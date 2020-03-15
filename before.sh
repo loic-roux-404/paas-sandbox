@@ -4,11 +4,11 @@ pass=janVanHelsing69
 apt-get update
 apt-get install sudo
 
-adduser $usr << 'EOF'
-${pass}
-${pass} 
-Roux
-69
+adduser $usr <<EOF
+$pass
+$pass
+
+
 
 
 
