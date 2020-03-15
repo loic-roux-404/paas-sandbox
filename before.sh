@@ -20,5 +20,3 @@ su - $usr
 id $usr 
 
 echo "please run ssh-copy-id lastico@144.91.67.171 on your machine" && logout
-
-
