@@ -1,10 +1,18 @@
 #ssh configure
-echo '
+sudo echo '
 ChallengeResponseAuthentication no 
 PasswordAuthentication no
 UsePAM no
 PermitRootLogin no
 Port 69' >> /etc/ssh/sshd_config
+
+sudo echo '{
+  "debug": true,
+  "tls": true,
+  "tlscert": "/var/docker/server.pem",
+  "tlskey": "/var/docker/serverkey.pem",
+  "hosts": ["tcp://192.168.59.3:2376"]
+}' >> /etc/docker/daemon.json
 
 /etc/init.d/ssh reload
 sudo systemctl reload ssh
