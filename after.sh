@@ -7,6 +7,7 @@ $pass
 EOF
 
 sudo -s
+rm -rf /root/vpm-init
 
 #ssh configure
 echo '

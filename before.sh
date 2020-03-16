@@ -15,7 +15,11 @@ $pass
 Y
 EOF
 
-usermod -aG sudo $usr 
+r=/home/$usr/vpm-init
+cp ./ $r
+chown -R $usr:$usr $r
+usermod -aG sudo $usr
+
 echo "please run echo 'janVanHelsing69' | ssh-copy-id lastico@144.91.67.171 on your machine" && logout
 su - $usr
 
