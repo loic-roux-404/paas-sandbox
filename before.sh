@@ -15,7 +15,7 @@ $pass
 Y
 EOF
 
-r=/home/$usr/vpm-init
+r=/home/$usr/
 cp ./ $r
 chown -R $usr:$usr $r
 usermod -aG sudo $usr
