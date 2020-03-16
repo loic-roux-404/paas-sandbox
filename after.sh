@@ -6,21 +6,20 @@ su $usr <<EOF
 $pass
 EOF
 
-sudo -s
-rm -rf /root/vpm-init
+echo $pass | sudo -S rm -rf /root/vpm-init
 
 #ssh configure
-echo '
+echo $pass | sudo -S echo '
 ChallengeResponseAuthentication no 
 PasswordAuthentication no
 UsePAM no
 PermitRootLogin no' >> /etc/ssh/sshd_config
 
-/etc/init.d/ssh reload
-sudo systemctl reload ssh
+echo $pass | sudo -S /etc/init.d/ssh reload
+echo $pass | sudo -S systemctl reload ssh
 
-sudo apt-get --assume-yes update 
-sudo apt-get --assume-yes install  \
+echo $pass | sudo -S apt-get --assume-yes update 
+echo $pass | sudo -S apt-get --assume-yes install  \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -30,18 +29,18 @@ sudo apt-get --assume-yes install  \
     dnsutils \
     zsh \
 
-service dnsmasq start
+echo $pass | sudo -S service dnsmasq start
 
 curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
 apt-key fingerprint 0EBFCD88
 
-add-apt-repository \
+echo $pass | sudo -S add-apt-repository \
    "deb [arch=amd64] https://download.docker.com/linux/debian \
    $(lsb_release -cs) \
    nightly"
 
-apt --assume-yes install docker-ce docker-ce-cli containerd.io docker-compose
-service docker start
+echo $pass | sudo -S apt --assume-yes install docker-ce docker-ce-cli containerd.io docker-compose
+echo $pass | sudo -S service docker start
 
 # TODO : automatic dns docker config
 #touch /etc/network/interfaces.d/dockerdns0
