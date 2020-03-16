@@ -30,8 +30,13 @@ EOT
 echo "--- finished ---"
 
 echo "--- append text to zshrc ---"
-sudo touch /etc/zsh/zshrc
-sudo cat <<EOT>> /etc/zsh/zshrc
+if [ -f ~/.bash_aliases ]; then
+    rm -rf /etc/zsh/zshrc
+else
+    sudo touch /etc/zsh/zshrc
+    sudo cat <<EOT>> /etc/zsh/zshrc
+fi
+
 # for powerline
 if [[ -r /usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh ]]; then
     source /usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh
