@@ -30,13 +30,8 @@ EOT
 echo "--- finished ---"
 
 echo "--- append text to zshrc ---"
-if [ -f ~/.bash_aliases ]; then
-    rm -rf /etc/zsh/zshrc
-else
-    sudo touch /etc/zsh/zshrc
-    sudo cat <<EOT>> /etc/zsh/zshrc
-fi
-
+sudo touch /etc/zsh/zshrc
+sudo cat <<EOT>> /etc/zsh/zshrc
 # for powerline
 if [[ -r /usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh ]]; then
     source /usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh
@@ -53,9 +48,3 @@ set-option -g default-terminal "screen-256color"
 set-option -g default-shell /bin/zsh
 EOT
 echo "--- finished ---"
-
-echo "
-if [ -f ~/.bash_aliases ]; then
-     . ~/.bash_aliases
-fi
-" >> ~/.zshrc
