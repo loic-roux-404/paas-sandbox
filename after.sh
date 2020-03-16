@@ -53,6 +53,7 @@ sudo service docker start
 
 # TODO : automatic dns docker config
 #touch /etc/network/interfaces.d/dockerdns0
+# https://www.howtoforge.com/how-to-deploy-a-dynamic-dns-server-with-docker-on-debian-10/#step-updating-and-installing-dependencies
 
 git clone git@github.com:anthraxx/ant-zsh.git ~/ant-zsh/
 make -C ~/ant-zsh/ install
