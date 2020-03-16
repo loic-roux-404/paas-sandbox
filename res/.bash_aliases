@@ -47,4 +47,6 @@ alias ldir="ls -l | egrep '^d'" # directories only
 # Search command line history
 alias h="history | grep "
 
+alias docker='sudo docker'
+
 # END
