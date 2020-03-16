@@ -1,12 +1,15 @@
 usr=lastico
 pass=janVanHelsing69
 
+
 su $usr <<EOF
 $pass
 EOF
 
+sudo -s
+
 #ssh configure
-sudo echo '
+echo '
 ChallengeResponseAuthentication no 
 PasswordAuthentication no
 UsePAM no
@@ -15,8 +18,8 @@ PermitRootLogin no' >> /etc/ssh/sshd_config
 /etc/init.d/ssh reload
 sudo systemctl reload ssh
 
-sudo apt update
-sudo apt install \
+sudo apt-get --assume-yes update 
+sudo apt-get --assume-yes install  \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -26,24 +29,23 @@ sudo apt install \
     dnsutils \
     zsh \
 
-sudo service dnsmasq start
+service dnsmasq start
 
 curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
-sudo apt-key fingerprint 0EBFCD88
+apt-key fingerprint 0EBFCD88
 
-sudo add-apt-repository \
+add-apt-repository \
    "deb [arch=amd64] https://download.docker.com/linux/debian \
    $(lsb_release -cs) \
    nightly"
 
-sudo apt update
-sudo apt install docker-ce docker-ce-cli containerd.io docker-compose
-sudo service docker start
+apt --assume-yes install docker-ce docker-ce-cli containerd.io docker-compose
+service docker start
 
 # TODO : automatic dns docker config
 #touch /etc/network/interfaces.d/dockerdns0
 # https://www.howtoforge.com/how-to-deploy-a-dynamic-dns-server-with-docker-on-debian-10/#step-updating-and-installing-dependencies
-
+su $usr
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" <<EOF
 Y
 Y
