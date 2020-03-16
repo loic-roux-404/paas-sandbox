@@ -61,17 +61,17 @@ make -C ~/ant-zsh/ install
 rm -rf ~/ant-zsh/
 
 nr=/home/$usr/vps-init/res
-if [ -f $nr ]; then
-    echo $pass | sudo -s
-    rm -rf ~/
-    mv $nr/.vimrc ~/
-    mv $nr/.gitconfig ~/
-    rm -rf /etc/motd
-    mv $nr/motd /etc/
-    mv $nr/.zsh_aliases ~/
-else
-  echo "Please check the location of vpm-init repo"
-fi
+
+sudo su root<<EOF
+$pass
+EOF
+
+rm -rf ~/
+mv $nr/.vimrc ~/
+mv $nr/.gitconfig ~/
+rm -rf /etc/motd
+mv $nr/motd /etc/
+mv $nr/.zsh_aliases ~/
 
 # dnsmasq
 #213.136.95.10
