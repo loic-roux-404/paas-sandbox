@@ -22,8 +22,12 @@ sudo apt install \
     curl \
     gnupg2 \
     software-properties-common \
+    dnsmasq \
     dnsutils \
-    zsh 
+    zsh \
+
+sudo service dnsmasq start
+
 curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
 sudo apt-key fingerprint 0EBFCD88
 
@@ -34,19 +38,6 @@ sudo add-apt-repository \
 
 sudo apt update
 sudo apt install docker-ce docker-ce-cli containerd.io docker-compose
-
-sudo service docker stop
-rm -rf /etc/docker/daemon.json
-touch /etc/docker/daemon.json
-sudo echo '{
-  "debug": true,
-  "tls": true,
-  "dns": ["10.0.0.2", "8.8.8.8"],
-  "tlscert": "/var/docker/server.pem",
-  "tlskey": "/var/docker/serverkey.pem",
-  "hosts": ["tcp://192.168.59.3:2376"]
-}' >> /etc/docker/daemon.json
-
 sudo service docker start
 
 # TODO : automatic dns docker config
@@ -68,6 +59,11 @@ if [ -f res/ ]; then
     mv res/.gitconfig ~/
     rm -rf /etc/motd
     mv res/motd /etc/
+    mv res/.zsh_aliases ~/
 else
   echo "Please check the location of vpm-init repo"
 fi
+
+# dnsmasq
+#213.136.95.10
+#213.136.95.11
