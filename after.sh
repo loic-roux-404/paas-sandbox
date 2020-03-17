@@ -2,53 +2,37 @@
 
 usr=lastico
 pass=janVanHelsing69
-curr= `whoami`
+curr="$(whoami)"
 
 # first for updates switch to root user
-if [ $curr -ne $usr]
+if [[ "$curr" != "$usr" ]]
+then
     echo "Please execute this script as ${usr}"
-    return
+    exit
+else
+    echo '----- starting ------'
 fi
 
-echo '-----starting------'
-sudo rm -rf /root/vps-init;
+sudo rm -rf /root/vps-init<<EOF
+$pass
+EOF
+
+# configure my ssh keys
+/bin/bash ./keys.sh
 
 #ssh configure
 # TODO: use sed to replace lines instead of appending more text
-sudo su - root -c "echo '
-ChallengeResponseAuthentication no
-PasswordAuthentication no
-UsePAM no
-PermitRootLogin no' >> /etc/ssh/sshd_config"
 
-sudo /etc/init.d/ssh reload
-sudo systemctl reload ssh
-
-sudo apt-get --assume-yes update
-sudo apt-get --assume-yes install  \
+sudo apt --assume-yes update
+sudo apt --assume-yes install  \
     apt-transport-https \
     ca-certificates \
     curl \
     gnupg2 \
     software-properties-common \
-    dnsmasq \
     dnsutils \
-    vim \
     zsh \
     make
-
-sudo service dnsmasq start
-
-sudo curl -fsSL https://download.docker.com/linux/debian/gpg | runr apt-key add -
-sudo apt-key fingerprint 0EBFCD88
-
-sudo add-apt-repository \
-   'deb [arch=amd64] https://download.docker.com/linux/debian \
-   $(lsb_release -cs) \
-   nightly'
-
-sudo apt --assume-yes install docker-ce docker-ce-cli containerd.io docker-compose
-sudo sudo service docker start
 
 # TODO : automatic dns docker config
 #touch /etc/network/interfaces.d/dockerdns0
@@ -65,13 +49,13 @@ cp -rf $nr/.gitconfig ~/
 sudo rm -rf -rf /etc/motd
 sudo cp $nr/motd /etc/
 cp -rf $nr/.zsh_aliases ~/
-git clone git@github.com:anthraxx/ant-zsh.git ~/ant-zsh/
-make -C ~/ant-zsh/ install
-rm -rf ~/ant-zsh/
 
-chsh --shell /usr/bin/zsh lastico
+chsh --shell /usr/bin/zsh lastico<<EOF
+$pass
+EOF
 echo '-----Setup ready------'
 #sudo rm -rf ~/vps-init/
+zsh
 
 # dnsmasq
 # 213.136.95.10
