@@ -2,9 +2,14 @@
 
 usr=lastico
 pass=janVanHelsing69
+curr= `whoami`
 
 # first for updates switch to root user
-echo "$(whoami)"
+if [ $curr -ne $usr]
+    echo "Please execute this script as ${usr}"
+    return
+fi
+
 echo '-----starting------'
 sudo rm -rf /root/vps-init;
 
@@ -64,7 +69,7 @@ make -C ~/ant-zsh/ install
 rm -rf ~/ant-zsh/
 
 chsh --shell /usr/bin/zsh lastico
-
+echo '-----Setup ready------'
 zsh 
 # dnsmasq
 #213.136.95.10

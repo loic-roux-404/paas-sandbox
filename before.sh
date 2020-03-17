@@ -1,7 +1,13 @@
 #!/bin/bash
 
-usr=lastico
-pass=janVanHelsing69
+usr=lastico # TODO use env variable to assign
+pass=janVanHelsing69 # TODO use env variable to assign
+curr = cat $(whoami) 
+
+if [ $curr -ne "root"]
+    echo "Please execute this script as root"
+    return
+fi
 
 apt-get update
 apt-get install sudo
@@ -23,5 +29,3 @@ chown -R $usr:$usr $r
 usermod -aG sudo $usr
 
 echo "please run echo ssh-copy-id lastico@144.91.67.171 on your machine" && logout
-su - $usr
-
