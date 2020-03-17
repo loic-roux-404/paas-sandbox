@@ -14,6 +14,7 @@ echo '-----starting------'
 sudo rm -rf /root/vps-init;
 
 #ssh configure
+# TODO: use sed to replace lines instead of appending more text
 sudo su - root -c "echo '
 ChallengeResponseAuthentication no
 PasswordAuthentication no
@@ -71,6 +72,7 @@ rm -rf ~/ant-zsh/
 chsh --shell /usr/bin/zsh lastico
 echo '-----Setup ready------'
 zsh 
+
 # dnsmasq
-#213.136.95.10
-#213.136.95.11
+# 213.136.95.10
+# 213.136.95.11
