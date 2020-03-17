@@ -9,11 +9,11 @@ echo '-----starting------'
 sudo rm -rf /root/vps-init;
 
 #ssh configure
-sudo echo '
-ChallengeResponseAuthentication no 
+sudo su - root -c "echo '
+ChallengeResponseAuthentication no
 PasswordAuthentication no
 UsePAM no
-PermitRootLogin no' >> /etc/ssh/sshd_config
+PermitRootLogin no' >> /etc/ssh/sshd_config"
 
 sudo /etc/init.d/ssh reload
 sudo systemctl reload ssh
@@ -27,6 +27,7 @@ sudo apt-get --assume-yes install  \
     software-properties-common \
     dnsmasq \
     dnsutils \
+    vim \
     zsh \
     make
 
@@ -52,20 +53,19 @@ Y
 Y
 EOF
 
-usermod -s /usr/bin/zsh $usr
-
-git clone git@github.com:anthraxx/ant-zsh.git ~/ant-zsh/
-make -C ~/ant-zsh/ install
-rm -rf ~/ant-zsh/
-
 nr=~/vps-init/res
-
 cp -rf $nr/.vimrc ~/
 cp -rf $nr/.gitconfig ~/
 sudo rm -rf -rf /etc/motd
 sudo cp $nr/motd /etc/
 cp -rf $nr/.zsh_aliases ~/
+git clone git@github.com:anthraxx/ant-zsh.git ~/ant-zsh/
+make -C ~/ant-zsh/ install
+rm -rf ~/ant-zsh/
 
+chsh --shell /usr/bin/zsh lastico
+
+zsh 
 # dnsmasq
 #213.136.95.10
 #213.136.95.11
