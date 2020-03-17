@@ -1,23 +1,26 @@
 usr=lastico
 pass=janVanHelsing69
 
-sudo su - root
+function runr() {
+  sudo su - root -c "${1}"
+}
+
 # first for updates switch to root user
 echo "\n\n$(whoami)\n\n"
-sudo rm -rf /root/vps-init
+runr rm -rf /root/vps-init;
 
 #ssh configure
-sudo echo '
+runr echo '
 ChallengeResponseAuthentication no 
 PasswordAuthentication no
 UsePAM no
 PermitRootLogin no' >> /etc/ssh/sshd_config
 
-sudo /etc/init.d/ssh reload
-sudo systemctl reload ssh
+runr '/etc/init.d/ssh reload'
+runr systemctl reload ssh
 
-sudo apt-get --assume-yes update 
-sudo apt-get --assume-yes install  \
+runr apt-get --assume-yes update 
+runr apt-get --assume-yes install  \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -27,18 +30,18 @@ sudo apt-get --assume-yes install  \
     dnsutils \
     zsh \
 
-sudo service dnsmasq start
+runr service dnsmasq start
 
-curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
-apt-key fingerprint 0EBFCD88
+runr curl -fsSL https://download.docker.com/linux/debian/gpg | runr apt-key add -
+runr apt-key fingerprint 0EBFCD88
 
-add-apt-repository \
+runr add-apt-repository \
    "deb [arch=amd64] https://download.docker.com/linux/debian \
    $(lsb_release -cs) \
    nightly"
 
-apt --assume-yes install docker-ce docker-ce-cli containerd.io docker-compose
-sudo service docker start
+runr apt --assume-yes install docker-ce docker-ce-cli containerd.io docker-compose
+runr sudo service docker start
 
 # TODO : automatic dns docker config
 #touch /etc/network/interfaces.d/dockerdns0
@@ -62,11 +65,11 @@ nr=~/vps-init/res
 
 usermod -s /usr/bin/zsh $usr
 
-mv $nr/.vimrc ~/
-mv $nr/.gitconfig ~/
-rm -rf /etc/motd
-mv $nr/motd /etc/
-mv $nr/.zsh_aliases ~/
+runr mv -f $nr/.vimrc ~/
+runr mv -f $nr/.gitconfig ~/
+runr rm -f -rf /etc/motd
+runr mv -f $nr/motd /etc/
+runr mv -f $nr/.zsh_aliases ~/
 
 # dnsmasq
 #213.136.95.10
