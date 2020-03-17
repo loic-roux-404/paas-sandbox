@@ -71,7 +71,7 @@ rm -rf ~/ant-zsh/
 
 chsh --shell /usr/bin/zsh lastico
 echo '-----Setup ready------'
-zsh 
+#sudo rm -rf ~/vps-init/
 
 # dnsmasq
 # 213.136.95.10
