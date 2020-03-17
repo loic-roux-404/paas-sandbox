@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #自动化安装zsh,oh-my-zsh-tmux,powerline并配置powerline
 echo "--- start update ---"
 sudo apt-get update

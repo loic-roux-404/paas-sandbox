@@ -1,3 +1,5 @@
+#!/bin/bash
+
 usr=lastico
 pass=janVanHelsing69
 
@@ -15,8 +17,8 @@ $pass
 Y
 EOF
 
-r=/home/$usr/
-cp ./ $r
+r=/home/$usr
+cp -r /root/vps-init $r
 chown -R $usr:$usr $r
 usermod -aG sudo $usr
 
