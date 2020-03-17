@@ -48,5 +48,7 @@ alias ldir="ls -l | egrep '^d'" # directories only
 alias h="history | grep "
 
 alias docker='sudo docker'
-
+alias apt='sudo apt'
+alias apt-get='sudo apt-get'
+alias chown='sudo chown'
 # END
