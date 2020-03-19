@@ -1,0 +1,7 @@
+---
+# defaults file for secu
+packages: 
+  - dns-utils
+  - ufw
+
+basics_packages: "{{ packages }}" # TODO merge list

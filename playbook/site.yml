@@ -1,0 +1,15 @@
+---
+
+- hosts: vps
+  #remote_user: lastico
+  become: yes
+  roles:
+    - role: basics
+    
+    - role: dev-sec.ssh-hardening
+
+    - role: "nickjj.docker"
+      tags: ["docker"]
+
+    - role: viasite-ansible.zsh
+
