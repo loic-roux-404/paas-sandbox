@@ -1,0 +1,5 @@
+[vps]
+server01 ansible_host=144.91.67.171
+
+[localhost]
+localhost
