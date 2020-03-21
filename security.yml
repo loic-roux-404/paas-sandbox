@@ -1,0 +1,8 @@
+
+- hosts: security
+  #remote_user: lastico
+  gather_facts: true
+  become: yes
+  roles:
+    - role: dev-sec.ssh-hardening
+    - role: geerlingguy.firewall

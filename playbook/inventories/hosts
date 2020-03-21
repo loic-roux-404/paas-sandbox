@@ -1,8 +1,0 @@
-#!/bin/bash
-# -*- mode: bash; -*-
-# syntax for windows environments
-
-
-cat<<EOF
-
-EOF

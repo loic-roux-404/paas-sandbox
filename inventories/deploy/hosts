@@ -1,8 +1,2 @@
-#!/bin/bash
-# -*- mode: bash; -*-
-# syntax for windows environments
-
-
-cat<<EOF
-    "vps" = [ "localhost" ]
-EOF
+[env]
+server01 ansible_host=144.91.67.171
