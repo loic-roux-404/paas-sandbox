@@ -2,7 +2,6 @@
 # -*- mode: bash; -*-
 # syntax for windows environments
 
-
 cat<<EOF
-    "vps" =>
+    "env" = [ "localhost" ] 
 EOF
