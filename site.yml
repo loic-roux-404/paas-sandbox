@@ -1,5 +1,0 @@
----
-
-- include: env.yml
-- include: docker.yml
-- include: security.yml
