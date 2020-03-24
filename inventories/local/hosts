@@ -1,7 +1,8 @@
-#!/bin/bash
-# -*- mode: bash; -*-
-# syntax for windows environments
+[env]
+server01 ansible_host=127.0.0.1
 
-cat<<EOF
-    "env" = [ "localhost" ] 
-EOF
+[docker]
+server01 ansible_host=127.0.0.1
+
+[security]
+server01 ansible_host=127.0.0.1

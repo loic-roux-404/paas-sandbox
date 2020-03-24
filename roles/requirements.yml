@@ -1,0 +1,3 @@
+- src: git+ssh://github.com:pearofducks/ansible-vim.git
+  version: master
+  

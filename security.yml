@@ -4,5 +4,6 @@
   gather_facts: true
   become: yes
   roles:
+    - role: geerlingguy.github-users
     - role: dev-sec.ssh-hardening
     - role: geerlingguy.firewall
