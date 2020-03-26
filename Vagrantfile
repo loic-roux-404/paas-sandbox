@@ -5,7 +5,7 @@ ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
 playbook_name = ENV['PLAYBOOK'] ? ENV['PLAYBOOK']  : 'site.yaml'
 
 Vagrant.configure("2") do |config|
-    config.vm.box = "loic-roux-404/deb-g4"
+    config.vm.box = "loic-roux-404/deb64-buster"
     config.vm.box_check_update = false
 
     id_rsa_path        = File.join(Dir.home, ".ssh", "id_rsa")
@@ -28,6 +28,7 @@ Vagrant.configure("2") do |config|
       rsync__args: ["--archive", "--delete", "--no-owner", "--no-group","-q", "-W"],
       rsync__exclude: [".git"]
 
+    config.vm.provision :shell, path: 'utils/install.sh'
     ## Install and configure software
     config.vm.provision "ansible_local" do |ansible|
       ansible.provisioning_path = "#{playbook_name}/"
