@@ -1,6 +1,9 @@
 #!/bin/bash
 debian_version=$(cat /etc/debian_version)
 ansible_installed=$(which ansible | wc -l)
+ENABLE_AUTO_PROVISION=0
+GIT_USER='loic-roux-404'
+REPONAME='playbook-vps'
 
 if [ "$ansible_installed" -eq 0 ]; then
 
@@ -17,3 +20,11 @@ fi
 
 echo "[ ---- Ansible version installed ---- ]"
 ansible --version
+echo "[ ---- Start provisionning local ---- ]"
+
+if [$ENABLE_AUTO_PROVISION -eq 1]; then
+  git clone https://github.com/$GIT_USER/$REPONAME.git
+  cd $REPONAME
+  make install
+  make site
+fi

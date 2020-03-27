@@ -1,10 +1,9 @@
 ---
 
-- hosts: security
+- hosts: hosting
   #remote_user: lastico
   gather_facts: true
   become: yes
   roles:
-    - role: geerlingguy.github-users
-    - role: geerlingguy.firewall
     - role: geerlingguy.security
+    - role: geerlingguy.firewall

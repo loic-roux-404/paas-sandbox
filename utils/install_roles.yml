@@ -1,0 +1,5 @@
+---
+
+- name: check requirements before starting
+  local_action:
+    command ansible-galaxy install -r requirements.yml --roles-path ../roles

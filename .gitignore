@@ -1,3 +1,4 @@
 .DS_Store
 roles/role-basics
 .vagrant/
+.ext_roles
