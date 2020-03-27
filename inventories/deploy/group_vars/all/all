@@ -1,14 +1,45 @@
 ---
+
 #==========================
-# ansible-role-github-users
-#=========================
+# Base variables
+#==========================
 user: "loic-roux-404"
 user_email: "loic-roux-404@gmail.com"
 
+#==========================
+# ansible-users
+# https://github.com/weareinteractive/ansible-users.git
+#=========================
 # create user from github with correct auth key
-github_users:
-- name: "{{ user }}"
-  groups: sudo
+users:
+- username: "{{ user }}"
+  group: "{{ user }}"
+  groups: ["sudo"]
+  uid: 1667
+  # password: TODO use ansible-vault
+  append: no
+  home_mode: "0750"
+  home_create: yes
+  home_files:
+    - "{{ lookup('file', '/path/to/id_rsa') }}"
+    - "{{ lookup('file', '/path/to/id_rsa') }}"
+  authorized_keys_exclusive: yes
+  ssh_key_type: rsa
+  ssh_key_bits: 2048
+  ssh_key_generate: yes
+
+users_home_files: []
+users_home: /home
+users_home_create: yes
+users_group:
+users_shell: /bin/zsh
+users_ssh_key_type: rsa
+users_ssh_key_bits: 2048
+users_authorized_keys_exclusive: yes
+users_remove: []
+
+# github
+github_main_user_token: 269ca3adb47b44f3432124095bf5d8c04761f441
 
 #==================
 # role-basics
@@ -24,7 +55,7 @@ motd_message_3: 'Unauthorized access is punished'
 user_gitignore_global_name: ".gitignore_global"
 
 #==================
-# role
+# role-security
 #==================
 security_ssh_port: 667
 
@@ -98,7 +129,6 @@ zsh_aliases_extra:
 
   # Search command line history
   - { alias: h, action: "history | grep " }
-
   - { alias: docker, action: 'sudo docker' }
   - { alias: alias, action: apt='sudo apt' }
   - { alias: apt-get, action: 'sudo apt-get' }
