@@ -14,5 +14,11 @@ $(PLAYBOOKS): % : %.run
 %.vault:	
 	ansible-playbook $*.yml --vault-password-file
 	
-test:
-	ansible all.yml -i ./inventories/test/ env 
+%.test.deploy:
+	ansible-playbook -e ansible_host=localhost \
+	-e ansible_port=2222 \
+	-e ansible_user=vagrant \
+	 -i ./inventories/deploy/ $*.yml
+
+install:
+	ansible-galaxy install -r roles/requirements.yml
