@@ -1,0 +1,106 @@
+---
+#==========================
+# ansible-role-github-users
+#=========================
+user: "loic-roux-404"
+user_email: "loic-roux-404@gmail.com"
+
+# create user from github with correct auth key
+github_users:
+- name: "{{ user }}"
+  groups: sudo
+
+#==================
+# role-basics
+#==================
+packages_extra: 
+  - dns-utils
+  - ufw
+
+motd_message_1: 'VPS owned by lastico'
+motd_message_2: 'Docker prod for multiple apps'
+motd_message_3: 'Unauthorized access is punished'
+
+user_gitignore_global_name: ".gitignore_global"
+
+#==================
+# role
+#==================
+security_ssh_port: 667
+
+security_ssh_password_authentication: "no"
+security_ssh_permit_root_login: "no"
+security_ssh_usedns: "no"
+security_ssh_permit_empty_password: "no"
+security_ssh_challenge_response_auth: "no"
+security_ssh_gss_api_authentication: "no"
+security_ssh_x11_forwarding: "no"
+
+security_ssh_restart_handler_state: restarted
+
+security_sudoers_passwordless: ["{{ user }}"]
+security_sudoers_passworded: []
+
+# module to ignore from apt auto upgrade
+security_autoupdate_blacklist: []
+
+security_autoupdate_mail_to: "{{ user_email }}"
+security_autoupdate_mail_on_error: true
+# module with IP black list 
+security_fail2ban_enabled: true
+
+#==================
+# ansible-role-zsh
+#==================
+zsh_antigen_bundles_extras:
+  - nvm
+  - docker
+  - docker-compose
+
+zsh_user: "{{ user }}"
+zsh_shared: yes
+zsh_aliases_extra:
+  - { alias: 'dfh', action: 'df -h | grep -v docker' }
+  - { alias: p, action: "ps aux | grep" }
+  # Search files in the current folder
+  - { alias: f, action: "find . | grep " }
+  # Show current network connections to the server
+  - { alias: ipview, action: 'netstat -anpl | grep :80 | awk {"print \$5"} | cut -d":" -f1 | sort | uniq -c | sort -n | sed -e "s/^ *//" -e "s/ *\$//"' }
+  # Show open ports
+  - {alias: openports, action: 'netstat -nape --inet' }
+  # Alias's to show disk space and space used in a folder
+  - { alias: diskspace, action: "du -S | sort -n -r |more" }
+  - { alias: folders, action: 'du -h --max-depth=1' }
+  # search in all files 
+  # ftext function
+  - { alias: mkdirg, action: "mkdirg" }
+  # Alias's to modified commands
+  - { alias: cp , action: 'cp -i' }
+  - { alias: mv , action : 'mv -i' }
+  - { alias: rm, action: 'rm -iv' }
+  - { alias: mkdir, action: 'mkdir -p' }
+  - { alias: vi, action:'sudo vim' }
+  - { alias: tail, action: 'sudo tail' }
+  - { alias: apt-get, action: 'sudo apt-get' }
+  - { alias: apt, action: 'sudo apt' }
+  - { alias: '..', action: 'cd ..'}
+  # Change directory aliases
+  - { alias: '...', action: 'cd ../..' }
+  - { alias: '....', action: 'cd ../../..' }
+  - { alias: '.....', action: 'cd ../../../..' }
+
+  # Alias's for multiple directory listing commands
+  - { alias: la, action: 'ls -Alh' } # show hidden files
+  - { alias: ls, action: ls -aFh --color=always' } # add colors and file type extensions
+  - { alias: ll, action: 'ls -Fls' } # long listing format
+  - { alias: lf, action: "ls -l | egrep -v '^d'" } # files only
+  - { alias: ldir, action: ls -l | egrep '^d'" } # directories only
+
+  # Search command line history
+  - { alias: h, action: "history | grep " }
+
+  - { alias: docker, action: 'sudo docker' }
+  - { alias: alias, action: apt='sudo apt' }
+  - { alias: apt-get, action: 'sudo apt-get' }
+  - { alias: chown, action: 'sudo chown' }
+  

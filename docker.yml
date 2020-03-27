@@ -1,7 +1,0 @@
-- hosts: docker
-  gather_facts: true
-  become: yes
-  roles:
-
-    - role: "nickjj.docker"
-      tags: ["docker"]

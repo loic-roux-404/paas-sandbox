@@ -1,3 +1,4 @@
+---
 
 - hosts: security
   #remote_user: lastico
@@ -5,5 +6,5 @@
   become: yes
   roles:
     - role: geerlingguy.github-users
-    - role: dev-sec.ssh-hardening
     - role: geerlingguy.firewall
+    - role: geerlingguy.security

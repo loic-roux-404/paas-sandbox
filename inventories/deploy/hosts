@@ -1,8 +1,8 @@
 [env]
-server01 ansible_host=144.91.67.171
+server01 ansible_host=loicroux.com
 
-[docker]
-server01 ansible_host=144.91.67.171
+[hosting]
+server01 ansible_host=loicroux.com
 
 [security]
-server01 ansible_host=144.91.67.171
+server01 ansible_host=loicroux.com
