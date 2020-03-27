@@ -18,10 +18,10 @@ Vagrant.configure("2") do |config|
     config.ssh.private_key_path = [id_rsa_path, insecure_key_path]
 
     config.vm.provider "virtualbox" do |vb|
-        vb.customize ["modifyvm", :id, "--name", "libguest-vm"]
-        vb.customize ["modifyvm", :id, "--memory", "2048"]
-        vb.customize ["modifyvm", :id, "--cpu", "2"]
-        vb.customize ["modifyvm", :id, "--ioapic", "on"]
+      vb.customize ["modifyvm", :id, "--name", "libguest-vm"]
+      vb.customize ["modifyvm", :id, "--memory", "2048"]
+      vb.customize ["modifyvm", :id, "--cpu", "2"]
+      vb.customize ["modifyvm", :id, "--ioapic", "on"]
     end
 
     config.vm.synced_folder ".", "/vagrant", type: 'rsync', rsync__auto:true,

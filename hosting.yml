@@ -1,0 +1,8 @@
+---
+
+- hosts: hosting
+  gather_facts: true
+  become: yes
+  roles:
+    - role: nickjj.docker
+    - role: arillso.logrotate
