@@ -1,12 +1,17 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+if !Vagrant.has_plugin?('vagrant-vbguest')
+  system('vagrant plugin install vagrant-vbguest')
+end
+
 ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
 playbook_name = ENV['PLAYBOOK'] ? ENV['PLAYBOOK']  : 'site.yaml'
 
 Vagrant.configure("2") do |config|
     config.vm.box = "loic-roux-404/deb64-buster"
     config.vm.box_check_update = false
+    config.vbguest.auto_update = true
 
     id_rsa_path        = File.join(Dir.home, ".ssh", "id_rsa")
     id_rsa_ssh_key     = File.read(id_rsa_path)
@@ -18,9 +23,9 @@ Vagrant.configure("2") do |config|
     config.ssh.private_key_path = [id_rsa_path, insecure_key_path]
 
     config.vm.provider "virtualbox" do |vb|
-      vb.customize ["modifyvm", :id, "--name", "libguest-vm"]
+      vb.customize ["modifyvm", :id, "--name", "debug-ansible"]
       vb.customize ["modifyvm", :id, "--memory", "2048"]
-      vb.customize ["modifyvm", :id, "--cpu", "2"]
+      vb.customize ["modifyvm", :id, "--cpus", "2"]
       vb.customize ["modifyvm", :id, "--ioapic", "on"]
     end
 
@@ -28,15 +33,15 @@ Vagrant.configure("2") do |config|
       rsync__args: ["--archive", "--delete", "--no-owner", "--no-group","-q", "-W"],
       rsync__exclude: [".git"]
 
-    config.vm.provision :shell, path: 'utils/install.sh'
+    # config.vm.provision :shell, path: 'utils/install.sh'
     ## Install and configure software
-    config.vm.provision "ansible_local" do |ansible|
-      ansible.provisioning_path = "#{playbook_name}/"
-      ansible.playbook = "playbook.yml"
-      ansible.become = true
-      ansible.verbose = ""
-      ansible.extra_vars = conf
-    end
+    # config.vm.provision "ansible_local" do |ansible|
+    #  ansible.provisioning_path = "#{playbook_name}/"
+    #  ansible.playbook = "playbook.yml"
+    #  ansible.become = true
+    #  ansible.verbose = ""
+    #  ansible.extra_vars = conf
+    # end
 
     # fix ssh common issues
     ssh_path = "/home/vagrant/.ssh"

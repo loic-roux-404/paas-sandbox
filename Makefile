@@ -12,4 +12,7 @@ $(PLAYBOOKS): % : %.run
 	ansible-playbook $*.yml
 
 %.vault:	
-	ansible-playbook $*.yml --vault-password-file 
+	ansible-playbook $*.yml --vault-password-file
+	
+test:
+	ansible all.yml -i ./inventories/test/ env 

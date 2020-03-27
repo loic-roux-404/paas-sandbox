@@ -1,3 +1,5 @@
+- src: git+ssh://github.com:loic-roux-404/role-basics.git
 - src: git+ssh://github.com:pearofducks/ansible-vim.git
   version: master
-  
+- src: weareinteractive.users
+- src: arillso.logrotate

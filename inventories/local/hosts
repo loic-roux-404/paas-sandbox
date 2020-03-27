@@ -1,8 +1,2 @@
 [env]
 server01 ansible_host=127.0.0.1
-
-[hosting]
-server01 ansible_host=127.0.0.1
-
-[security]
-server01 ansible_host=127.0.0.1
