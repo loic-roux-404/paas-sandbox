@@ -1,0 +1,54 @@
+
+# ============
+# nickjj.docker
+#=============
+docker__channel: ["nightly"]
+docker__state: "present"
+docker__users: ["{{ user1 }}"]
+
+# TODO: no hardcode docker registery
+docker__registries:
+ -  username: "your_docker_hub_username"
+    password: "your_docker_hub_password"
+
+docker__default_daemon_json: |
+  "log-driver": "journald"
+
+docker__daemon_flags:
+  - "-H unix://"
+
+docker__daemon_environment:
+  #- "HTTP_PROXY=http://proxy.example.com:80"
+  #- "HTTPS_PROXY=https://proxy.example.com:443"
+
+docker__systemd_override: ""
+
+# docker Crons
+# `a` removes unused images (useful in production).
+# `f` forces it to happen without prompting you to agree.
+docker__cron_jobs_prune_flags: "af"
+
+# Control the schedule of the docker system prune.
+docker__cron_jobs_prune_schedule: ["0", "0", "*", "*", "0"]
+
+docker__cron_jobs:
+  - name: "Docker disk clean up"
+    job: "docker system prune -{{ docker__cron_jobs_prune_flags }} > /dev/null 2>&1"
+    schedule: "{{ docker__cron_jobs_prune_schedule }}"
+    cron_file: "docker-disk-clean-up"
+    #user: "{{ (docker__users | first) | d('root') }}"
+    state: "present"
+
+# pip dependencies
+docker__pip_dependencies:
+  - "gcc"
+  #- "python-setuptools"
+  - "python{{ '3' if ansible_python.version.major == 3 else '' }}-dev"
+  #- "python{{ '3' if ansible_python.version.major == 3 else '' }}-pip"
+  - "virtualenv"
+
+# Pip config
+docker__pip_packages: []
+
+docker__pip_docker_state: "present"
+docker__pip_docker_compose_state: "present"
