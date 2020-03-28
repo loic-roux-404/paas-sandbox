@@ -2,18 +2,13 @@
 # From github roles
 - name: role-basics 
   src: ssh://git@github.com/loic-roux-404/role-basics.git
-  version: "master"
-  scm: git
-- name: ansible-vim
-  src: ssh://git@github.com/pearofducks/ansible-vim.git
-  version: "v2.1"
+  version: "configs"
   scm: git
 - name: ansible-role-zsh
   src: ssh://git@github.com/viasite-ansible/ansible-role-zsh.git
   version: "v3.2.6"
   scm: git
 # galaxy roles
-- src: weareinteractive.users
 - src: arillso.logrotate
 - src: geerlingguy.firewall
 - src: geerlingguy.security

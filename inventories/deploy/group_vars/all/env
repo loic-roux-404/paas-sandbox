@@ -3,34 +3,34 @@
 #==========================
 # Base variables
 #==========================
-user: "loic-roux-404"
-user_email: "loic-roux-404@gmail.com"
+user1: "loic-roux-404"
+user1_home: "/home/{{ user1 }}"
 gitignore_global: .gitignore_global
-home: "/home/{{ user }}"
 #==========================
 # ansible-users
 # https://github.com/weareinteractive/ansible-users.git
 #=========================
 # create user from github with correct auth key
 users:
-- username: "{{ user }}"
-  group: "{{ user }}"
+- username: "{{ user1 }}"
+  group: "{{ user1 }}"
   groups: ["sudo"]
   uid: 1667
   # password: TODO use ansible-vault
   append: no
   home_mode: "0750"
   home_create: yes
-  home: "{{ home }}"
+  home: "{{ user1_home }}"
   home_files:
-    - "{{ lookup('file', '/files/.inputrc') }}"
-    - "{{ lookup('file', './files/' + gitignore_global) }}"
-    # this file need email variable / username and gitignore_global
-    - "{{ lookup('template', './.gitconfig.j2') }}"
+    - "files/.inputrc"
+    - "files/.virmc"
+  authorized_key: "{{ github_url }}/{{ user1 }}.keys"
   authorized_keys_exclusive: yes
   ssh_key_type: rsa
   ssh_key_bits: 2048
   ssh_key_generate: yes
+  # TODO: keep token with vault
+  github_user_token: 269ca3adb47b44f3432124095bf5d8c04761f441
 
 users_home_files: []
 users_home: /home
@@ -47,43 +47,13 @@ users_remove: []
 # https://github.com/loic-roux-404/role-basics
 #==================
 
-# github
-# TODO: keep token with vault
-github_main_user_token: 269ca3adb47b44f3432124095bf5d8c04761f441
-
 packages_extra: 
   - dns-utils
   - ufw
 
-motd_message_1: 'VPS owned by lastico'
-motd_message_2: 'Docker prod for multiple apps'
-motd_message_3: 'Unauthorized access is punished'
-
-user_gitignore_global_name: ".gitignore_global"
-
-#==================
-# role-security
-#==================
-security_ssh_port: 667
-security_ssh_password_authentication: "no"
-security_ssh_permit_root_login: "no"
-security_ssh_usedns: "no"
-security_ssh_permit_empty_password: "no"
-security_ssh_challenge_response_auth: "no"
-security_ssh_gss_api_authentication: "no"
-security_ssh_x11_forwarding: "no"
-
-security_ssh_restart_handler_state: restarted
-
-security_sudoers_passwordless: ["{{ user }}"]
-security_sudoers_passworded: []
-
-# module to ignore from apt auto upgrade
-security_autoupdate_blacklist: []
-security_autoupdate_mail_to: "{{ user_email }}"
-security_autoupdate_mail_on_error: true
-# module with IP black list 
-security_fail2ban_enabled: true
+motd_message_1: VPS owned by lastico
+motd_message_2: Docker prod for multiple apps
+motd_message_3: Unauthorized access is punished
 
 #==================
 # ansible-role-zsh
@@ -93,7 +63,7 @@ zsh_antigen_bundles_extras:
   - docker
   - docker-compose
 
-zsh_user: "{{ user }}"
+zsh_user: "{{ user1 }}"
 zsh_shared: yes
 zsh_aliases_extra:
   - { alias: 'dfh', action: 'df -h | grep -v docker' }
@@ -138,4 +108,3 @@ zsh_aliases_extra:
   - { alias: alias, action: apt='sudo apt' }
   - { alias: apt-get, action: 'sudo apt-get' }
   - { alias: chown, action: 'sudo chown' }
-  

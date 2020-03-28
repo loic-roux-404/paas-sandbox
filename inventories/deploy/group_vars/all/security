@@ -1,0 +1,28 @@
+#==================
+# role-security
+#==================
+security_ssh_port: 667
+security_ssh_password_authentication: "no"
+security_ssh_permit_root_login: "no"
+security_ssh_usedns: "no"
+security_ssh_permit_empty_password: "no"
+security_ssh_challenge_response_auth: "no"
+security_ssh_gss_api_authentication: "no"
+security_ssh_x11_forwarding: "no"
+
+security_ssh_restart_handler_state: restarted
+
+security_sudoers_passwordless: ["{{ user }}"]
+security_sudoers_passworded: []
+
+# module to ignore from apt auto upgrade
+security_autoupdate_blacklist: []
+security_autoupdate_mail_to: "{{ user_email }}"
+security_autoupdate_mail_on_error: true
+# module with IP black list 
+security_fail2ban_enabled: true
+
+#==================
+# role-firewall
+#==================
+# TODO
