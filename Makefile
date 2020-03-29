@@ -1,6 +1,7 @@
 PLAYBOOKS = $(basename $(wildcard *.yml))
-verbose =
+verbose=
 role=
+ask-vault=
 
 all:
 	@echo "Usage: make <playbook>"
@@ -18,11 +19,12 @@ $(PLAYBOOKS): % : %.run
 
 # role option take --tag your-role as option
 # verbose write simply verbose="-vvv"
+# --ask-vault-pass
 %.test.deploy: 
 	ansible-playbook -e ansible_host=localhost \
 	-e ansible_port=2222 \
 	-e ansible_user=vagrant \
-	 -i ./inventories/deploy/ $*.yml $(verbose) $(role)
+	-i ./inventories/deploy/ $*.yml $(verbose) $(role) $(ask-vault)
 
 install:
 	ansible-galaxy install -r roles/requirements.yml

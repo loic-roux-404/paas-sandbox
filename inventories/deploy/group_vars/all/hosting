@@ -6,11 +6,6 @@ docker__channel: ["nightly"]
 docker__state: "present"
 docker__users: ["{{ user1 }}"]
 
-# TODO: no hardcode docker registery
-docker__registries:
- -  username: "your_docker_hub_username"
-    password: "your_docker_hub_password"
-
 docker__default_daemon_json: |
   "log-driver": "journald"
 

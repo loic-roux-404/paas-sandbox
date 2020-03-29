@@ -22,7 +22,7 @@ echo "[ ---- Ansible version installed ---- ]"
 ansible --version
 echo "[ ---- Start provisionning local ---- ]"
 
-if [$ENABLE_AUTO_PROVISION -eq 1]; then
+if [ $ENABLE_AUTO_PROVISION -eq 1 ]; then
   git clone https://github.com/$GIT_USER/$REPONAME.git
   cd $REPONAME
   make install

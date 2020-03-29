@@ -10,6 +10,7 @@ TODO
 - gitconfig aliases (for loop) ?
 - gitignore (for loop) ?
 - review all gitconfig from github user
+- nodejs
 
 Requirements
 ------------

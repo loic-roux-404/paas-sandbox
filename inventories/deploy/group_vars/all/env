@@ -23,19 +23,18 @@ users:
   home: "{{ user1_home }}"
   home_files:
     - "files/.inputrc"
-    - "files/.virmc"
+    - "files/.vimrc"
   authorized_key: "{{ github_url }}/{{ user1 }}.keys"
   authorized_keys_exclusive: yes
   ssh_key_type: rsa
   ssh_key_bits: 2048
   ssh_key_generate: yes
   # TODO: keep token with vault
-  github_user_token: 269ca3adb47b44f3432124095bf5d8c04761f441
+  github_user_token: "{{ user1_github_token }}" #
 
 users_home_files: []
 users_home: /home
 users_home_create: yes
-users_group:
 users_shell: /bin/zsh
 users_ssh_key_type: rsa
 users_ssh_key_bits: 2048
