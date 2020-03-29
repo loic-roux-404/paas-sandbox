@@ -4,7 +4,7 @@
 #=============
 docker__channel: ["nightly"]
 docker__state: "present"
-docker__users: ["{{ user1 }}"]
+docker__users: ["{{ user1.username }}"]
 
 docker__default_daemon_json: |
   "log-driver": "journald"
@@ -47,3 +47,24 @@ docker__pip_packages: []
 
 docker__pip_docker_state: "present"
 docker__pip_docker_compose_state: "present"
+
+#============
+# arillso.logrotate
+#=============
+# https://github.com/arillso/ansible.logrotate/blob/master/defaults/main.yml
+logrotate_use_hourly_rotation: true
+# TODO : configure docker logs
+# More log files can be added that will log rotate.
+# An example of multiple log rotate applications with available settings:
+# logrotate_applications:
+#   - name: name-your-log-rotate-application
+#     definitions:
+#       - logs:
+#           - /var/log/apt/term.log
+#           - /var/log/apt/history.log
+#         options:
+#           - rotate 12
+#           - monthly
+#           - missingok
+#           - notifempty
+#           - compress
