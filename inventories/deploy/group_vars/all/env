@@ -3,34 +3,25 @@
 #==========================
 # Base variables
 #==========================
-user1: "loic-roux-404"
-user1_home: "/home/{{ user1 }}"
-gitignore_global: .gitignore_global
-#==========================
 # ansible-users
 # https://github.com/weareinteractive/ansible-users.git
 #=========================
 # create user from github with correct auth key
 users:
-- username: "{{ user1 }}"
-  group: "{{ user1 }}"
-  groups: ["sudo"]
-  uid: 1667
-  # password: TODO use ansible-vault
-  append: no
-  home_mode: "0750"
-  home_create: yes
-  home: "{{ user1_home }}"
-  home_files:
-    - "files/.inputrc"
-    - "files/.vimrc"
-  authorized_key: "{{ github_url }}/{{ user1 }}.keys"
-  authorized_keys_exclusive: yes
-  ssh_key_type: rsa
-  ssh_key_bits: 2048
-  ssh_key_generate: yes
-  # TODO: keep token with vault
-  github_user_token: "{{ user1_github_token }}" #
+  - username: "{{ user1.username }}"
+    group: "{{ user1.username }}"
+    groups: ["sudo"]
+    uid: 1667
+    append: no
+    home_mode: "0750"
+    home_create: yes
+    home: "/home/{{ user1.username }}"
+    home_files:
+      - "files/.inputrc"
+      - "files/.vimrc"
+    authorized_key: "{{ github_url }}/{{ user1.username }}.keys"
+    ssh_key_generate: yes
+    github_user_token: "{{ user1.github_token }}"
 
 users_home_files: []
 users_home: /home
@@ -42,27 +33,22 @@ users_authorized_keys_exclusive: yes
 users_remove: []
 
 #==================
-# role-basics
-# https://github.com/loic-roux-404/role-basics
-#==================
-
-packages_extra: 
-  - dns-utils
-  - ufw
-
-motd_message_1: VPS owned by lastico
-motd_message_2: Docker prod for multiple apps
-motd_message_3: Unauthorized access is punished
-
-#==================
 # ansible-role-zsh
 #==================
+zsh_antigen_bundles:
+  - { name: docker, command: docker }
+  - git-extras
+  - { name: symfony2, command: symfony }
+  - { name: viasite-ansible/zsh-ansible-server, command: ansible-deploy }
+  - { name: systemd, command: systemctl }
+  - { name: zsh-users/zsh-autosuggestions, when: "{{ zsh_version is version_compare('5.0', '>=') }}" }
+  - popstas/zsh-command-time
+  - { name: zdharma/fast-syntax-highlighting@v1.2, when: "{{ zsh_version is version_compare('4.3.17', '>=') }}" }
+  - zsh_reload
+
 zsh_antigen_bundles_extras:
   - nvm
-  - docker
-  - docker-compose
 
-zsh_user: "{{ user1 }}"
 zsh_shared: yes
 zsh_aliases_extra:
   - { alias: 'dfh', action: 'df -h | grep -v docker' }
@@ -107,3 +93,15 @@ zsh_aliases_extra:
   - { alias: alias, action: apt='sudo apt' }
   - { alias: apt-get, action: 'sudo apt-get' }
   - { alias: chown, action: 'sudo chown' }
+
+#==================
+# role-basics
+# https://github.com/loic-roux-404/role-basics
+#==================
+
+packages_extra: 
+  - dns-utils
+
+motd_message_1: VPS owned by lastico
+motd_message_2: Docker prod for multiple apps
+motd_message_3: Unauthorized access is punished

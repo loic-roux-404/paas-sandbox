@@ -14,9 +14,6 @@ $(PLAYBOOKS): % : %.run
 %.run: 
 	ansible-playbook $*.yml
 
-%.vault:	
-	ansible-playbook $*.yml --vault-password-file
-
 # role option take --tag your-role as option
 # verbose write simply verbose="-vvv"
 # --ask-vault-pass
@@ -24,7 +21,7 @@ $(PLAYBOOKS): % : %.run
 	ansible-playbook -e ansible_host=localhost \
 	-e ansible_port=2222 \
 	-e ansible_user=vagrant \
-	-i ./inventories/deploy/ $*.yml $(verbose) $(role) $(ask-vault)
+	-i ./inventories/deploy/ $*.yml $(verbose) $(role)
 
 install:
 	ansible-galaxy install -r roles/requirements.yml
