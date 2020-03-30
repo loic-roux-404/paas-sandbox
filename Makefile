@@ -11,8 +11,9 @@ all:
 .PRECIOUS: %.run
 $(PLAYBOOKS): % : %.run
 
+# default to deploy in makefile
 %.run: 
-	ansible-playbook $*.yml
+	ansible-playbook -i ./inventories/deploy/ $*.yml $(pass) $(verbose)
 
 # role option take --tag your-role as option
 # verbose write simply verbose="-vvv"

@@ -16,21 +16,22 @@ users:
     home_mode: "0750"
     home_create: yes
     home: "/home/{{ user1.username }}"
-    home_files:
-      - "files/.inputrc"
-      - "files/.vimrc"
-    authorized_key: "{{ github_url }}/{{ user1.username }}.keys"
+    authorized_keys: 
+      - "https://github.com/{{ user1.username }}.keys"
     ssh_key_generate: yes
     github_user_token: "{{ user1.github_token }}"
 
-users_home_files: []
+users_home_files: 
+  - "files/.inputrc"
+  - "files/.vimrc"
+
 users_home: /home
 users_home_create: yes
 users_shell: /bin/zsh
 users_ssh_key_type: rsa
 users_ssh_key_bits: 2048
 users_authorized_keys_exclusive: yes
-users_remove: []
+#users_remove: [vagrant]
 
 #==================
 # ansible-role-zsh
@@ -50,7 +51,7 @@ zsh_antigen_bundles_extras:
   - nvm
 
 zsh_shared: yes
-zsh_aliases_extra:
+zsh_aliases:
   - { alias: 'dfh', action: 'df -h | grep -v docker' }
   - { alias: p, action: "ps aux | grep" }
   # Search files in the current folder
@@ -70,22 +71,10 @@ zsh_aliases_extra:
   - { alias: mv , action : 'mv -i' }
   - { alias: rm, action: 'rm -iv' }
   - { alias: mkdir, action: 'mkdir -p' }
-  - { alias: vi, action:'sudo vim' }
+  - { alias: vi, action: 'sudo vim' }
   - { alias: tail, action: 'sudo tail' }
   - { alias: apt-get, action: 'sudo apt-get' }
   - { alias: apt, action: 'sudo apt' }
-  - { alias: '..', action: 'cd ..'}
-  # Change directory aliases
-  - { alias: '...', action: 'cd ../..' }
-  - { alias: '....', action: 'cd ../../..' }
-  - { alias: '.....', action: 'cd ../../../..' }
-
-  # Alias's for multiple directory listing commands
-  - { alias: la, action: 'ls -Alh' } # show hidden files
-  - { alias: ls, action: ls -aFh --color=always' } # add colors and file type extensions
-  - { alias: ll, action: 'ls -Fls' } # long listing format
-  - { alias: lf, action: "ls -l | egrep -v '^d'" } # files only
-  - { alias: ldir, action: ls -l | egrep '^d'" } # directories only
 
   # Search command line history
   - { alias: h, action: "history | grep " }
@@ -101,6 +90,14 @@ zsh_aliases_extra:
 
 packages_extra: 
   - dns-utils
+  - python3
+  - python3-pip
+  - python3-setuptools
+  - python-pkg-resources
+
+remove_packages:
+  - apache*
+  - php*
 
 motd_message_1: VPS owned by lastico
 motd_message_2: Docker prod for multiple apps
