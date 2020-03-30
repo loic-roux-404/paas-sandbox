@@ -26,3 +26,8 @@ $(PLAYBOOKS): % : %.run
 
 install:
 	ansible-galaxy install -r roles/requirements.yml
+
+%.first_deploy:
+	ansible-playbook -e ansible_host=localhost \
+	-e ansible_user=root \
+	-i ./inventories/deploy/ $*.yml $(verbose) $(role)

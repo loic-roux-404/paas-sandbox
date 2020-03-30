@@ -31,10 +31,10 @@ users_shell: /bin/zsh
 users_ssh_key_type: rsa
 users_ssh_key_bits: 2048
 users_authorized_keys_exclusive: yes
-#users_remove: [vagrant]
 
 #==================
 # ansible-role-zsh
+#  https://github.com/viasite-ansible/ansible-role-zsh
 #==================
 zsh_antigen_bundles:
   - { name: docker, command: docker }
@@ -88,16 +88,17 @@ zsh_aliases:
 # https://github.com/loic-roux-404/role-basics
 #==================
 
-packages_extra: 
-  - dns-utils
-  - python3
-  - python3-pip
-  - python3-setuptools
-  - python-pkg-resources
+packages: 
+  - "dnsutils"
+  - "python3-pip"
 
+# remove default webserver
 remove_packages:
-  - apache*
-  - php*
+  - "apache*"
+  - "php*"
+
+pip_packages:
+ - "setuptools"
 
 motd_message_1: VPS owned by lastico
 motd_message_2: Docker prod for multiple apps

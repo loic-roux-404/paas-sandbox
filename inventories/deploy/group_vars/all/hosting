@@ -1,6 +1,7 @@
 
 # ============
 # nickjj.docker
+# https://github.com/nickjj/ansible-docker
 #=============
 docker__channel: ["nightly"]
 docker__state: "present"
@@ -37,9 +38,9 @@ docker__cron_jobs:
 # pip dependencies
 docker__pip_dependencies:
   - "gcc"
-  #- "python-setuptools"
+  - "python-setuptools"
   - "python{{ '3' if ansible_python.version.major == 3 else '' }}-dev"
-  #- "python{{ '3' if ansible_python.version.major == 3 else '' }}-pip"
+  - "python{{ '3' if ansible_python.version.major == 3 else '' }}-pip"
   - "virtualenv"
 
 # Pip config
@@ -50,10 +51,10 @@ docker__pip_docker_compose_state: "present"
 
 #============
 # arillso.logrotate
-#=============
 # https://github.com/arillso/ansible.logrotate/blob/master/defaults/main.yml
+#============
 logrotate_use_hourly_rotation: true
-# TODO : configure docker logs
+# TODO : configure vault / docker logs
 # More log files can be added that will log rotate.
 # An example of multiple log rotate applications with available settings:
 # logrotate_applications:
