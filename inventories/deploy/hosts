@@ -1,8 +1,8 @@
 [env]
-server01 ansible_host=loicroux.com ansible_user=root
+server01 ansible_host=loicroux.com
 
 [hosting]
-server01 ansible_host=loicroux.com ansible_user=root
+server01 ansible_host=loicroux.com
 
 [security]
-server01 ansible_host=loicroux.com ansible_user=root
+server01 ansible_host=loicroux.com

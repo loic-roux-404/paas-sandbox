@@ -1,5 +1,2 @@
 [env]
 server01 ansible_host=localhost ansible_port=2222 ansible_user=vagrant
-
-[hosting]
-server01 ansible_host=localhost ansible_port=2222 ansible_user=vagrant
