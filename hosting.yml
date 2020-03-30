@@ -5,4 +5,5 @@
   become: yes
   roles:
     - role: nickjj.docker
+      tags: ["docker"]
     - role: arillso.logrotate
