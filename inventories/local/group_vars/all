@@ -1,2 +1,101 @@
 ---
 
+---
+
+#==========================
+# Base variables
+#==========================
+# ansible-users
+# https://github.com/weareinteractive/ansible-users.git
+#=========================
+# create user from github with correct auth key
+user1:
+    username: vagrant
+
+users:
+  - username: "{{ user1.username }}"
+    group: "{{ user1.username }}"
+    groups: ["sudo"]
+    uid: 1000
+    append: no
+    home_mode: "0750"
+    home_create: yes
+    home: "/home/{{ user1.username }}"
+    authorized_keys: 
+      - "" # TODO: put vagrant key and packer here
+    ssh_key_generate: yes
+
+users_home_files: 
+  - "files/.inputrc"
+  - "files/.vimrc"
+
+users_home: /home
+users_home_create: yes
+users_shell: /bin/zsh
+users_ssh_key_type: rsa
+users_ssh_key_bits: 2048
+users_authorized_keys_exclusive: yes
+
+#==================
+# ansible-role-zsh
+#  https://github.com/viasite-ansible/ansible-role-zsh
+#==================
+zsh_antigen_bundles:
+  - git-extras
+  - { name: symfony2, command: symfony }
+  - { name: viasite-ansible/zsh-ansible-server, command: ansible-deploy }
+  - { name: zsh-users/zsh-autosuggestions, when: "{{ zsh_version is version_compare('5.0', '>=') }}" }
+  - popstas/zsh-command-time
+  - { name: zdharma/fast-syntax-highlighting@v1.2, when: "{{ zsh_version is version_compare('4.3.17', '>=') }}" }
+  - zsh_reload
+
+zsh_antigen_bundles_extras:
+  - nvm
+
+zsh_shared: yes
+zsh_aliases:
+  - { alias: p, action: "ps aux | grep" }
+  # Search files in the current folder
+  - { alias: f, action: "find . | grep " }
+  # Show current network connections to the server
+  - { alias: ipview, action: 'netstat -anpl | grep :80 | awk {"print \$5"} | cut -d":" -f1 | sort | uniq -c | sort -n | sed -e "s/^ *//" -e "s/ *\$//"' }
+  # Show open ports
+  - {alias: openports, action: 'netstat -nape --inet' }
+  # Alias's to show disk space and space used in a folder
+  - { alias: diskspace, action: "du -S | sort -n -r |more" }
+  - { alias: folders, action: 'du -h --max-depth=1' }
+  # search in all files 
+  # ftext function
+  - { alias: mkdirg, action: "mkdirg" }
+  # Alias's to modified commands
+  - { alias: cp , action: 'cp -i' }
+  - { alias: mv , action : 'mv -i' }
+  - { alias: rm, action: 'rm -iv' }
+  - { alias: mkdir, action: 'mkdir -p' }
+  - { alias: vi, action: 'sudo vim' }
+  - { alias: tail, action: 'sudo tail' }
+  - { alias: apt-get, action: 'sudo apt-get' }
+  - { alias: apt, action: 'sudo apt' }
+
+  # Search command line history
+  - { alias: h, action: "history | grep " }
+  - { alias: apt, action: apt='sudo apt' }
+  - { alias: apt-get, action: 'sudo apt-get' }
+  - { alias: chown, action: 'sudo chown' }
+
+#==================
+# role-basics
+# https://github.com/loic-roux-404/role-basics
+#==================
+
+#packages: 
+  #- "python3-pip"
+
+# remove default webserver
+remove_packages:
+  - "apache*"
+  - "php*"
+
+motd_message_1: Vm for web applications
+motd_message_2: Dev essentials and goodies
+motd_message_3: 

@@ -11,9 +11,9 @@ all:
 .PRECIOUS: %.run
 $(PLAYBOOKS): % : %.run
 
-# default to deploy in makefile
+# default to vps in makefile
 %.run: 
-	ansible-playbook -i ./inventories/deploy/ $*.yml $(pass) $(verbose)
+	ansible-playbook -i ./inventories/vps/ $*.yml $(pass) $(verbose)
 
 # role option take --tag your-role as option
 # verbose write simply verbose="-vvv"
@@ -22,12 +22,13 @@ $(PLAYBOOKS): % : %.run
 	ansible-playbook -e ansible_host=localhost \
 	-e ansible_port=2222 \
 	-e ansible_user=vagrant \
-	-i ./inventories/deploy/ $*.yml $(verbose) $(role)
+	-i ./inventories/vps/ $*.yml $(verbose) $(role)
 
 install:
 	ansible-galaxy install -r roles/requirements.yml
 
+# This command is used for first install of playbook on a vagrant instance
 %.first_deploy:
 	ansible-playbook -e ansible_host=localhost \
 	-e ansible_user=root \
-	-i ./inventories/deploy/ $*.yml $(verbose) $(role)
+	-i ./inventories/vps/ $*.yml $(verbose) $(role)
