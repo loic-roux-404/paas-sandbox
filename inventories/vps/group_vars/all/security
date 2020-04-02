@@ -54,10 +54,14 @@ firewall_additional_rules:
   - "iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT"
   - "iptables -A OUTPUT -m conntrack --ctstate ESTABLISHED -j ACCEPT"
 # databases 
-  - "iptables -A INPUT -p tcp --dport 3306 -s {{ allowed_ip_1 }} -j ACCEPT"
-  - "iptables -A INPUT -p tcp --dport 5342 -s {{ allowed_ip_1 }} -j ACCEPT"
-  - "iptables -A INPUT -p tcp --dport 5342 -s {{ allowed_ip_2 }} -j ACCEPT"
-  - "iptables -A INPUT -p tcp --dport 3306 -s {{ allowed_ip_2 }} -j ACCEPT"
+  #- "iptables -A INPUT -m state --state NEW,ESTABLISHED,RELATED -p tcp \
+  #   --dport 3306 -j DROP"
+  # - "iptables -A INPUT -m state --state NEW,ESTABLISHED,RELATED -p tcp \
+  #   --dport 5342 -j DROP"
+  # - "iptables -A INPUT -p tcp --dport 3306 -s {{ allowed_ip_1 }} -j ACCEPT"
+  # - "iptables -A INPUT -p tcp --dport 3306 -s {{ allowed_ip_2 }} -j ACCEPT"
+  # - "iptables -A INPUT -p tcp --dport 5342 -s {{ allowed_ip_1 }} -j ACCEPT"
+  # - "iptables -A INPUT -p tcp --dport 5342 -s {{ allowed_ip_2 }} -j ACCEPT"
 # ssh
   - "iptables -A INPUT -p tcp -s {{ allowed_ip_1 }} --dport {{ my_ssh_port }} \
     -m conntrack --ctstate NEW,ESTABLISHED,RELATED -j ACCEPT"
