@@ -5,12 +5,8 @@ Playbook to automate
 
 TODO
 ------------
-- firewall config
-- Auth github api / add the public key
-- gitconfig aliases (for loop) ?
-- gitignore (for loop) ?
-- review all gitconfig from github user
 - nodejs
+- nomad (WIP)
 
 Requirements
 ------------
