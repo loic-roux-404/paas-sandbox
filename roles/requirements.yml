@@ -13,3 +13,5 @@
 - src: geerlingguy.firewall
 - src: geerlingguy.security
 - src: nickjj.docker
+- src: kibatic.traefik
+- src: oefenweb.dnsmasq

@@ -5,6 +5,10 @@ if !Vagrant.has_plugin?('vagrant-vbguest')
   system('vagrant plugin install vagrant-vbguest')
 end
 
+if !Vagrant.has_plugin?('vagrant-dns')
+  system('vagrant plugin install vagrant-dns')
+end
+
 ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
 playbook_name = ENV['PLAYBOOK'] ? ENV['PLAYBOOK']  : 'site.yaml'
 
@@ -18,6 +22,8 @@ Vagrant.configure("2") do |config|
     id_rsa_ssh_key     = File.read(id_rsa_path)
     id_rsa_ssh_key_pub = File.read(File.join(Dir.home, ".ssh", "id_rsa.pub"))
     insecure_key_path  = File.join(Dir.home, ".vagrant.d", "insecure_private_key")
+
+    config.dns.patterns = [/^.*loicroux.com$/]
   
     config.ssh.insert_key = false
     config.ssh.forward_agent = true
@@ -31,20 +37,11 @@ Vagrant.configure("2") do |config|
     end
 
     config.vm.network :forwarded_port, id: "ssh", guest: 22, host: 2222
+    config.vm.network :private_network, ip: '192.168.33.10'
 
     config.vm.synced_folder ".", "/vagrant", type: 'rsync', rsync__auto:true,
       rsync__args: ["--archive", "--delete", "--no-owner", "--no-group","-q", "-W"],
       rsync__exclude: [".git"]
-
-    # config.vm.provision :shell, path: 'utils/install.sh'
-    ## Install and configure software
-    # config.vm.provision "ansible_local" do |ansible|
-    #  ansible.provisioning_path = "#{playbook_name}/"
-    #  ansible.playbook = "playbook.yml"
-    #  ansible.become = true
-    #  ansible.verbose = ""
-    #  ansible.extra_vars = conf
-    # end
 
     # fix ssh common issues
     ssh_path = "/home/vagrant/.ssh"

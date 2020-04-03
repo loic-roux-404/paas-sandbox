@@ -47,7 +47,30 @@ docker__pip_dependencies:
 docker__pip_packages: []
 
 docker__pip_docker_state: "present"
-docker__pip_docker_compose_state: "present"
+docker__pip_docker_compose_state: "absent"
+
+#============
+# role-nomad
+#============
+nomad_domain: "{{ domain }}"
+nomad_iface: eth1
+nomad_network_interface: eth1
+nomad_group_name: nomad_instances
+#nomad_servers: []
+# CONSTANTS
+nomad_vault_allow_unauthenticated: yes #TODO tmp
+nomad_vault_address: "http://active.vault.service.{{ domain }}:8200"
+nomad_bind_address: "0.0.0.0"
+nomad_use_consul: no
+nomad_vault_enabled: yes
+nomad_options: {  'driver.raw_exec.enable': '1' }
+nomad_network_speed: 10
+nomad_bootstrap_expect: 1
+nomad_docker_enable: yes
+permanent: yes
+nomad_ports_http: 4646
+nomad_ports_rpc: 4647
+nomad_ports_serf: 4648
 
 #============
 # arillso.logrotate
