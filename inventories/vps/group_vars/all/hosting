@@ -57,9 +57,10 @@ nomad_domain: "{{ domain }}"
 nomad_iface: eth1
 nomad_network_interface: eth1
 nomad_group_name: nomad_instances
-nomad_servers: [server01.dc1.loicroux:4647]
+nomad_servers: [server01.dc1.{{ domain }}:4647]
 # CONSTANTS
 nomad_user: "{{ user1.username }}"
+nomad_node_role: both
 nomad_vault_enabled: false
 nomad_vault_allow_unauthenticated: yes # TODO tmp
 #nomad_vault_address: "http://active.vault.service.{{ domain }}:8200"
@@ -79,7 +80,7 @@ nomad_ports_serf: 4648
 # https://github.com/arillso/ansible.logrotate/blob/master/defaults/main.yml
 #============
 logrotate_use_hourly_rotation: true
-# TODO : configure vault / docker logs
+# TODO : configure vault / nomad / docker logs
 # More log files can be added that will log rotate.
 # An example of multiple log rotate applications with available settings:
 # logrotate_applications:

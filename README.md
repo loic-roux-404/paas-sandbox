@@ -1,36 +1,57 @@
 Playbook-vps
 ============
+ENV : 
 
-Playbook to automate
+&rarr; Simple playbook to create shell / users / ssh keys from github
+
+Security:
+&rarr; Securise anyone of the linux instances of the infrastructure
+
+Stack :
+
+--> Objective is to build a simple configuration on top of playbook-vps sub playbooks to provide container
+orchestration and per env applications system
 
 TODO
 ------------
 - nodejs
-- nomad (WIP)
+- Nomad Simple container management system
+- Link to applications and their artifacts (database / logs)
+- UI to manage deployments between different environments
+- Vault system with dynamic secret and project protection
+- Vault CA Authority
+- Subdomains attribution with traefik
+- split playbooks
+
+Roles used by sub-playbook: 
+------------
+
+### Env :
+
+- role-basics with deps : ansible-role-zsh & weareinteractive.users
+
+### Security :
+
+- firewall (jeff g.)
+- ssh (jeff g.)
+
+### Stack :
+
+Later it's can be more logical to split server in two nodes with a master custer and client one
+
+- role-docker
+- role-nomad → https://github.com/loic-roux-404/role-nomad
+- role-traefik → https://github.com/kibatic/ansible-traefik # LATER
+- role-vault → https://github.com/loic-roux-404/role-vault # LATER
+- consul also lateerrr
+- logrotate # Later with at least one configured app
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+`make install` 
 
-Role Variables
---------------
-#### Needed
-`user` : provide base user
-
-Dependencies
-------------
-
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
-
-Example Playbook
-----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+See [Makefile](Makefile) for debugging and full deploy on a server
 
 License
 -------
@@ -40,4 +61,4 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+[Loic Roux]()

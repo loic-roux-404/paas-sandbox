@@ -32,6 +32,15 @@ users_ssh_key_type: rsa
 users_ssh_key_bits: 2048
 users_authorized_keys_exclusive: yes
 
+users_remove: 
+ - irc
+ - list
+ - www-data
+ - news
+ - backup
+ - gnats
+ - games
+
 #==================
 # ansible-role-zsh
 #  https://github.com/viasite-ansible/ansible-role-zsh
