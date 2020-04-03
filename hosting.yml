@@ -4,6 +4,30 @@
   gather_facts: true
   become: yes
   roles:
+    - role: oefenweb.dnsmasq
     - role: nickjj.docker
       tags: ["docker"]
+    - {role: brianshumate.nomad, tags: ['docker', 'nomad']}
     - role: arillso.logrotate
+
+# - hosts: traefik_instances
+#   become: true
+#   become_user: root
+#   ignore_errors: True
+#   post_tasks:
+#     - name: Copy Traefik Config File
+#       template:
+#         src: /files/stack/traefik/traefik.toml
+#         dest: /etc/traefik.toml
+#     - name: Copy Traefik init script
+#       template:
+#         src: /files/stack/traefik/traefik_debianinit.j2
+#         dest: /etc/init.d/traefik
+#         owner: root
+#         group: root
+#         mode: 0755
+#   roles:
+#        - { role: kibatic.traefik, tags: ['docker', 'nomad', 'traefik']}
+#   vars:
+#       # TODO: VARIABLES TO EDIT
+#       traefik_bind_ip: "192.168.0.111"
