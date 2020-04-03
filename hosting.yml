@@ -7,9 +7,10 @@
     - role: oefenweb.dnsmasq
     - role: nickjj.docker
       tags: ["docker"]
-    - {role: brianshumate.nomad, tags: ['docker', 'nomad']}
+    - { role: brianshumate.nomad, tags: ['docker', 'nomad'] }
     - role: arillso.logrotate
 
+# TODO: adapt to actual config and dnsmasq
 # - hosts: traefik_instances
 #   become: true
 #   become_user: root

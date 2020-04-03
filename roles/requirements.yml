@@ -1,5 +1,5 @@
 ---
-# From github roles
+# Github roles
 - name: role-basics 
   src: ssh://git@github.com/loic-roux-404/role-basics.git
   version: "configs"

@@ -32,7 +32,7 @@ docker__cron_jobs:
     job: "docker system prune -{{ docker__cron_jobs_prune_flags }} > /dev/null 2>&1"
     schedule: "{{ docker__cron_jobs_prune_schedule }}"
     cron_file: "docker-disk-clean-up"
-    #user: "{{ (docker__users | first) | d('root') }}"
+    user: "{{ (docker__users | first) | d('root') }}"
     state: "present"
 
 # pip dependencies
@@ -51,18 +51,20 @@ docker__pip_docker_compose_state: "absent"
 
 #============
 # role-nomad
+# https://github.com/ansible-community/ansible-nomad
 #============
 nomad_domain: "{{ domain }}"
 nomad_iface: eth1
 nomad_network_interface: eth1
 nomad_group_name: nomad_instances
-#nomad_servers: []
+nomad_servers: [server01.dc1.loicroux:4647]
 # CONSTANTS
-nomad_vault_allow_unauthenticated: yes #TODO tmp
-nomad_vault_address: "http://active.vault.service.{{ domain }}:8200"
+nomad_user: "{{ user1.username }}"
+nomad_vault_enabled: false
+nomad_vault_allow_unauthenticated: yes # TODO tmp
+#nomad_vault_address: "http://active.vault.service.{{ domain }}:8200"
 nomad_bind_address: "0.0.0.0"
 nomad_use_consul: no
-nomad_vault_enabled: yes
 nomad_options: {  'driver.raw_exec.enable': '1' }
 nomad_network_speed: 10
 nomad_bootstrap_expect: 1

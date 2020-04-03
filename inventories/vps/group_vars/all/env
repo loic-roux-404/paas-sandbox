@@ -77,9 +77,9 @@ zsh_aliases:
   # Search command line history
   - { alias: h, action: "history | grep " }
   - { alias: docker, action: 'sudo docker' }
-  - { alias: alias, action: apt='sudo apt' }
-  - { alias: apt-get, action: 'sudo apt-get' }
-  - { alias: chown, action: 'sudo chown' }
+  - { alias: alias, action: sudo apt }
+  - { alias: apt-get, action: sudo apt-get }
+  - { alias: chown, action: sudo chown }
 
 #==================
 # role-basics
