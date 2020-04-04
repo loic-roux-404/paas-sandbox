@@ -20,6 +20,7 @@ TODO
 - UI to manage deployments between different environments
 - Vault system with dynamic secret and project protection
 - Vault CA Authority
+- Secure nomad with vault
 - Subdomains attribution with traefik
 - split playbooks
 

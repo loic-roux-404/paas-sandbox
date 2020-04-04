@@ -40,6 +40,7 @@ firewall_allowed_tcp_ports:
   - "4646"              # nomad http
   - "4647"              # nomad rpc
   - "4648"              # nomad serf
+ 
 firewall_allowed_udp_ports: []
 
 #firewall_forwarded_tcp_ports:

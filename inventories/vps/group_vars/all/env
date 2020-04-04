@@ -93,12 +93,15 @@ zsh_aliases:
 #==================
 packages: 
   - "dnsutils"
+  - "python3"
   - "python3-pip"
+  - "man"
 
-# remove default webserver
+# remove default webserver and unused python versions
 remove_packages:
   - "apache*"
   - "php*"
+  - "python2*"
 
 pip_packages:
  - "setuptools"

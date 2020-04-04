@@ -1,5 +1,5 @@
 job "example" {
-  // datacenters = ["lab"]
+  datacenters = ["dc1"]
   type = "service"
   group "sampleservice" {
     count = 1
@@ -20,9 +20,9 @@ job "example" {
         labels {
           group = "label_db"
         }
-        // dns_servers = [
-        //   "consul.service.lab.consul"
-        // ]
+        dns_servers = [
+          "test.loicroux.com"
+        ]
       }
       resources {
         network {
