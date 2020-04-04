@@ -4,14 +4,20 @@
   src: ssh://git@github.com/loic-roux-404/role-basics.git
   version: "configs"
   scm: git
-- name: ansible-role-zsh
+- name: role-zsh
   src: ssh://git@github.com/viasite-ansible/ansible-role-zsh.git
   version: "v3.2.6"
   scm: git
 # galaxy roles
-- src: arillso.logrotate
-- src: geerlingguy.firewall
-- src: geerlingguy.security
-- src: nickjj.docker
-- src: kibatic.traefik
-- src: oefenweb.dnsmasq
+- name: role-logrotate
+  src: arillso.logrotate
+- name: role-firewall
+  src: geerlingguy.firewall
+- name: role-security
+  src: geerlingguy.security
+- name: role-docker
+  src: nickjj.docker
+- name: role-traefik
+  src: kibatic.traefik
+- name: role-dnsmasq
+  src: oefenweb.dnsmasq
