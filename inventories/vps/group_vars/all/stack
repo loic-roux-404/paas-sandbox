@@ -49,107 +49,32 @@ docker__pip_packages: []
 docker__pip_docker_state: "present"
 docker__pip_docker_compose_state: "absent"
 
-#============
+#=============
 # role-dnsmasq
-# https://github.com/jriguera/ansible-role-dnsmasq
-#============
-dnsmasq_enabled_on_startup: True
-# Manage resolvconf
-dnsmasq_resolvconf: True
+# https://github.com/jriguera/ansible-role-dnsmasq # LATER REPLACE WITH THIS ONE
+# https://github.com/Oefenweb/ansible-dnsmasq
+#=============
+dnsmasq_etc_default_domain_suffix: "{{ domain }}"
 
-# Install from upstream repos or directly from operating system packages
-dnsmasq_os_packages: True
+dnsmasq_dnsmasq_conf:
+  - |
+    port=53
+    listen-address={{ ansible_lo['ipv4']['address'] }}
+    bind-interfaces
 
-# Global parameters, settings needed! otherwise are ignored!
-dnsmasq_dhcp: True
-dnsmasq_tftp: True
-
-### resolv.conf
-dnsmasq_host_domain: local #"{{ domain }}"
-dnsmasq_host_search: local  #"{{ domain }}"
-dnsmasq_host_resolvers: ['127.0.0.1']
-
-# Set the facility to which dnsmasq will send syslog entries, this defaults to
-# DAEMON, and to LOCAL0 when debug mode is in operation. If the facility given
-# contains at least one '/' character, it is taken to be a filename, and dnsmasq
-# logs to the given file, instead of syslog. If the facility is '-' then dnsmasq
-# logs to stderr.
-dnsmasq_conf_log: /var/log/dnsmasq.log
-
-# Enable asynchronous logging and optionally set the limit on the number of
-# lines which will be queued by dnsmasq when writing to the syslog is slow.
-dnsmasq_conf_log_async: True
-dnsmasq_conf_log_dns: True
-
-# List of ip or interfaces to listen (empty list for all)
-dnsmasq_conf_listen: ['eth0']
-
-# On systems which support it, dnsmasq binds the wildcard address,
-# even when it is listening on only some interfaces. It then discards
-# requests that it shouldn't reply to. This has the advantage of
-# working even when interfaces come and go and change address.
-dnsmasq_conf_bind_interfaces: 'dynamic'
-
-### DNS
-# Accept DNS queries only from hosts whose address is on a local subnet,
-# ie a subnet for which an interface exists on the server.
-dnsmasq_conf_local_service: False
-
-# Never forward plain names (without a dot or domain part)
-dnsmasq_conf_domain_needed: True
-
-# Enable code to detect DNS forwarding loops; ie the situation where a query
-# sent to one of the upstream server eventually returns as a new query to the
-# dnsmasq instance.
-dnsmasq_conf_dns_loop_detect: True
-
-# If you don't want dnsmasq to read /etc/hosts, uncomment the
-# following line.
-dnsmasq_conf_no_hosts: False
-
-# Additional hosts file, /etc/hosts format (it is a list!)
-#dnsmasq_conf_hosts:
-# - ["127.0.0.1", "localhost"]
-# - ["::1", "ip6-localhost", "ip6-loopback"]
-# - ["fe00::0", "ip6-localnet"]
-# - ["192.168.1.10", "foo.mydomain.org", "foo" ]
-dnsmasq_conf_hosts: []
-
-# This flag forces dnsmasq to try each query with each server strictly in
-# the order they appear in /etc/resolv.conf
-dnsmasq_conf_strict_order: False
-
-# This flag forces dnsmasq to send all queries to all available servers.
-# The reply from the server which answers first will be returned to the
-# original requester.
-dnsmasq_conf_all_servers: False
-
-# If you want dnsmasq to read "/etc/resolv.conf" or any other file.
-# Empty or not defined to disable reading resolfv.conf
-dnsmasq_conf_resolv: /etc/resolv.conf
-
-# Don't poll /etc/resolv.conf for changes.
-dnsmasq_conf_no_poll: False
-
-# if dnsmasq_conf_no_poll is False then /etc/resolv.conf is re-read or the
-# upstream servers are set via DBus, clear the DNS cache.
-dnsmasq_conf_clear_on_reload: True
-
-dnsmasq_conf_servers: [ "8.8.8.8", "8.8.4.4" ]
-
-# Log lots of extra information about DHCP transactions.
-dnsmasq_conf_log_dhcp: True
-
-# Set the domain for dnsmasq. this is optional, but if it is set, it
-# does the following things.
-# 1) Allows DHCP hosts to have fully qualified domain names, as long
-#     as the domain part matches this setting.
-# 2) Sets the "domain" DHCP option thereby potentially setting the
-#    domain of all systems configured by DHCP
-# 3) Provides the domain part for "expand-hosts"
-# If the domain is given as "#" then the domain is read from the first
-# "search" directive in /etc/resolv.conf
-dnsmasq_conf_domain: '{{ domain }}'
+dnsmasq_dnsmasq_d_files_present:
+  '{{ domain }}':
+    - address=/*.{{ domain }}/192.168.33.10
+  cache:
+    - |
+      domain-needed
+      bogus-priv
+      no-hosts
+      dns-forward-max=150
+      cache-size=1000
+      neg-ttl=3600
+      resolv-file=/etc/resolv.dnsmasq
+      no-poll
 
 #============
 # role-nomad
@@ -160,6 +85,7 @@ nomad_iface: eth1
 nomad_network_interface: eth1
 nomad_group_name: nomad_instances
 nomad_servers: []
+nomad_retry_join: yes
 # CONSTANTS
 nomad_user: "{{ user1.username }}"
 nomad_node_role: both
