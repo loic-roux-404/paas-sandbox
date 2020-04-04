@@ -1,6 +1,6 @@
 ---
 
-- hosts: hosting
+- hosts: stack
   gather_facts: true
   become: yes
   roles:

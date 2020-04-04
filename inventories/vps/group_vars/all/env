@@ -48,7 +48,6 @@ zsh_antigen_bundles:
   - git-extras
   - { name: symfony2, command: symfony }
   - { name: viasite-ansible/zsh-ansible-server, command: ansible-deploy }
-  - { name: systemd, command: systemctl }
   - { name: zsh-users/zsh-autosuggestions, when: "{{ zsh_version is version_compare('5.0', '>=') }}" }
   - popstas/zsh-command-time
   - { name: zdharma/fast-syntax-highlighting@v1.2, when: "{{ zsh_version is version_compare('4.3.17', '>=') }}" }
@@ -92,7 +91,6 @@ zsh_aliases:
 # role-basics
 # https://github.com/loic-roux-404/role-basics
 #==================
-
 packages: 
   - "dnsutils"
   - "python3-pip"
@@ -108,3 +106,9 @@ pip_packages:
 motd_message_1: VPS owned by lastico
 motd_message_2: Docker prod for multiple apps
 motd_message_3: Unauthorized access is punished
+
+# ntp 
+ntp_enabled: true
+ntp_manage_config: true
+ntp_timezone: Europe/Berlin
+ntp_area: europe
