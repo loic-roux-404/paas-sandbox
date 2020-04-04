@@ -29,9 +29,9 @@ job "simple-server" {
         port_map {
           http = 8000
         }
-        // dns_servers = [
-        //   "consul.service.lab.consul"
-        // ]
+        dns_servers = [
+          "test.loicroux.com"
+        ]
         work_dir = "/var/www/html/"
       }
 
@@ -60,6 +60,5 @@ job "simple-server" {
         }
       }
     }
-
   }
 }

@@ -51,7 +51,6 @@ docker__pip_docker_compose_state: "absent"
 
 #=============
 # role-dnsmasq
-# https://github.com/jriguera/ansible-role-dnsmasq # LATER REPLACE WITH THIS ONE
 # https://github.com/Oefenweb/ansible-dnsmasq
 #=============
 dnsmasq_etc_default_domain_suffix: "{{ domain }}"
@@ -62,9 +61,6 @@ dnsmasq_dnsmasq_conf:
     listen-address={{ ansible_lo['ipv4']['address'] }}
     bind-interfaces
 
-dnsmasq_dnsmasq_d_files_present:
-  '{{ domain }}':
-    - address=/*.{{ domain }}/192.168.33.10
   cache:
     - |
       domain-needed
@@ -80,19 +76,19 @@ dnsmasq_dnsmasq_d_files_present:
 # role-nomad
 # https://github.com/ansible-community/ansible-nomad
 #============
-nomad_domain: "{{ domain }}"
 nomad_iface: eth1
 nomad_network_interface: eth1
 nomad_group_name: nomad_instances
 nomad_servers: []
 nomad_retry_join: yes
 # CONSTANTS
-nomad_user: "{{ user1.username }}"
+nomad_user: root
 nomad_node_role: both
 nomad_vault_enabled: false
-nomad_vault_allow_unauthenticated: yes # TODO tmp
+nomad_vault_allow_unauthenticated: yes # TODO ACL
 #nomad_vault_address: "http://active.vault.service.{{ domain }}:8200"
 nomad_bind_address: "0.0.0.0"
+#nomad_advertise_address: 
 nomad_use_consul: no
 nomad_options: {  'driver.raw_exec.enable': '1' }
 nomad_network_speed: 10

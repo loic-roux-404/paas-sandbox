@@ -20,7 +20,7 @@ logLevel = "INFO"
 
 [docker]
 endpoint = "unix:///var/run/docker.sock"
-domain = "consul"
+domain = "com"
 watch = true
 
 # Activate API and Dashboard
