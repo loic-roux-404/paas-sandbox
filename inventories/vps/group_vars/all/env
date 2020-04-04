@@ -37,9 +37,7 @@ users_remove:
  - list
  - www-data
  - news
- - backup
  - gnats
- - games
 
 #==================
 # ansible-role-zsh
@@ -69,7 +67,7 @@ zsh_aliases:
   - {alias: openports, action: 'netstat -nape --inet' }
   # Alias's to show disk space and space used in a folder
   - { alias: diskspace, action: "du -S | sort -n -r |more" }
-  - { alias: folders, action: 'du -h --max-depth=1' }
+  - { alias: folders, action: "du -h --max-depth=1" }
   # search in all files 
   # ftext function
   - { alias: mkdirg, action: "mkdirg" }
@@ -85,10 +83,10 @@ zsh_aliases:
 
   # Search command line history
   - { alias: h, action: "history | grep " }
-  - { alias: docker, action: 'sudo docker' }
-  - { alias: alias, action: sudo apt }
-  - { alias: apt-get, action: sudo apt-get }
-  - { alias: chown, action: sudo chown }
+  - { alias: docker, action: "sudo docker" }
+  - { alias: apt, action: "sudo apt" }
+  - { alias: apt-get, action: "sudo apt-get" }
+  - { alias: chown, action: "sudo chown" }
 
 #==================
 # role-basics
