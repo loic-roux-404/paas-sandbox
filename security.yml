@@ -1,6 +1,6 @@
 ---
 
-- hosts: hosting
+- hosts: stack
   #remote_user: lastico
   gather_facts: true
   become: yes
