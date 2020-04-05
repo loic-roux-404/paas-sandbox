@@ -110,8 +110,3 @@ motd_message_1: VPS owned by lastico
 motd_message_2: Docker prod for multiple apps
 motd_message_3: Unauthorized access is punished
 
-# ntp 
-ntp_enabled: true
-ntp_manage_config: true
-ntp_timezone: Europe/Berlin
-ntp_area: europe
