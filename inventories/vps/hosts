@@ -7,5 +7,3 @@ server01 ansible_host=loicroux.com
 [security]
 server01 ansible_host=loicroux.com
 
-[nomad_instances]
-server01 ansible_host=loicroux.com

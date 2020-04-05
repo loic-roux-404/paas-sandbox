@@ -61,7 +61,7 @@ dnsmasq_dnsmasq_conf:
     port=53
     listen-address={{ ansible_lo['ipv4']['address'] }}
     bind-interfaces
-    
+
 dnsmasq_dnsmasq_d_files_present:
   cache:
     - |
@@ -73,13 +73,15 @@ dnsmasq_dnsmasq_d_files_present:
       resolv-file=/etc/resolv.dnsmasq
       no-poll
 
+# TODO dhcp
+
 #============
 # role-nomad
 # https://github.com/ansible-community/ansible-nomad
 #============
+nomad_group_name: "stack"
 nomad_iface: eth1
 nomad_network_interface: eth1
-nomad_group_name: nomad_instances
 nomad_servers: []
 nomad_retry_join: yes
 # CONSTANTS
@@ -105,18 +107,16 @@ nomad_ports_serf: 4648
 # https://github.com/arillso/ansible.logrotate/blob/master/defaults/main.yml
 #============
 logrotate_use_hourly_rotation: true
-# TODO : configure vault / nomad / docker logs
-# More log files can be added that will log rotate.
-# An example of multiple log rotate applications with available settings:
-# logrotate_applications:
-#   - name: name-your-log-rotate-application
-#     definitions:
-#       - logs:
-#           - /var/log/apt/term.log
-#           - /var/log/apt/history.log
-#         options:
-#           - rotate 12
-#           - monthly
-#           - missingok
-#           - notifempty
-#           - compress
+#TODO : configure vault / nomad / docker logs
+logrotate_applications:
+  - name: apt logs
+    definitions:
+      - logs:
+          - /var/log/apt/term.log
+          - /var/log/apt/history.log
+        options:
+          - rotate 12
+          - monthly
+          - missingok
+          - notifempty
+          - compress
