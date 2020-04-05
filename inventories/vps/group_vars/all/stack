@@ -14,6 +14,7 @@ docker__daemon_flags:
   - "-H unix://"
 
 docker__daemon_environment:
+  # TODO : configure
   #- "HTTP_PROXY=http://proxy.example.com:80"
   #- "HTTPS_PROXY=https://proxy.example.com:443"
 
@@ -60,12 +61,12 @@ dnsmasq_dnsmasq_conf:
     port=53
     listen-address={{ ansible_lo['ipv4']['address'] }}
     bind-interfaces
-
+    
+dnsmasq_dnsmasq_d_files_present:
   cache:
     - |
       domain-needed
       bogus-priv
-      no-hosts
       dns-forward-max=150
       cache-size=1000
       neg-ttl=3600

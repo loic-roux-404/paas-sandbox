@@ -75,3 +75,15 @@ firewall_additional_rules:
    -m conntrack --ctstate NEW,ESTABLISHED,RELATED -j ACCEPT"
 # Drop rules
   - "iptables -A INPUT -m conntrack --ctstate INVALID -j DROP"
+# Docker rules
+  - iptables -N DOCKER
+  - iptables -N DOCKER-ISOLATION-STAGE-1
+  - iptables -N DOCKER-ISOLATION-STAGE-2
+  - iptables -N DOCKER-USER
+  - iptables -A DOCKER -d 172.17.0.2/32 ! -i docker0 -o docker0 -p tcp -m tcp --dport 8000 -j ACCEPT
+  - iptables -A DOCKER -d 172.17.0.2/32 ! -i docker0 -o docker0 -p udp -m udp --dport 8000 -j ACCEPT
+  - iptables -A DOCKER-ISOLATION-STAGE-1 -i docker0 ! -o docker0 -j DOCKER-ISOLATION-STAGE-2
+  - iptables -A DOCKER-ISOLATION-STAGE-1 -j RETURN
+  - iptables -A DOCKER-ISOLATION-STAGE-2 -o docker0 -j DROP
+  - iptables -A DOCKER-ISOLATION-STAGE-2 -j RETURN
+  - iptables -A DOCKER-USER -j RETURN
