@@ -1,4 +1,5 @@
 PLAYBOOKS = $(basename $(wildcard *.yml))
+DOMAIN ?= loicroux.test
 verbose=
 role=
 ask-vault=
@@ -26,7 +27,7 @@ $(PLAYBOOKS): % : %.run
 	ansible-playbook -e ansible_host=localhost \
 	-e ansible_port=2222 \
 	-e ansible_user=vagrant \
-	-e domain=loicroux.com \
+	-e domain=$(DOMAIN) \
 	-i ./inventories/vps/ $*.yml $(verbose) $(role)
 
 %.test.local:

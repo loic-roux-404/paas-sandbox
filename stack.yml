@@ -4,12 +4,13 @@
   become: yes
   roles:
     - role: oefenweb.dnsmasq
+    - role: role-stack
     - role: nickjj.docker
       tags: ["docker"]
     - { role: brianshumate.nomad, tags: ['docker', 'nomad'] }
     - role: arillso.logrotate
 
-# TODO: adapt to actual config and dnsmasq
+# TODO: adapt to actual config (For consul)
 # - hosts: traefik_instances
 #   become: true
 #   become_user: root

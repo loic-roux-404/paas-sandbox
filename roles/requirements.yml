@@ -4,6 +4,10 @@
   src: ssh://git@github.com/loic-roux-404/role-basics.git
   version: "configs"
   scm: git
+- name: role-stack
+  src: ssh://git@github.com/loic-roux-404/role-stack.git
+  version: "master"
+  scm: git
 - name: role-zsh
   src: ssh://git@github.com/viasite-ansible/ansible-role-zsh.git
   version: "v3.2.6"
