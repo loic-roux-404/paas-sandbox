@@ -21,7 +21,7 @@
   src: geerlingguy.security
 - name: role-docker
   src: nickjj.docker
+- name: role-nomad
+  src: brianshumate.nomad
 - name: role-traefik
   src: kibatic.traefik
-- name: role-dnsmasq
-  src: oefenweb.dnsmasq

@@ -7,3 +7,6 @@ set number
 
 " Enable syntax highlighting
 syntax on
+
+" Ensure we keep host keyboard mappings
+vnoremap <C-c> "*y
