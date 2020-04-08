@@ -1,9 +1,13 @@
-[env]
 server01 ansible_host=loicroux.com
+
+[env]
+server01
 
 [stack]
-server01 ansible_host=loicroux.com
+server01
 
 [security]
-server01 ansible_host=loicroux.com
+server01
 
+[traefiks]
+server01

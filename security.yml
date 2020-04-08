@@ -5,5 +5,5 @@
   gather_facts: true
   become: yes
   roles:
-    - role: geerlingguy.security
-    - role: geerlingguy.firewall
+    - role: role-security
+    - role: role-firewall

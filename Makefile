@@ -10,7 +10,7 @@ all:
 	@echo "Fake deploy on vps: $(addsuffix .test.vps, $(PLAYBOOKS))"
 
 install:
-	ansible-galaxy install -r roles/requirements.yml
+	ansible-galaxy install -r roles/requirements.yml $(e)
 
 .PHONY: $(PLAYBOOKS)
 .PRECIOUS: %.run
@@ -27,7 +27,7 @@ $(PLAYBOOKS): % : %.run
 	ansible-playbook -e ansible_host=localhost \
 	-e ansible_port=2222 \
 	-e ansible_user=vagrant \
-	-e domain=$(DOMAIN) \
+	-e domain_test=$(DOMAIN) \
 	-i ./inventories/vps/ $*.yml $(verbose) $(role)
 
 %.test.local:

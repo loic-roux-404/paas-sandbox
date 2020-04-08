@@ -40,6 +40,8 @@ Vagrant.configure("2") do |config|
     vb.customize ["modifyvm", :id, "--ioapic", "on"]
     vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    vb.customize ["modifyvm", :id, "--nictrace1", "on"]
+    vb.customize ["modifyvm", :id, "--nictracefile1", ".vagrant/dump.pcap"]
   end
 
   config.vm.network :forwarded_port, id: "ssh", guest: 22, host: 2222

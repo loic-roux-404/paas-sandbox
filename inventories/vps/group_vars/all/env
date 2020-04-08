@@ -96,7 +96,6 @@ packages:
   - "python3"
   - "python3-pip"
   - "man"
-  - "netstat"
 
 # remove default webserver and unused python versions
 remove_packages:
