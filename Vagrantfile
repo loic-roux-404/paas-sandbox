@@ -45,7 +45,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.network :forwarded_port, id: "ssh", guest: 22, host: 2222
-  config.vm.network :private_network, ip: '192.168.33.10'
+  #onfig.vm.network :private_network, ip: '192.168.33.10'
 
   config.vm.synced_folder ".", "/vagrant", disabled: !RSYNC, type: 'rsync', rsync__auto:true,
     rsync__args: ["--archive", "--delete", "--no-owner", "--no-group","-q", "-W"],
