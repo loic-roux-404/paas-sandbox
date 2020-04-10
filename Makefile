@@ -1,37 +1,54 @@
-PLAYBOOKS = $(basename $(wildcard *.yml))
-DOMAIN ?= loicroux.test
-verbose=
-role=
-ask-vault=
+# Makefile to run vps playbook
+PLAYBOOKS=$(basename $(wildcard *.yml))
+DOMAIN?=loicroux.test
+# ansible-playbook arguments
+OPTIONS:=
+# Environment variables of ansible 
+# (https://docs.ansible.com/ansible/latest/reference_appendices/config.html#ansible-configuration-settings)
+ANSIBLE_STDOUT_CALLBACK?=default
+# default to vps in makefile
+INVENTORY?=vps
+playbook_exe= \
+	ANSIBLE_STDOUT_CALLBACK=$(ANSIBLE_STDOUT_CALLBACK) \
+	ansible-playbook $(OPTIONS) \
+	-i ./inventories/$(INVENTORY) $*.yml $(ARG)
 
-all:
-	@echo "Usage: make <playbook> (role='role-yours') (verbose='-v')"
+
+help:
+	@echo "Usage: make <playbook> (ARG=<your-arg>)"
 	@echo "Available PLAYBOOKS: $(PLAYBOOKS)"
 	@echo "Fake deploy on vps: $(addsuffix .test.vps, $(PLAYBOOKS))"
 
-install:
-	ansible-galaxy install -r roles/requirements.yml $(e)
-
+.DEFAULT_GOAL := help
 .PHONY: $(PLAYBOOKS)
 .PRECIOUS: %.run
 $(PLAYBOOKS): % : %.run
 
-# default to vps in makefile
+install:
+	ansible-galaxy install -r roles/requirements.yml $(ARG)
+	pip install -r roles/requirements.txt
+
 %.run: 
-	ansible-playbook -i ./inventories/vps/ $*.yml $(verbose)
+	@$(call playbook_exe)
 
-# role option take --tag your-role as option
-# verbose write simply verbose="-vvv"
-# --ask-vault-pass
-%.test.vps: 
-	ansible-playbook -e ansible_host=localhost \
+# Entering debugging zone on next lines
+OPTIONS:= -e ansible_host=localhost \
 	-e ansible_port=2222 \
 	-e ansible_user=vagrant \
-	-e domain_test=$(DOMAIN) \
-	-i ./inventories/vps/ $*.yml $(verbose) $(role)
 
-%.test.local:
-	ansible-playbook -e ansible_host=localhost \
-	-e ansible_port=2222 \
-	-e ansible_user=vagrant \
-	-i ./inventories/local/ $*.yml $(verbose) $(role)
+debug: 
+	$(eval ANSIBLE_STDOUT_CALLBACK:=debug)
+
+%.test.vps: debug
+	$(eval OPTIONS:=$(OPTIONS) \
+		-e domain_test=$(DOMAIN) \
+		-e network_default_ipv4=192.168.33.10 \
+		-e network_default_ipv6=2a01:e35:2e89:6130:ca5:2cd6:c199:1c3a \
+	)
+	@echo "RUNNING : "${playbook_exe}
+	@$(call playbook_exe)
+
+%.test.local: debug
+	$(eval INVENTORY:=local)
+	@echo "RUNNING : "${playbook_exe}
+	@$(call playbook_exe)
