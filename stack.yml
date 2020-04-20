@@ -3,9 +3,9 @@
   gather_facts: true
   become: yes
   roles:
-    - { role: role-stack,  tags: ['stack'] }
-    - { role: role-docker, tags: ['stack','docker'] }
-    - { role: role-nomad, tags: ['stack', 'docker', 'nomad'] }
+    - { role: role-dns,  tags: ['dns'] }
+    - { role: role-docker, tags: ['dns','docker'] }
+    - { role: role-nomad, tags: ['dns', 'docker', 'nomad'] }
     - role: role-logrotate
 
 # - hosts: traefiks
