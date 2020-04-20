@@ -15,8 +15,8 @@ docker__daemon_flags:
 
 docker__daemon_environment:
   # TODO : configure
-  #- "HTTP_PROXY=http://proxy.example.com:80"
-  #- "HTTPS_PROXY=https://proxy.example.com:443"
+  # - "HTTP_PROXY=http://proxy.example.com:80"
+  # - "HTTPS_PROXY=https://proxy.example.com:443"
 
 docker__systemd_override: ""
 
@@ -54,6 +54,8 @@ docker__pip_docker_compose_state: "absent"
 # role-stack
 #============
 dhcp_prepend: false #"domain-name-servers {{ ansible_lo['ipv4']['address'] }}"
+keyboard_mac: true
+# network
 
 #=============
 # role-dns
@@ -66,17 +68,20 @@ enable_wildcard_domains: true
 dnsmasq_bind_interfaces:
   - lo
   - eth0
-  - docker0
 
 dnsmasq_conditional_forwarders:
-  - address:                       127.0.0.1#4646
-    domain:                        "nomad.{{ domain }}"
-  - address:                       127.0.0.1#8200
-    domain:                        "vault.{{ domain }}"
+  - address: 127.0.0.1#4646
+    domain: "nomad.{{ domain_test  }}"
+  - address: 127.0.0.1#8200
+    domain: "vault.{{ domain_test  }}"
 
 dnsmasq_nameservers:
   - 208.67.222.222
   - 208.67.220.220
+
+# force the use of dnsmasq local server
+interface_dns: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
+
 # role stack add variables for dnsmasq
 # TODO : check https://github.com/ansible/ansible/pull/68288 to be merged
 
@@ -84,7 +89,7 @@ dnsmasq_nameservers:
 # role-nomad
 # https://github.com/ansible-community/ansible-nomad
 #============
-nomad_version: '0.10.5'
+nomad_version: "0.10.5"
 nomad_group_name: "stack"
 nomad_iface: eth1
 nomad_network_interface: eth1
@@ -97,9 +102,9 @@ nomad_vault_enabled: false
 nomad_vault_allow_unauthenticated: true # TODO Vault ACL
 #nomad_vault_address: "vault.{{ domain }}"
 nomad_bind_address: "0.0.0.0"
-# nomad_advertise_address: test.loicroux.test #hostvars[inventory_hostname]['ansible_' + nomad_iface]['ipv4']['address'] 
-nomad_use_consul: no
-nomad_options: {  'driver.raw_exec.enable': '1' }
+nomad_advertise_address: 127.0.0.1 #hostvars[inventory_hostname]['ansible_' + nomad_iface]['ipv4']['address'] 
+nomad_use_consul: false
+nomad_options: { 'driver.raw_exec.enable': '1' }
 nomad_network_speed: 10
 nomad_bootstrap_expect: 1
 nomad_docker_enable: true

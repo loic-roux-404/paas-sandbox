@@ -4,8 +4,8 @@
   src: ssh://git@github.com/loic-roux-404/role-basics.git
   version: "configs"
   scm: git
-- name: role-stack
-  src: ssh://git@github.com/loic-roux-404/role-stack.git
+- name: role-dns
+  src: ssh://git@github.com/loic-roux-404/role-dns.git
   version: "master"
   scm: git
 - name: role-zsh

@@ -1,0 +1,4 @@
+manala:
+    description: Vagrant environment
+    sync:
+        - .settings
