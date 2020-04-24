@@ -53,7 +53,6 @@ docker__pip_docker_compose_state: "absent"
 #============
 # role-stack
 #============
-dhcp_prepend: false #"domain-name-servers {{ ansible_lo['ipv4']['address'] }}"
 keyboard_mac: true
 # network
 
