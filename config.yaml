@@ -1,0 +1,49 @@
+---
+project_name: playbook-vps
+box: loic-roux-404/deb64-buster
+box_update: false
+box_version: 
+vb_guest_update: false
+domain: loicroux.test
+git:
+  org: loic-roux-404
+  provider: https://github.com
+paths:
+  guest: "/vagrant"
+  host: "./"
+  web: ''
+network:
+  dns: true
+  ip: 192.168.33.10
+  ports: []
+  ssl:
+    cert: 
+    path: "/etc/ssl"
+  type: public
+ansible:
+  disabled: true
+  inventory: ''
+  playbook: ''
+  sub_playbook: site.yml
+  type: local
+  vars:
+    keyboard_mac: false
+fs:
+  opts:
+    disabled: true
+    ignored:
+    - "/**/.DS_Store"
+    - ".git"
+    - ".vagrant"
+    - ".idea/"
+    - ".vscode/"
+    rsync_auto: true
+    smb_password: 
+    smb_username: 
+  type: rsync
+provider:
+  opts:
+    cpus: '2'
+    memory: '1024'
+    natdnshostresolver1: true
+  type: virtualbox

@@ -1,0 +1,22 @@
+{
+	// See https://go.microsoft.com/fwlink/?LinkId=827846 to learn about workspace recommendations.
+	// Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
+
+	// List of extensions which should be recommended for users of this workspace.
+	"recommendations": [
+		// Vagrant
+		"marcostazi.vs-code-vagrantfile",
+		// Formatter
+		"SimonSiefke.prettier-vscode", // Better support of jinja
+		"redhat.vscode-yaml", 
+		// Languages
+		"haaaad.ansible",
+        "vscoss.vscode-ansible", // ansible in yaml
+		"Kasik96.latte", // Nette Latte + Neon
+		"wholroyd.jinja" // jinja templating 
+	],
+	// List of extensions recommended by VS Code that should not be recommended for users of this workspace.
+	"unwantedRecommendations": [
+
+	]
+}

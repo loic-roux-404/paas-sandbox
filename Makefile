@@ -1,27 +1,17 @@
-include .settings/mk/ansible-commons.mk
+include .manala/ansible.mk
 
 help_more:
-	@echo "Fake deploy on vps: $(addsuffix .test.vps, $(PLAYBOOKS))"
+	@echo "Fake deploy on vps: $(addsuffix .debug.vps, $(PLAYBOOKS))"
 
 # =============================
-# Debugging zone on next lines
+# Additionals playbook-vps commands
 # =============================
-OPTIONS:= $(OPTIONS)\
-	-e ansible_host=$(DOMAIN)\
-	-e ansible_port=22\
-	-e ansible_user=vagrant\
 
-debug: 
-	$(eval ANSIBLE_STDOUT_CALLBACK:=yaml)
-	@$(MAKE) running DEBUG='IN DEBUG MODE '
+%.debug.vps: debug-deco
+	$(eval INVENTORY?=./inventories/vps)
+	$(call playbook_exe)
 
-%.test.vps: debug
-	$(eval OPTIONS:=$(OPTIONS) \
-		-e domain_test=$(DOMAIN) \
-		-e base_ipv4=$(IP)\
-	)
-	@$(call playbook_exe)
-
-%.test.local: debug
-	$(eval INVENTORY:=local)
-	@$(call playbook_exe)
+DOMAIN:= localhost
+%.debug.local: debug-deco
+	$(eval INVENTORY:=./inventories/local)
+	$(call playbook_exe)
