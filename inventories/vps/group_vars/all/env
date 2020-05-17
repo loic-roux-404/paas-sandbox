@@ -16,12 +16,12 @@ users:
     home_mode: "0750"
     home_create: yes
     home: "/home/{{ user1.username }}"
-    authorized_keys: 
+    authorized_keys:
       - "https://github.com/{{ user1.username }}.keys"
     ssh_key_generate: yes
     github_user_token: "{{ user1.github_token }}"
 
-users_home_files: 
+users_home_files:
   - "files/.inputrc"
   - "files/.vimrc"
 
@@ -32,7 +32,7 @@ users_ssh_key_type: rsa
 users_ssh_key_bits: 2048
 users_authorized_keys_exclusive: yes
 
-users_remove: 
+users_remove:
  - irc
  - list
  - www-data
@@ -67,7 +67,7 @@ zsh_aliases:
   # Alias's to show disk space and space used in a folder
   - { alias: diskspace, action: "du -S | sort -n -r |more" }
   - { alias: folders, action: "du -h --max-depth=1" }
-  # search in all files 
+  # search in all files
   # ftext function
   - { alias: mkdirg, action: "mkdirg" }
   # Alias's to modified commands
@@ -91,7 +91,7 @@ zsh_aliases:
 # role-basics
 # https://github.com/loic-roux-404/role-basics
 #==================
-packages: 
+packages:
   - "dnsutils"
   - "python3"
   - "python3-pip"

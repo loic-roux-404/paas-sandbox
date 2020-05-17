@@ -12,4 +12,14 @@
   src: ssh://git@github.com/viasite-ansible/ansible-role-zsh.git
   version: "v3.2.6"
   scm: git
-
+# External requirements
+- name: role-logrotate
+  src: arillso.logrotate
+- name: role-firewall
+  src: geerlingguy.firewall
+- name: role-security
+  src: geerlingguy.security
+- name: role-docker
+  src: nickjj.docker
+- name: role-nomad
+  src: brianshumate.nomad
