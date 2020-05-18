@@ -13,13 +13,12 @@ users:
     group: "{{ user1.username }}"
     groups: ["sudo"]
     uid: 1000
-    append: no
+    append: yes
     home_mode: "0750"
-    home_create: yes
+    home_create: no
     home: "/home/{{ user1.username }}"
     authorized_keys:
       - 'https://raw.github.com/mitchellh/vagrant/master/keys/vagrant.pub'
-
     ssh_key_generate: no
 
 users_home_files:
@@ -45,7 +44,7 @@ users_remove:
 #  https://github.com/viasite-ansible/ansible-role-zsh
 #==================
 zsh_antigen_bundles:
-  - { name: common-aliases }
+  - common-aliases
   - { name: zsh-users/zsh-autosuggestions, when: "{{ zsh_version is version_compare('5.0', '>=') }}" }
   - popstas/zsh-command-time
   - { name: zdharma/fast-syntax-highlighting@v1.2, when: "{{ zsh_version is version_compare('4.3.17', '>=') }}" }

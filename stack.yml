@@ -4,6 +4,6 @@
   become: yes
   roles:
     - { role: role-dns,  tags: ['dns'] }
-    - { role: role-docker, tags: ['dns','docker'] }
-    - { role: role-nomad, tags: ['dns', 'docker', 'nomad'] }
+    - { role: role-docker, tags: ['docker'] }
+    - { role: role-nomad, tags: ['nomad'] }
     - role: role-logrotate
