@@ -1,6 +1,6 @@
 ---
 # Github roles
-- name: role-basics 
+- name: role-basics
   src: ssh://git@github.com/loic-roux-404/role-basics.git
   version: "configs"
   scm: git
@@ -10,7 +10,7 @@
   scm: git
 - name: role-zsh
   src: ssh://git@github.com/viasite-ansible/ansible-role-zsh.git
-  version: "v3.2.6"
+  version: "v3.2.8"
   scm: git
 # External requirements
 - name: role-logrotate

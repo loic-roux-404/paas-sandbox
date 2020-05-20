@@ -8,8 +8,7 @@
     ".yaml": "yaml",
     "/**/hosts": "ini",
     "/**/group_vars/**": "yaml",
-    "/**/inventory/secrets": "txt",
-    "/**/inventories/secrets": "txt",
+    "/**/invento**/secrets": "txt",
     "*.tmpl": "gotemplate"
   },
   "[yaml|goyaml|ansible|ansible-advanced]": {
