@@ -43,10 +43,11 @@ users_remove:
 # ansible-role-zsh
 #  https://github.com/viasite-ansible/ansible-role-zsh
 #==================
+zsh_user: "{{ user1.username }}"
+zsh_antigen_theme: "romkatv/powerlevel10k powerlevel10k"
 zsh_antigen_bundles:
   - common-aliases
   - { name: zsh-users/zsh-autosuggestions, when: "{{ zsh_version is version_compare('5.0', '>=') }}" }
-  - popstas/zsh-command-time
   - { name: zdharma/fast-syntax-highlighting@v1.2, when: "{{ zsh_version is version_compare('4.3.17', '>=') }}" }
   - zsh_reload
 
@@ -56,7 +57,7 @@ zsh_aliases:
   # Search files in the current folder
   - { alias: f, action: "find . | grep " }
   # Show open ports
-  - {alias: openports, action: 'netstat -nape --inet' }
+  - { alias: openports, action: 'netstat -nape --inet' }
   # Alias's to show disk space and space used in a folder
   - { alias: diskspace, action: "du -S | sort -n -r |more" }
   - { alias: folders, action: "du -h --max-depth=1" }
@@ -72,7 +73,6 @@ zsh_aliases:
   - { alias: tail, action: 'sudo tail' }
   - { alias: apt-get, action: 'sudo apt-get' }
   - { alias: apt, action: 'sudo apt' }
-
   # Search command line history
   - { alias: h, action: "history | grep " }
   - { alias: apt, action: "sudo apt" }
@@ -84,7 +84,7 @@ zsh_aliases:
 # https://github.com/loic-roux-404/role-basics
 #==================
 packages:
-  - python3
+  - python3-dev
   - python3-pip
   - man
 
@@ -95,8 +95,7 @@ remove_packages:
 
 pip_packages:
  - setuptools
- - virtualenv
 
-motd_message_1: VPS owned by lastico
-motd_message_2: Vm for testing
-motd_message_3: Unauthorized access is punished
+motd_message_1: VM by lastico
+motd_message_2: For testing / development
+motd_message_3: You got this (⊃｡•́‿•̀｡)⊃
