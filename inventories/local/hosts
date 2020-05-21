@@ -1,2 +1,4 @@
+packer remote_user=root ansible_host=127.0.0.1 remote_tmp=/tmp/ansible-root
+
 [env]
-server01 ansible_host=localhost ansible_port=2222 ansible_user=vagrant
+packer
