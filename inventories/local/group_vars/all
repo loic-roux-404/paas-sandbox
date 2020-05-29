@@ -24,6 +24,8 @@ users:
 users_home_files:
   - "files/.inputrc"
   - "files/.vimrc"
+  - "files/.bash_aliases"
+  - "files/.bashrc"
 
 users_home: /home
 users_home_create: yes
@@ -51,7 +53,7 @@ zsh_antigen_bundles:
   - { name: zdharma/fast-syntax-highlighting@v1.2, when: "{{ zsh_version is version_compare('4.3.17', '>=') }}" }
   - zsh_reload
 
-zsh_shared: yes
+zsh_shared: no
 zsh_aliases:
   - { alias: p, action: "ps aux | grep" }
   # Search files in the current folder
@@ -61,9 +63,6 @@ zsh_aliases:
   # Alias's to show disk space and space used in a folder
   - { alias: diskspace, action: "du -S | sort -n -r |more" }
   - { alias: folders, action: "du -h --max-depth=1" }
-  # search in all files
-  # ftext function
-  - { alias: mkdirg, action: "mkdirg" }
   # Alias's to modified commands
   - { alias: cp , action: 'cp -i' }
   - { alias: mv , action : 'mv -i' }
@@ -84,9 +83,12 @@ zsh_aliases:
 # https://github.com/loic-roux-404/role-basics
 #==================
 packages:
-  - python3-dev
-  - python3-pip
   - man
+  - vim
+  - wget
+  - gnupg
+  - curl
+  - git
 
 # remove default webserver and unused python versions
 remove_packages:
@@ -94,8 +96,8 @@ remove_packages:
   - "php*"
 
 pip_packages:
- - setuptools
+ - virtualenv
 
 motd_message_1: VM by lastico
 motd_message_2: For testing / development
-motd_message_3: You got this (⊃｡•́‿•̀｡)⊃
+motd_message_3: 8===D
