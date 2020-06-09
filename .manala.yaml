@@ -1,12 +1,14 @@
 manala:
-    repository: /Users/loic/Ops/manala-recipes
-    recipe: ops.playbook
+  repository: /Users/loic/Ops/manala-recipes
+  recipe: ops.playbook
 
 repository_save: /Users/loic/Ops/manala-recipes
 
 ansible: 
+  cfg_lines:
+      vault_password_file: ./utils/vault_pass.sh
   internal_roles: false
-  inventory: inventories/vps
+  inventory: ./inventories/vps
 
 vagrant: 
   project_name: playbook-vps
@@ -34,6 +36,7 @@ vagrant:
     disabled: true
     inventory: ""
     playbook: ""
+    playbook_version: master
     sub_playbook: site.yml
     type: local
     vars:

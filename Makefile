@@ -15,3 +15,6 @@ DOMAIN:= localhost
 %.debug.local: debug-deco
 	$(eval INVENTORY:=./inventories/local)
 	$(call playbook_exe)
+
+first-run:
+	$(MAKE) site ANSIBLE_VARS=ansible_user=root

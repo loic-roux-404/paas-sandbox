@@ -5,6 +5,12 @@ class Config
   DEFAULT_CONFIG = '/.manala.yaml'
   CONFIG_OBJECT_KEY = 'vagrant'
   USER_CONFIG = '/config.yaml'
+  HELPER_MSG = <<-HELPER
+# Override original config in #{DEFAULT_CONFIG }
+# Useful to pass ansible extra vars or add RAM to VM
+---
+#{CONFIG_OBJECT_KEY}:
+HELPER
 
   def initialize
     @default = YAML.load_file($__dir__+ DEFAULT_CONFIG)[CONFIG_OBJECT_KEY]
@@ -15,12 +21,12 @@ class Config
 
   # Request a config by index
   def get(index = '')
-    if !@config[index.to_s] 
+    if !@config[index.to_s]
       gen_base(@config).to_struct
     elsif !@config[index.to_s].is_a?(Hash)
        @config[index.to_s]
     else
-      @config[index.to_s].to_struct  
+      @config[index.to_s].to_struct
     end
   end
 
@@ -40,7 +46,7 @@ class Config
     rescue StandardError
       puts 'Creating missing config'
       user_config_file = File.open($__dir__ + USER_CONFIG, 'w+')
-      user_config_file.puts @default.to_yaml
+      user_config_file.puts HELPER_MSG
       user_config_file.close
     end
   end
