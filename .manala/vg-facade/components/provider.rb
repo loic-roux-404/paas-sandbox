@@ -2,7 +2,7 @@
 class Provider < Component
 
   def initialize(cnf, project_name = '')
-    @name = project_name 
+    @name = project_name
     super(cnf)
 
     ENV['VAGRANT_DEFAULT_PROVIDER'] = cnf.type
@@ -12,7 +12,7 @@ class Provider < Component
   # create virtualbox config with VboxManage settings
   def provider_virtualbox
     $vagrant.vm.provider 'virtualbox' do |vb|
-      vb.customize ['modifyvm', :id, "--name", @name]    
+      vb.customize ['modifyvm', :id, "--name", @name]
       @cnf.opts.each_pair do |param_id, value|
         # Convert booleans to virtualbox modifyvm params
         value = value.to_s != 'false' ? value : "off"
@@ -46,6 +46,8 @@ class Provider < Component
         'missing'
       )
     end
+    # Set @valid to true (component is ok)
+    return true
   end
 
   def non_supported

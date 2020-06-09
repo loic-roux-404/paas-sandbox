@@ -98,6 +98,6 @@ remove_packages:
 pip_packages:
  - virtualenv
 
-motd_message_1: VM by lastico
+motd_message_1: Debian buster VPS
 motd_message_2: For testing / development
 motd_message_3: 8===D

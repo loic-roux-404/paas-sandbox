@@ -8,11 +8,11 @@ IP?=$(call config,vagrant.network.ip)
 DOMAIN?=$(call config,vagrant.domain)
 # ansible vars
 ANSIBLE_VARS:=$(shell echo -n $(call config,vagrant.ansible.vars) |\sed -e 's/:[^:\/\/]/="/g;s/$$/"/g;s/ *=/=/g')
-OPTIONS:= $(foreach var, $(ANSIBLE_VARS), -e $(subst ",,$(var)))
+OPTIONS:=$(foreach var, $(ANSIBLE_VARS), -e $(subst ",,$(var)))
 # Environment variables of ansible
 ANSIBLE_STDOUT_CALLBACK:=default
 # Default Inventory
-INVENTORY?= $(call config,ansible.inventory)
+INVENTORY?=$(call config,ansible.inventory)
 
 # Build command
 playbook_exe= ANSIBLE_STDOUT_CALLBACK=$(ANSIBLE_STDOUT_CALLBACK) \
@@ -40,18 +40,18 @@ $(PLAYBOOKS): % : %.run
 
 install:
 	ansible-galaxy install -r roles/requirements.yml $(ARG)
-	$(foreach var,$(shell ls -d *roles/role*/requirements.txt),pip install -r $(var);)
-	$(foreach var,$(shell ls -d *.ext_roles/role*/requirements.txt),pip install -r $(var);)
+	$(foreach var,$(shell ls -d *roles/role*/requirements.txt),pip install -r $(var))
+	$(foreach var,$(shell ls -d *.ext_roles/role*/requirements.txt),pip install -r $(var))
 
 # ==============================
 # Warning run target is for prod
 # ==============================
-%.run: running
+%.run:
 	@$(call prompt)
 	@$(call playbook_exe)
 
 # avoid prompt (Use this in automated processes)
-%.run-f: running
+%.run-f:
 	@$(call playbook_exe)
 
 # =============================
@@ -62,7 +62,6 @@ debug-deco:
 	$(eval ANSIBLE_STDOUT_CALLBACK:=yaml)
 	$(eval OPTIONS+=\
 		   -e ansible_host=$(DOMAIN)\
-		   -e ansible_port=2222\
 		   -e ansible_user=vagrant\
 	)
 

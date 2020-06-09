@@ -16,13 +16,13 @@ class Network < Component
     # Automatic interfaces
     preferred_interfaces = ['eth0.*', 'eth\d.*', 'enp0s.*', 'enp\ds.*', 'en0.*', 'en\d.*']
     host_interfaces = %x( VBoxManage list bridgedifs | grep ^Name ).gsub(/Name:\s+/, '').split("\n")
-    network_interface_to_use = preferred_interfaces.map{ |pi| 
-      host_interfaces.find { |vm| vm =~ /#{Regexp.new(pi)}/ } 
+    network_interface_to_use = preferred_interfaces.map{ |pi|
+      host_interfaces.find { |vm| vm =~ /#{Regexp.new(pi)}/ }
     }.compact[0]
-    
+
     $vagrant.vm.network :public_network, bridge: network_interface_to_use #, adapter: "1"
     routing
-  end 
+  end
 
   def network_private
     if !@cnf.ip
@@ -40,7 +40,7 @@ class Network < Component
   def redirect_ports
     @cnf.ports.each do |port|
       $vagrant.vm.network :forwarded_port, id: defined?(port.id) ? port.id : nil,
-        guest: port.guest, 
+        guest: port.guest,
         host: port.host,
         auto_correct: defined?(port.auto_correct) ? port.auto_correct : true,
         disabled: defined?(port.disabled ) ? port.disabled : false
@@ -49,15 +49,15 @@ class Network < Component
 
   # Fix routing bad default gateway
   def routing
-    if Vagrant::Util::Platform.darwin? 
+    if Vagrant::Util::Platform.darwin?
       @gateway = `route -n get default | grep 'gateway' | awk '{print $2}'`.delete("\n")
-    elsif Vagrant::Util::Platform.linux? 
+    elsif Vagrant::Util::Platform.linux?
       # Not tested
       @gateway = `ip route show`[/default.*/][/\d+\.\d+\.\d+\.\d+/]
     end
 
-    $vagrant.vm.provision :shell, 
-      run: "always", 
+    $vagrant.vm.provision :shell,
+      run: "always",
       path: File.join(__dir__, "../", "/utils/routing.py"),
       args: "#{@gateway}"
   end
@@ -74,7 +74,7 @@ class Network < Component
       t.run = { inline: "scp -P 22 vagrant@#{@domain}:#{guest_path}/#{cert} #{host_path}"}
 
       if Vagrant::Util::Platform.darwin? || Vagrant::Util::Platform.linux?
-        t.run = { inline: 
+        t.run = { inline:
           "sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain #{host_path}/#{cert}"
         }
       else
@@ -95,10 +95,22 @@ class Network < Component
     if @cnf.dns && !Vagrant.has_plugin?('landrush')
 			system('vagrant plugin install landrush')
     end
-    
+
     if @cnf.ssl.path && @cnf.ssl.cert
       @ssl = true
     end
+
+    @cnf.ports.each do |port|
+      if !port.guest || !port.host
+        raise ConfigError.new(
+          ["network.ports.guest", "network.ports.host"],
+          "Missing forward port or port destination",
+          'missing'
+        )
+      end
+    end
+    # Set @valid to true (component is ok)
+    return true
   end
- # end class 
+ # end class
 end
