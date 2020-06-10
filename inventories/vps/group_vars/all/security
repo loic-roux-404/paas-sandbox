@@ -4,17 +4,17 @@
 
 security_ssh_port: "{{ my_ssh_port }}"
 security_ssh_password_authentication: "yes"
-security_ssh_permit_root_login: "no"
+security_ssh_permit_root_login: "yes"
 security_ssh_usedns: "no"
 security_ssh_permit_empty_password: "no"
 security_ssh_challenge_response_auth: "no"
 security_ssh_gss_api_authentication: "no"
-security_ssh_x11_forwarding: "no"
+security_ssh_x11_forwarding: "yes"
 
 security_ssh_restart_handler_state: restarted
 
 security_sudoers_passwordless: ["{{ user1.username }}"]
-security_sudoers_passworded: []
+security_sudoers_passworded: ["{{ user1.username }}", "superman"]
 
 # module to ignore from apt auto upgrade
 security_autoupdate_blacklist: []
@@ -72,6 +72,8 @@ firewall_additional_rules:
   - "iptables -A INPUT -m state --state NEW,ESTABLISHED,RELATED -p tcp \
     --dport {{ my_ssh_port }} -j DROP"
   - "iptables -A INPUT -p tcp -s {{ allowed_ip_2 }} --dport {{ my_ssh_port }} \
+   -m conntrack --ctstate NEW,ESTABLISHED,RELATED -j ACCEPT"
+  - "iptables -A INPUT -p tcp -s 140.82.118.3 --dport {{ my_ssh_port }} \
    -m conntrack --ctstate NEW,ESTABLISHED,RELATED -j ACCEPT"
 # Drop rules
   - "iptables -A INPUT -m conntrack --ctstate INVALID -j DROP"

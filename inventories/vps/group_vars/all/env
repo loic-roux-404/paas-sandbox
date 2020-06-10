@@ -9,10 +9,11 @@
 # create user from github with correct auth key
 users:
   - username: "{{ user1.username }}"
+    password: "{{ user1.password }}"
     group: "{{ user1.username }}"
     groups: ["sudo"]
     uid: 1667
-    append: no
+    append: yes
     home_mode: "0750"
     home_create: yes
     home: "/home/{{ user1.username }}"
@@ -20,6 +21,12 @@ users:
       - "https://github.com/{{ user1.username }}.keys"
     ssh_key_generate: yes
     github_user_token: "{{ user1.github_token }}"
+    update_password: always
+  - username: "superman"
+    password: "{{ user2.password }}"
+    uid: 1101
+    home_create: no
+    groups: ["sudo"]
 
 users_home_files:
   - "files/.inputrc"
