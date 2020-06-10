@@ -101,7 +101,7 @@ nomad_vault_enabled: false
 nomad_vault_allow_unauthenticated: true # TODO Vault ACL
 #nomad_vault_address: "vault.{{ domain }}"
 nomad_bind_address: "0.0.0.0"
-nomad_advertise_address: 127.0.0.1 #hostvars[inventory_hostname]['ansible_' + nomad_iface]['ipv4']['address'] 
+nomad_advertise_address: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
 nomad_use_consul: false
 nomad_options: { 'driver.raw_exec.enable': '1' }
 nomad_network_speed: 10
