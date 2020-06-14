@@ -78,9 +78,6 @@ dnsmasq_nameservers:
   - 208.67.222.222
   - 208.67.220.220
 
-# force the use of dnsmasq local server
-interface_dns: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
-
 # role stack add variables for dnsmasq
 # TODO : check https://github.com/ansible/ansible/pull/68288 to be merged
 
@@ -88,10 +85,10 @@ interface_dns: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_address
 # role-nomad
 # https://github.com/ansible-community/ansible-nomad
 #============
-nomad_version: "0.10.5"
+nomad_version: "0.11.3"
 nomad_group_name: "stack"
-nomad_iface: eth1
-nomad_network_interface: eth1
+nomad_iface: "{{ ansible_default_ipv4.interface }}"
+nomad_network_interface: "{{ ansible_default_ipv4.interface }}"
 nomad_servers: []
 nomad_retry_join: yes
 # CONSTANTS
@@ -123,6 +120,7 @@ logrotate_applications:
   - name: packages logs
     definitions:
       - logs:
+          - /var/log/syslog
           - /var/log/apt/term.log
           - /var/log/apt/history.log
           - /var/log/dpkg.log

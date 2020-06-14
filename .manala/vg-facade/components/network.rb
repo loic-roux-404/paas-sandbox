@@ -21,7 +21,9 @@ class Network < Component
     }.compact[0]
 
     $vagrant.vm.network :public_network, bridge: network_interface_to_use #, adapter: "1"
-    routing
+    if @cnf.fix_routing
+      routing
+    end
   end
 
   def network_private

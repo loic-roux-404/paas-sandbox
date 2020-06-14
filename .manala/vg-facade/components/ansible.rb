@@ -46,7 +46,7 @@ class Ansible < Component
     if @cnf.playbook
       @git_url ="git@#{@git.provider}:#{@git.org}/#{@cnf.playbook}"
       full_path = "#{PLAYBOOK_PATH}/#{@cnf.playbook}"
-      git_clone = "git clone #{@git_url} #{full_path}"
+      git_clone = "GIT_SSH_COMMAND='ssh -o StrictHostKeyChecking=no' git clone #{@git_url} #{full_path}"
       @get_playbook = "rm -rf #{full_path} || true; #{git_clone}"
     end
   end
