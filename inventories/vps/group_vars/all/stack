@@ -70,9 +70,9 @@ dnsmasq_bind_interfaces:
 
 dnsmasq_conditional_forwarders:
   - address: 127.0.0.1#4646
-    domain: "nomad.{{ domain_test  }}"
+    domain: "nomad.{{ domain_test }}"
   - address: 127.0.0.1#8200
-    domain: "vault.{{ domain_test  }}"
+    domain: "vault.{{ domain_test }}"
 
 dnsmasq_nameservers:
   - 208.67.222.222
@@ -80,6 +80,12 @@ dnsmasq_nameservers:
 
 # role stack add variables for dnsmasq
 # TODO : check https://github.com/ansible/ansible/pull/68288 to be merged
+
+vault_datacenter: "dc1"
+vault_domain: "consul"
+# CONSTANTS
+vault_ui: yes
+vault_cluster_disable: yes
 
 #============
 # role-nomad
@@ -99,7 +105,7 @@ nomad_vault_allow_unauthenticated: true # TODO Vault ACL
 #nomad_vault_address: "vault.{{ domain }}"
 nomad_bind_address: "0.0.0.0"
 nomad_advertise_address: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
-nomad_use_consul: false
+nomad_use_consul: true
 nomad_options: { 'driver.raw_exec.enable': '1' }
 nomad_network_speed: 10
 nomad_bootstrap_expect: 1
@@ -109,6 +115,20 @@ nomad_syslog_enable: true
 nomad_ports_http: 4646
 nomad_ports_rpc: 4647
 nomad_ports_serf: 4648
+
+#============
+# role-consul
+# http://github.com/ansible-community/ansible-consul/blob/master/defaults/main.yml
+#============
+consul_iface: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
+consul_datacenter: "dc1"
+consul_acl_datacenter: "dc1"
+consul_domain: "consul"
+consul_recursors: ['1.1.1.1', '1.0.0.1']
+# CONSTANTS
+consul_client_address: "0.0.0.0"
+consul_dnsmasq_enable: yes
+consul_acl_master_token_display: yes
 
 #============
 # arillso.logrotate
