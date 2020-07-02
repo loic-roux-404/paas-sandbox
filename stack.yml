@@ -7,3 +7,15 @@
     - { role: role-docker, tags: ['docker'] }
     - { role: role-nomad, tags: ['nomad'] }
     - role: role-logrotate
+
+- hosts: consuls
+  become: true
+  become_user: root
+  roles:
+      - { role: role-consul, tags: ['consul'] }
+
+- hosts: vault
+  gather_facts: true
+  # TODO: before task to create an `vault` alias
+  roles:
+      - { role: role-vault, tags: ['vault'] }

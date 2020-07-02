@@ -10,7 +10,7 @@
   scm: git
 - name: role-zsh
   src: ssh://git@github.com/viasite-ansible/ansible-role-zsh.git
-  version: "v3.2.8"
+  version: "v3.3.0"
   scm: git
 # External requirements
 - name: role-logrotate
@@ -23,3 +23,9 @@
   src: nickjj.docker
 - name: role-nomad
   src: brianshumate.nomad
+- name: role-consul
+  src: ssh://git@github.com/ansible-community/ansible-consul.git
+  scm: git
+- name: role-vault
+  src: ssh://git@github.com/ansible-community/ansible-vault.git
+  scm: git

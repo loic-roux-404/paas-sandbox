@@ -9,5 +9,8 @@ server01
 [security]
 server01
 
-[traefiks]
+[consuls]
 server01
+
+[vault]
+ansible_host=pandemik699@ssh-pandemik699.alwaysdata.net ansible_user=pandemik699

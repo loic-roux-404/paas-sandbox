@@ -59,8 +59,7 @@ zsh_antigen_bundles:
   - { name: zdharma/fast-syntax-highlighting@v1.2, when: "{{ zsh_version is version_compare('4.3.17', '>=') }}" }
   - zsh_reload
 
-zsh_antigen_bundles_extras:
-  - nvm
+zsh_antigen_bundles_extras: []
 
 zsh_shared: yes
 zsh_aliases:
@@ -102,6 +101,8 @@ packages:
   - "python3"
   - "python3-pip"
   - "man"
+  - "apache2-utils"
+# TODO : add yarn and node js
 
 # remove default webserver and unused python versions
 remove_packages:
