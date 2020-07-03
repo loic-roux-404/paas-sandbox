@@ -1,4 +1,5 @@
 #!/bin/bash
+
 debian_version=$(cat /etc/debian_version)
 ansible_installed=$(which ansible | wc -l)
 ENABLE_AUTO_PROVISION=0

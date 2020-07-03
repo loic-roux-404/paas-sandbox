@@ -13,7 +13,7 @@ docker__default_daemon_json: |
 docker__daemon_flags:
   - "-H unix://"
 
-docker__daemon_environment:
+docker__daemon_environment: []
   # TODO : configure
   # - "HTTP_PROXY=http://proxy.example.com:80"
   # - "HTTPS_PROXY=https://proxy.example.com:443"
@@ -78,33 +78,47 @@ dnsmasq_nameservers:
   - 208.67.222.222
   - 208.67.220.220
 
-# role stack add variables for dnsmasq
-# TODO : check https://github.com/ansible/ansible/pull/68288 to be merged
+# Hashistack
+# ==========
+# Base variables
+datacenter: dc1
+stack_domain: stack.loicroux.com
+stack_ip: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
 
-vault_datacenter: "dc1"
-vault_domain: "consul"
-# CONSTANTS
+#============
+# role-vault
+# https://github.com/ansible-community/ansible-vault/blob/master/defaults/main.yml
+#============
+vault_version: 1.4.2
+vault_datacenter: "{{ datacenter }}"
+vault_domain: "pandemik699.alwaysdata.net"
 vault_ui: yes
 vault_cluster_disable: yes
+vault_user: "{{ ansible_user }}"
+vault_home: "/home/{{ vault_user }}"
+vault_bin_path: "{{ vault_home }}/vault/bin"
+vault_plugin_path: "{{ vault_home }}/vault/lib/plugins"
+vault_data_path: "{{ vault_home }}/vault/data"
+vault_log_path: "{{ vault_home }}/vault/logs"
+vault_run_path: "{{ vault_home }}/vault/run"
 
 #============
 # role-nomad
-# https://github.com/ansible-community/ansible-nomad
+# https://github.com/ansible-community/ansible-nomad/blob/master/defaults/main.yml
 #============
 nomad_version: "0.11.3"
 nomad_group_name: "stack"
-nomad_iface: "{{ ansible_default_ipv4.interface }}"
-nomad_network_interface: "{{ ansible_default_ipv4.interface }}"
-nomad_servers: []
+nomad_datacenter: "{{ datacenter }}"
+nomad_iface: "{{ stack_ip }}"
+nomad_network_interface: "{{ stack_ip }}"
 nomad_retry_join: yes
-# CONSTANTS
 nomad_user: root
 nomad_node_role: both
-nomad_vault_enabled: false
-nomad_vault_allow_unauthenticated: true # TODO Vault ACL
-#nomad_vault_address: "vault.{{ domain }}"
+nomad_vault_enabled: true
+nomad_vault_allow_unauthenticated: false
+nomad_vault_address: pandemik699.alwaysdata.net
 nomad_bind_address: "0.0.0.0"
-nomad_advertise_address: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
+nomad_advertise_address: "{{ stack_ip }}"
 nomad_use_consul: true
 nomad_options: { 'driver.raw_exec.enable': '1' }
 nomad_network_speed: 10
@@ -120,12 +134,11 @@ nomad_ports_serf: 4648
 # role-consul
 # http://github.com/ansible-community/ansible-consul/blob/master/defaults/main.yml
 #============
-consul_iface: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
-consul_datacenter: "dc1"
-consul_acl_datacenter: "dc1"
-consul_domain: "consul"
+consul_iface: "{{ stack_ip }}"
+consul_datacenter: "{{ datacenter }}"
+consul_acl_datacenter: "{{ datacenter }}"
+consul_domain: "{{ stack_domain }}"
 consul_recursors: ['1.1.1.1', '1.0.0.1']
-# CONSTANTS
 consul_client_address: "0.0.0.0"
 consul_dnsmasq_enable: yes
 consul_acl_master_token_display: yes
