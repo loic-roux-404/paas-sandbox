@@ -100,4 +100,4 @@ pip_packages:
 
 motd_message_1: Debian buster VPS
 motd_message_2: For testing / development
-motd_message_3: 8===D
+motd_message_3: "--__--"
