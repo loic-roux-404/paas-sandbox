@@ -3,10 +3,9 @@
   gather_facts: true
   become: yes
   roles:
-    - role: role-dns
-    - role: role-docker
-    - role: role-nomad
-    - role: role-logrotate
+    - { role: role-docker, tags: [stack] }
+    - { role: role-nomad, tags: [stack] }
+    - { role: role-logrotate, tags: [stack] }
 
 - hosts: consul_instances
   become: true
@@ -14,7 +13,8 @@
   pre_tasks:
     - debug: msg="{{ consul_iface }}"
   roles:
-    - role: role-consul
+    - { role: role-dns, tags: [discovery] }
+    - { role: role-consul, tags: [discovery] }
 
 - hosts: vault_instances
   gather_facts: true
@@ -22,4 +22,3 @@
   become_user: root
   roles:
     - role: role-vault
-

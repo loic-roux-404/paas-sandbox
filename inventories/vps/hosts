@@ -16,7 +16,7 @@ vault_instances
 server01.consul nomad_node_role=both
 
 [consul_instances]
-server01.consul consul_node_role=server
+server01.consul consul_node_role=server consul_bootstrap_expect=true
 
 [vault_instances]
 server02.consul

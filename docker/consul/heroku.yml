@@ -1,4 +1,6 @@
 build:
   docker:
-    bootstrap: client.Dockerfile
-    server: server.Dockerfile
+    bootstrap: ../Dockerfile
+    server: ../Dockerfile
+  config:
+    PORT: 8500
