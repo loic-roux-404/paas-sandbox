@@ -19,6 +19,6 @@ while lastinterface.find('eth'):
 
 if first != 'default' or last != lastinterface:
       print("Fixing routing from {0} to {1} ".format(last, lastinterface))
-      scmd = 'ip route add default via {0} dev {1}'.format(sys.argv[0], lastinterface)
+      scmd = 'ip route add default via {0} dev {1}'.format(sys.argv[1], lastinterface)
       subprocess.getstatusoutput('ip route del default')
       subprocess.getstatusoutput(scmd)

@@ -1,0 +1,4 @@
+build:
+  docker:
+    bootstrap: client.Dockerfile
+    server: server.Dockerfile

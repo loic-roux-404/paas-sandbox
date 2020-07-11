@@ -8,7 +8,7 @@
     "**/defaults/**/*": "ansible",
     "**/tasks/**/*.yml": "ansible",
     "**/handler/*.yml": "ansible",
-    "**/*_vars/**/*.yml": "ansible",
+    "**/*_vars/**/**": "ansible",
     "**/roles/**/*.yml": "ansible",
     "**/playbooks/**/*.yml": "ansible",
     "**/*ansible*/**/*.yml": "ansible",

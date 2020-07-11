@@ -10,7 +10,6 @@ docker__default_daemon_json: |
 docker__daemon_flags:
   - "-H unix://"
 docker__daemon_environment: []
-  # TODO : configure
   # - "HTTP_PROXY=http://proxy.example.com:80"
   # - "HTTPS_PROXY=https://proxy.example.com:443"
 docker__systemd_override: ""
@@ -73,17 +72,21 @@ dnsmasq_nameservers:
 datacenter: dc1
 stack_domain: stack.loicroux.com
 stack_ip: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
-vault_address: "" # place in secrets
+stack_eth: "{{ ansible_default_ipv4.interface|default(ansible_interfaces[0]) }}"
 
 #============
-# role-vault
-# https://github.com/ansible-community/ansible-vault/blob/master/defaults/main.yml
+# role-consul
+# http://github.com/ansible-community/ansible-consul/blob/master/defaults/main.yml
 #============
-vault_version: 1.4.2
-vault_datacenter: "{{ datacenter }}"
-vault_domain: "{{ vault_address }}"
-vault_ui: yes
-vault_cluster_disable: yes
+consul_iface: "{{ stack_ip }}"
+consul_datacenter: "{{ datacenter }}"
+consul_acl_datacenter: "{{ datacenter }}"
+consul_domain: "{{ stack_domain }}"
+consul_recursors: ['1.1.1.1', '1.0.0.1']
+consul_client_address: "0.0.0.0"
+consul_dnsmasq_enable: yes
+consul_acl_master_token_display: yes
+consul_syslog_enable: false
 
 #============
 # role-nomad
@@ -98,7 +101,7 @@ nomad_retry_join: yes
 nomad_user: root
 nomad_node_role: both
 nomad_vault_enabled: true
-nomad_vault_allow_unauthenticated: false
+nomad_vault_allow_unauthenticated: true #FIXME
 nomad_vault_address: "{{ vault_address }}"
 nomad_bind_address: "0.0.0.0"
 nomad_advertise_address: "{{ stack_ip }}"
@@ -108,41 +111,42 @@ nomad_network_speed: 10
 nomad_bootstrap_expect: 1
 nomad_docker_enable: true
 permanent: true
-nomad_syslog_enable: true
+nomad_syslog_enable: false
 nomad_ports_http: 4646
 nomad_ports_rpc: 4647
 nomad_ports_serf: 4648
 
 #============
-# role-consul
-# http://github.com/ansible-community/ansible-consul/blob/master/defaults/main.yml
+# role-vault
+# https://github.com/ansible-community/ansible-vault/blob/master/defaults/main.yml
 #============
-consul_iface: "{{ stack_ip }}"
-consul_datacenter: "{{ datacenter }}"
-consul_acl_datacenter: "{{ datacenter }}"
-consul_domain: "{{ stack_domain }}"
-consul_recursors: ['1.1.1.1', '1.0.0.1']
-consul_client_address: "0.0.0.0"
-consul_dnsmasq_enable: yes
-consul_acl_master_token_display: yes
+vault_version: 1.4.2
+vault_datacenter: "{{ datacenter }}"
+vault_domain: "{{ vault_address }}"
+vault_ui: yes
+vault_cluster_disable: yes
 
 #============
 # arillso.logrotate
 # https://github.com/arillso/ansible.logrotate/blob/master/defaults/main.yml
 #============
 logrotate_use_hourly_rotation: true
-# TODO : configure vault / nomad / docker logs
 logrotate_applications:
-  - name: packages logs
+  - name: all stack logs
     definitions:
       - logs:
           - /var/log/syslog
           - /var/log/apt/term.log
           - /var/log/apt/history.log
           - /var/log/dpkg.log
+          - /var/log/nomad/*.log
+          - /var/log/consul/*.log
         options:
-          - rotate 2
+          - daily
+          - weekly
+          - size 10M
           - monthly
           - missingok
           - notifempty
           - compress
+          - copytruncate
