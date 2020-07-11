@@ -18,14 +18,12 @@ help_more:
 	$(eval INVENTORY:=./inventories/local)
 	$(call playbook_exe)
 
-%.vault-test:
+%.vault-test: debug-deco
 	$(eval INVENTORY?=./inventories/vps)
-	$(eval OPTIONS+= \
-		-e ansible_host=localhost \
-		-e ansible_user=root \
-		-e ansible_port=22222 \
+	$(eval OPTIONS+=\
+	-e vault_address=localhost\
 	)
-	$(eval HOST:=,vault_instances) # Always use comma for python tuple parsing
+	$(eval ARG:='--tag=role-vault')
 	$(call playbook_exe)
 
 # -e vault_address=localhost

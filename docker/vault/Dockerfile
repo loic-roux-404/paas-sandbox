@@ -5,9 +5,9 @@
 FROM debian:stable
 MAINTAINER Loïc Roux <loic.roux.404@gmail.com>
 
-ARG PUB=''
+ARG PUB='' PORT=8200
 
-ENV VAULT_ADDR=http://0.0.0.0:8200 PUB=$PUB
+ENV VAULT_ADDR=http://0.0.0.0:8200 PUB=${PUB}
 
 EXPOSE 8200 22
 
