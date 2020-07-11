@@ -1,5 +1,5 @@
 ---
-- hosts: stack
+- hosts: docker_instances
   gather_facts: true
   become: yes
   roles:
@@ -8,13 +8,18 @@
     - role: role-nomad
     - role: role-logrotate
 
-- hosts: consuls
+- hosts: consul_instances
+  become: true
+  become_user: root
+  pre_tasks:
+    - debug: msg="{{ consul_iface }}"
+  roles:
+    - role: role-consul
+
+- hosts: vault_instances
+  gather_facts: true
   become: true
   become_user: root
   roles:
-      - role: role-consul
+    - role: role-vault
 
-- hosts: vault
-  gather_facts: true
-  roles:
-      - { role: role-vault, tags: ['vault'] }

@@ -6,6 +6,8 @@ repository_save: /Users/loic/Ops/manala-recipes
 
 ansible: 
   cfg_lines:
+      callback_plugins: plugins/callbacks
+      callback_whitelist: auto_tags
       vault_password_file: ./utils/vault_pass.sh
   internal_roles: false
   inventory: ./inventories/vps

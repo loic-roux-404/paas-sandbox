@@ -1,0 +1,13 @@
+{
+    "name": "acl-vault",
+    "region": "eu",
+    "stack": "container",
+    "description": "deploy a dev vault server to heroku",
+    "keywords": ["vault", "server"],
+    "formation": {
+        "vault": {
+          "quantity": 1,
+          "size": "hobby"
+        }
+    }
+}

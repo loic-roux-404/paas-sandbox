@@ -10,7 +10,7 @@
   scm: git
 - name: role-zsh
   src: ssh://git@github.com/viasite-ansible/ansible-role-zsh.git
-  version: "v3.3.0"
+  version: "v3.3.1"
   scm: git
 # External requirements
 - name: role-logrotate

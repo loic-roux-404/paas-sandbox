@@ -1,4 +1,3 @@
-:q
 #!/bin/bash
 # This script can be used to install Vault and its dependencies. This script has been tested with the following
 # operating systems:

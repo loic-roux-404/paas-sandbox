@@ -13,11 +13,15 @@ OPTIONS:=$(foreach var, $(ANSIBLE_VARS), -e $(subst ",,$(var)))
 ANSIBLE_STDOUT_CALLBACK:=default
 # Default Inventory
 INVENTORY?=$(call config,ansible.inventory)
+HOST:=
 
 # Build command
 playbook_exe= ANSIBLE_STDOUT_CALLBACK=$(ANSIBLE_STDOUT_CALLBACK) \
 	ansible-playbook $(OPTIONS) \
-	$(if $(INVENTORY), -i $(INVENTORY),) $*.yml $(ARG)
+	$(if $(INVENTORY),\
+		-i $(INVENTORY)$(if $(HOST),$(HOST),)\
+	,) \
+	$*.yml $(ARG)
 # Prompt exe
 prompt?=echo -ne "\x1b[33m $(1) Sure ? [y/N]\x1b[m" && read ans && [ $${ans:-N} = y ]
 
@@ -57,12 +61,12 @@ install:
 # =============================
 # Debugging zone on next lines
 # =============================
-
 debug-deco:
 	$(eval ANSIBLE_STDOUT_CALLBACK:=yaml)
-	$(eval OPTIONS+=\
-		   -e ansible_host=$(DOMAIN)\
-		   -e ansible_user=vagrant\
+	$(eval OPTIONS+= \
+		-e ansible_host=$(DOMAIN) \
+		-e ansible_user=vagrant \
+		-e ansible_port=22 \
 	)
 
 %.debug: debug-deco

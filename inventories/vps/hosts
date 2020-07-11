@@ -1,16 +1,22 @@
-server01 ansible_host=loicroux.com
+server01.consul ansible_host=loicroux.com
+server02.consul ansible_host=acl-vault.herokuapp.com ansible_user=root ansible_port=22222
 
 [env]
-server01
-
-[stack]
-server01
+server01.consul
 
 [security]
-server01
+server01.consuls
 
-[consuls]
-server01
+[stack:children]
+docker_instances
+consul_instances
+vault_instances
 
-[vault]
-ansible_host=pandemik699@ssh-pandemik699.alwaysdata.net ansible_user=pandemik699
+[docker_instances]
+server01.consul nomad_node_role=both
+
+[consul_instances]
+server01.consul consul_node_role=server
+
+[vault_instances]
+server02.consul

@@ -14,13 +14,18 @@ orchestration and per env applications system
 
 TO DO
 ------------
+- list a test host file
+- Create consul cluster before vault and unidirectional connect
+- Secure nomad with vault
+- Configure security role
+
+**Less emergency**
 - nodejs + NVM to build assets (should go on docker python venv)
 - Nomad Simple container management system
 - Link to applications and their artifacts (logs)
 - UI to manage deployments between different environments => auto CI deploy template
 - Vault system with dynamic secret and project protection
 - Vault CA Authority
-- Secure nomad with vault
 - Make app playbook template with nomad job
 
 Roles used by sub-playbook:
@@ -51,7 +56,8 @@ Later it's can be more logical to split server in two nodes with a master custer
 Vault instance is hosted on heroku container
 
 1. `heroku container:login`
-1.
+1. `PUB=$(cat ~/.ssh/id_rsa.pub) heroku container:push vault -a acl-vault`
+1. `heroku container:release -a acl-vault`
 
 Requirements
 ------------
