@@ -1,3 +1,12 @@
+---
+# Base variables
+datacenter: dc1
+stack_ip: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
+stack_eth: "{{ ansible_default_ipv4.interface|default(ansible_interfaces[0]) }}"
+stack_domain: "{{ ansible_host }}"
+# Review system for multiple instance cluster
+consul_leader_addr: "{{ hostvars[groups['consul_instances'][0]]['ansible_host'] }}"
+
 # ============
 # nickjj.docker
 # https://github.com/nickjj/ansible-docker
@@ -47,33 +56,14 @@ keyboard_mac: true
 # role-dns
 # https://github.com/mrlesmithjr/ansible-dnsmasq/blob/master/defaults/main.yml
 #=============
-dnsmasq_pri_domain_name: "{{ domain_test }}"
-dnsmasq_config: true
-enable_wildcard_domains: true
+dnsmasq_pri_domain_name: "{{ stack_domain }}"
+dnsmasq_config: True
 
-dnsmasq_bind_interfaces:
-  - lo
-  - eth0
-
-dnsmasq_conditional_forwarders:
-  - address: 127.0.0.1#4646
-    domain: "nomad.{{ domain_test }}"
-  - address: 127.0.0.1#8500
-    domain: "consul.{{ domain_test }}"
-
-dnsmasq_nameservers:
-  - 208.67.222.222
-  - 208.67.220.220
+dnsmasq_bind_interfaces: ["{{ stack_eth }}"]
 
 # ============ #
 #  Hashistack  #
 # ============ #
-# Base variables
-datacenter: dc1
-stack_domain: stack.loicroux.com
-stack_ip: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
-stack_eth: "{{ ansible_default_ipv4.interface|default(ansible_interfaces[0]) }}"
-
 #============
 # role-consul
 # http://github.com/ansible-community/ansible-consul/blob/master/defaults/main.yml
@@ -81,7 +71,6 @@ stack_eth: "{{ ansible_default_ipv4.interface|default(ansible_interfaces[0]) }}"
 consul_iface: "{{ stack_eth }}"
 consul_datacenter: "{{ datacenter }}"
 consul_acl_datacenter: "{{ datacenter }}"
-consul_domain: "{{ stack_domain }}"
 consul_recursors: ['1.1.1.1', '1.0.0.1']
 consul_client_address: "0.0.0.0"
 consul_dnsmasq_enable: yes
@@ -96,13 +85,13 @@ nomad_version: "0.11.3"
 nomad_group_name: "stack"
 nomad_datacenter: "{{ datacenter }}"
 nomad_iface: "{{ stack_ip }}"
-nomad_network_interface: "{{ stack_ip }}"
+nomad_network_interface: "{{ stack_eth }}"
 nomad_retry_join: yes
 nomad_user: root
 nomad_node_role: both
-nomad_vault_enabled: true
+nomad_vault_enabled: false
 nomad_vault_allow_unauthenticated: true #FIXME
-nomad_vault_address: "{{ vault_address }}"
+nomad_vault_address: "{{ vault_domain }}"
 nomad_bind_address: "0.0.0.0"
 nomad_advertise_address: "{{ stack_ip }}"
 nomad_use_consul: true
@@ -122,9 +111,11 @@ nomad_ports_serf: 4648
 #============
 vault_version: 1.4.2
 vault_datacenter: "{{ datacenter }}"
-vault_address: "{{ hostvars['vault_instances'] }}"
+vault_domain: "{{ hostvars[groups['vault_instances'][0]]['ansible_host'] }}"
 vault_ui: yes
 vault_cluster_disable: yes
+vault_consul: "{{ consul_leader_addr }}:8500"
+vault_service_registration_consul_address: "{{ consul_leader_addr }}:8500"
 
 #============
 # arillso.logrotate

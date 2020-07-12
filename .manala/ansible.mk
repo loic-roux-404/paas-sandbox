@@ -11,12 +11,17 @@ ANSIBLE_VARS:=$(shell echo -n $(call config,vagrant.ansible.vars) |\sed -e 's/:[
 OPTIONS:=$(foreach var, $(ANSIBLE_VARS), -e $(subst ",,$(var)))
 # Environment variables of ansible
 ANSIBLE_STDOUT_CALLBACK:=default
+ANSIBLE_FORCE_COLOR:=true
 # Default Inventory
 INVENTORY?=$(call config,ansible.inventory)
+DEV_INVENTORY:=$(call config,ansible.inventory)/dev_hosts
 HOST:=
+# Debug command list
+INVS_DEBUG:=graph list
 
 # Build command
 playbook_exe= ANSIBLE_STDOUT_CALLBACK=$(ANSIBLE_STDOUT_CALLBACK) \
+	ANSIBLE_FORCE_COLOR=$(ANSIBLE_FORCE_COLOR) \
 	ansible-playbook $(OPTIONS) \
 	$(if $(INVENTORY),\
 		-i $(INVENTORY)$(if $(HOST),$(HOST),)\
@@ -35,6 +40,8 @@ help:
 	@echo "Ip: $(IP)"
 	@echo "Domain: $(DOMAIN)"
 	@echo "default inventory: $(INVENTORY)"
+	@echo "[====== DEBUG COMMANDS ========]"
+	@echo $(addsuffix .invs, $(INVS_DEBUG))
 	@echo "[==============================]"
 
 .DEFAULT_GOAL := help
@@ -63,11 +70,10 @@ install:
 # =============================
 debug-deco:
 	$(eval ANSIBLE_STDOUT_CALLBACK:=yaml)
-	$(eval OPTIONS+= \
-		-e ansible_host=$(DOMAIN) \
-		-e ansible_user=vagrant \
-		-e ansible_port=22 \
-	)
+	$(eval INVENTORY:=$(DEV_INVENTORY))
 
 %.debug: debug-deco
 	$(call playbook_exe)
+
+%.invs:
+	ansible-inventory -i $(INVENTORY) --$* $(ARG)

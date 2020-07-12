@@ -2,6 +2,7 @@
 - hosts: docker_instances
   gather_facts: true
   become: yes
+  become_user: root
   roles:
     - { role: role-docker, tags: [stack] }
     - { role: role-nomad, tags: [stack] }
@@ -10,8 +11,6 @@
 - hosts: consul_instances
   become: true
   become_user: root
-  pre_tasks:
-    - debug: msg="{{ consul_iface }}"
   roles:
     - { role: role-dns, tags: [discovery] }
     - { role: role-consul, tags: [discovery] }

@@ -5,11 +5,11 @@
 FROM debian:stable
 MAINTAINER Loïc Roux <loic.roux.404@gmail.com>
 
-ARG PUB='' PORT=8200
+ARG PUB=''
 
-ENV VAULT_ADDR=http://0.0.0.0:8200 PUB=${PUB}
+ENV PUB=${PUB}
 
-EXPOSE 8200 22
+EXPOSE 22 8200
 
 RUN if [ "$PUB" = '' ]; then echo "\033[0;31mMissing env var PUB" && exit 1 ; fi; \
     apt-get update -y && apt-get upgrade -y && apt-get install -y \

@@ -1,24 +1,66 @@
-#==================
-# role-security
-#==================
+# ===========
+# role-users
+# https://github.com/weareinteractive/ansible-users.git
+#=========================
+# create user from github with correct auth key
+users:
+  - username: "{{ user1.username }}"
+    password: "{{ user1.password }}"
+    group: "{{ user1.username }}"
+    groups: ["sudo"]
+    uid: 1667
+    append: yes
+    home_mode: "0750"
+    home_create: yes
+    home: "/home/{{ user1.username }}"
+    authorized_keys:
+      - "https://github.com/{{ user1.username }}.keys"
+    ssh_key_generate: yes
+    github_user_token: "{{ user1.github_token }}"
+    update_password: always
+  - username: "superman"
+    password: "{{ user2.password }}"
+    uid: 1101
+    home_create: no
+    groups: ["sudo"]
 
-security_ssh_port: "{{ my_ssh_port }}"
+users_home_files:
+  - "files/.inputrc"
+  - "files/.vimrc"
+
+users_home: /home
+users_home_create: yes
+users_shell: /bin/zsh
+users_ssh_key_type: rsa
+users_ssh_key_bits: 2048
+users_authorized_keys_exclusive: yes
+
+users_remove:
+ - irc
+ - list
+ - news
+ - gnats
+
+#============
+# role-security
+#============
+security_ssh_port: 22
 security_ssh_password_authentication: "yes"
-security_ssh_permit_root_login: "yes"
+security_ssh_permit_root_login: "no"
 security_ssh_usedns: "no"
 security_ssh_permit_empty_password: "no"
-security_ssh_challenge_response_auth: "no"
+security_ssh_challenge_response_auth: "yes"
 security_ssh_gss_api_authentication: "no"
 security_ssh_x11_forwarding: "yes"
 
 security_ssh_restart_handler_state: restarted
 
-security_sudoers_passwordless: ["{{ user1.username }}"]
+security_sudoers_passwordless: []
 security_sudoers_passworded: ["{{ user1.username }}", "superman"]
 
 # module to ignore from apt auto upgrade
 security_autoupdate_blacklist: []
-security_autoupdate_mail_to: ""
+security_autoupdate_mail_to: "loic.roux.404@gmail.com"
 security_autoupdate_mail_on_error: true
 # module with IP black list
 security_fail2ban_enabled: true
@@ -27,24 +69,29 @@ security_fail2ban_enabled: true
 # role-firewall
 #==================
 firewall_allowed_tcp_ports:
-  - "{{ my_ssh_port }}"
+  - "22"
   - "5342"              # pgsql
   - "3306"              # mysql / mariadb
   - "25"                # smtp
   - "587"               # mails
-  - "110"               # pop3 incoming
-  - "995"               # pop3s incoming
+#- "110"               # pop3 incoming
+# - "995"               # pop3s incoming
   - "80"                # webserver
   - "443"               # ssl
-  - "873"               # rsync port
+# - "873"               # rsync port
   - "4646"              # nomad http
   - "4647"              # nomad rpc
   - "4648"              # nomad serf
+  - "8300"              # consul RPC server
+  - "8301"              # consul Serf LAN port
+  - "8500"              # consul (api / ui)
+  - "8501"              # consul https
+  - "8302"              # consul Serf WAN port
+  - "8600"              # consul DNS server
+# Apps
+  - "8000"
 
 firewall_allowed_udp_ports: []
-
-#firewall_forwarded_tcp_ports:
-  #- { src: "22", dest: "2222" }
 
 firewall_forwarded_udp_ports: []
 
@@ -57,23 +104,15 @@ firewall_additional_rules:
   - "iptables -A OUTPUT -o lo -j ACCEPT"
   - "iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT"
   - "iptables -A OUTPUT -m conntrack --ctstate ESTABLISHED -j ACCEPT"
-# databases
-  #- "iptables -A INPUT -m state --state NEW,ESTABLISHED,RELATED -p tcp \
-  #   --dport 3306 -j DROP"
-  # - "iptables -A INPUT -m state --state NEW,ESTABLISHED,RELATED -p tcp \
-  #   --dport 5342 -j DROP"
-  # - "iptables -A INPUT -p tcp --dport 3306 -s {{ allowed_ip_1 }} -j ACCEPT"
-  # - "iptables -A INPUT -p tcp --dport 3306 -s {{ allowed_ip_2 }} -j ACCEPT"
-  # - "iptables -A INPUT -p tcp --dport 5342 -s {{ allowed_ip_1 }} -j ACCEPT"
-  # - "iptables -A INPUT -p tcp --dport 5342 -s {{ allowed_ip_2 }} -j ACCEPT"# TODO use webserver ip
 # ssh
-  - "iptables -A INPUT -p tcp -s {{ allowed_ip_1 }} --dport {{ my_ssh_port }} \
+  - "iptables -A INPUT -p tcp -s {{ allowed_ip_1 }} --dport 22 \
     -m conntrack --ctstate NEW,ESTABLISHED,RELATED -j ACCEPT"
   - "iptables -A INPUT -m state --state NEW,ESTABLISHED,RELATED -p tcp \
-    --dport {{ my_ssh_port }} -j DROP"
-  - "iptables -A INPUT -p tcp -s {{ allowed_ip_2 }} --dport {{ my_ssh_port }} \
+    --dport 22 -j DROP"
+  - "iptables -A INPUT -p tcp -s {{ allowed_ip_2 }} --dport 22 \
    -m conntrack --ctstate NEW,ESTABLISHED,RELATED -j ACCEPT"
-  - "iptables -A INPUT -p tcp -s 140.82.118.3 --dport {{ my_ssh_port }} \
+# Github
+  - "iptables -A INPUT -p tcp -s 140.82.118.3 --dport 22 \
    -m conntrack --ctstate NEW,ESTABLISHED,RELATED -j ACCEPT"
 # Drop rules
   - "iptables -A INPUT -m conntrack --ctstate INVALID -j DROP"

@@ -1,8 +1,8 @@
-server01.consul ansible_host=loicroux.com ansible_user=loic-roux-404
-server02.consul ansible_host=acl-vault.herokuapp.com ansible_user=root ansible_port=22222
+server01.consul ansible_host=loicroux.test ansible_user=vagrant
+server02.consul ansible_host=localhost ansible_port=22222
 
 [env]
-server01.consul ansible_user=root
+server01.consul ansible_user=vagrant
 
 [security]
 server01.consul

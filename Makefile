@@ -11,29 +11,16 @@ help_more:
 # =============================
 
 %.debug.vps: debug-deco
-	$(eval INVENTORY?=./inventories/vps)
+	$(eval OPTIONS+= -e ansible_user=vagrant)
 	$(call playbook_exe)
 
 %.debug.local: debug-deco
 	$(eval INVENTORY:=./inventories/local)
 	$(call playbook_exe)
 
-%.vault-test: debug-deco
-	$(eval INVENTORY?=./inventories/vps)
-	$(eval OPTIONS+=\
-	-e vault_address=localhost\
-	)
+%.debug-vault: debug-deco
 	$(eval ARG:='--tag=role-vault')
 	$(call playbook_exe)
-
-# -e vault_address=localhost
-# -e vault_port=8200
-# -e vault_cluster_address=localhost:8200
-# -e vault_cluster_addr=http://localhost:8200
-# -e vault_api_addr=http://localhost:8200
-
-first-run:
-	$(MAKE) site ANSIBLE_VARS=ansible_user=root
 
 docker-vault-test:
 	export PUB=$$(cat ~/.ssh/id_rsa.pub) \
@@ -42,8 +29,9 @@ docker-vault-test:
  		--build-arg PUB \
  		-t=$(VAULT_IMAGE_TAG):latest\
 		docker/vault \
-	) && docker run -p 8200:8200 -p 22222:22 \
+	) && docker run -p 22222:22 -p 8200:8200 \
 		--rm \
+		--cap-add IPC_LOCK \
 		-it \
 		-d $(VAULT_IMAGE_TAG) \
 		&& echo "image_$${ID}"
