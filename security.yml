@@ -1,7 +1,14 @@
 ---
-- hosts: stack
+- hosts: security
   gather_facts: true
   become: yes
+  pre_tasks:
+    - package:
+        name:
+          - sudo
+          - zsh
+        state: latest
   roles:
+    - role: role-users
     - role: role-security
     - role: role-firewall
