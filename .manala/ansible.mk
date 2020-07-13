@@ -1,9 +1,10 @@
 # Base makefile for ansible / vagrant projects
-SHELL = /bin/bash
+SHELL=/bin/bash
 # read setting from config
-config = $(shell yq r .manala.yaml $(1))
+config=$(shell yq merge -x .manala.yaml config.yaml | yq r - $(1))
 # All variables necessary to run and debug ansible playbooks
 PLAYBOOKS=$(basename $(wildcard *.yml))
+DEFAULT_PLAYBOOK=$(call config,ansible.sub_playbook)
 IP?=$(call config,vagrant.network.ip)
 DOMAIN?=$(call config,vagrant.domain)
 # ansible vars
@@ -16,6 +17,8 @@ ANSIBLE_FORCE_COLOR:=true
 INVENTORY?=$(call config,ansible.inventory)
 DEV_INVENTORY:=$(call config,ansible.inventory)/dev_hosts
 HOST:=
+ROLES:=$(notdir $(basename $(wildcard roles/role-*) ))
+TAGS+=$(ROLES)
 # Debug command list
 INVS_DEBUG:=graph list
 
@@ -23,10 +26,10 @@ INVS_DEBUG:=graph list
 playbook_exe= ANSIBLE_STDOUT_CALLBACK=$(ANSIBLE_STDOUT_CALLBACK) \
 	ANSIBLE_FORCE_COLOR=$(ANSIBLE_FORCE_COLOR) \
 	ansible-playbook $(OPTIONS) \
-	$(if $(INVENTORY),\
-		-i $(INVENTORY)$(if $(HOST),$(HOST),)\
+	$(if $(INVENTORY), \
+		-i $(INVENTORY)$(if $(HOST),$(HOST),) \
 	,) \
-	$*.yml $(ARG)
+	$(if $(1),$(1).yml,$*.yml) $(ARG)
 # Prompt exe
 prompt?=echo -ne "\x1b[33m $(1) Sure ? [y/N]\x1b[m" && read ans && [ $${ans:-N} = y ]
 
@@ -34,14 +37,16 @@ help:
 	@echo "[======== Ansible Help ========]"
 	@echo "Usage: make <playbook> (ARG=<your-arg>)"
 	@echo "Available PLAYBOOKS: $(PLAYBOOKS)"
+	@echo "run role / tag : $(addsuffix .tag, $(TAGS)))"
 	@$(MAKE) help_more || echo -n ''
 	@echo "[========== OPTIONS ===========]"
-	@echo "$(ANSIBLE_VARS)"
+	@echo "Extra vars : $(ANSIBLE_VARS)"
 	@echo "Ip: $(IP)"
 	@echo "Domain: $(DOMAIN)"
 	@echo "default inventory: $(INVENTORY)"
 	@echo "[====== DEBUG COMMANDS ========]"
-	@echo $(addsuffix .invs, $(INVS_DEBUG))
+	@echo "Debug playbook (vagrant) : $(addsuffix .debug, $(PLAYBOOKS))"
+	@echo "Debug inventory vars : $(addsuffix .invs, $(INVS_DEBUG))"
 	@echo "[==============================]"
 
 .DEFAULT_GOAL := help
@@ -64,6 +69,13 @@ install:
 # avoid prompt (Use this in automated processes)
 %.run-f:
 	@$(call playbook_exe)
+
+# Run specific tag / role name
+# Example : make basics.tag ( for role-basics)
+# Role are automaticly tagged with ansible callback plugin auto_tag.py
+%.tag: debug-deco
+	$(eval ARG:='--tag=role-$*')
+	$(call playbook_exe, $(DEFAULT_PLAYBOOK))
 
 # =============================
 # Debugging zone on next lines

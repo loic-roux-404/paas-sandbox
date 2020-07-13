@@ -1,9 +1,9 @@
 ---
 user1:
   username: vagrant
-#==========================
+# ==========================
 # Base variables
-#==========================
+# ==========================
 # role-users
 # https://github.com/weareinteractive/ansible-users.git
 #=========================

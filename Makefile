@@ -1,15 +1,20 @@
 include .manala/ansible.mk
+include .manala/docker.mk
 
-VAULT_IMAGE_TAG:=404-infra/vault
-VAULT_APP_NAME:=acl-vault
+DOCKER_IMG_PREFIX:=404-infra
+DOCKER_IMAGES:=$(notdir $(basename $(wildcard docker/*.Dockerfile)))
+HEROKU_APP_NAME:=$(DOCKER_IMG_PREFIX)
+vault.sshPort:=22222
+consul.sshPort:=2222
+nomad.sshPort:=2022
 
 help_more:
-	@echo "Fake deploy on vps: $(addsuffix .debug.vps, $(PLAYBOOKS))"
+	@echo "Fake deploy on vps : $(addsuffix .debug.vps, $(PLAYBOOKS))"
+	@echo "Docker service : $(addsuffix .docker-run, $(DOCKER_IMAGES)))"
 
 # =============================
 # Additionals playbook-vps commands
 # =============================
-
 %.debug.vps: debug-deco
 	$(eval OPTIONS+= -e ansible_user=vagrant)
 	$(call playbook_exe)
@@ -18,24 +23,23 @@ help_more:
 	$(eval INVENTORY:=./inventories/local)
 	$(call playbook_exe)
 
-%.debug-vault: debug-deco
-	$(eval ARG:='--tag=role-vault')
-	$(call playbook_exe)
+# Usage : make stack.debug-(vault|consul)
 
-docker-vault-test:
-	export PUB=$$(cat ~/.ssh/id_rsa.pub) \
-	ID=$$( \
-		docker -l debug build \
- 		--build-arg PUB \
- 		-t=$(VAULT_IMAGE_TAG):latest\
-		docker/vault \
-	) && docker run -p 22222:22 -p 8200:8200 \
-		--rm \
-		--cap-add IPC_LOCK \
-		-it \
-		-d $(VAULT_IMAGE_TAG) \
-		&& echo "image_$${ID}"
+# ======================
+# Docker services
+# ======================
+# put ssh key in these containers
+export PUB=$(shell cat ~/.ssh/id_rsa.pub)
 
-deploy-vault:
-	cd docker/vault
-	heroku container:push --recursive -a $(VAULT_APP_NAME)
+# Test container deploys
+%.docker-run:
+	$(eval export USER=$*)
+	$(eval IMAGE_TAG:=$(DOCKER_IMG_PREFIX)/$*)
+	$(eval PORTS:=-p $($*.sshPort):22 -p 8300-8600:8300-8600)
+	$(eval DOCKERFILE:=docker/$*.Dockerfile)
+	$(call docker_run)
+
+# Deploy container as an heroku dyno
+deploy:
+	cd docker
+	heroku container:push --recursive -a $(HEROKU_APP_NAME) -e PASS=$(shell utils/vault_pass.sh)

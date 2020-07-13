@@ -1,5 +1,0 @@
-build:
-  docker:
-    vault: Dockerfile
-  config:
-    PORT: 8200

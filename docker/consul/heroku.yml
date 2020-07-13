@@ -1,6 +1,0 @@
-build:
-  docker:
-    bootstrap: ../Dockerfile
-    server: ../Dockerfile
-  config:
-    PORT: 8500
