@@ -18,6 +18,7 @@ users:
     ssh_key_generate: yes
     github_user_token: "{{ user1.github_token }}"
     update_password: always
+
   - username: "superman"
     password: "{{ user2.password }}"
     uid: 1101

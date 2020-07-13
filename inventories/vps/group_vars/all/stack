@@ -52,22 +52,33 @@ docker__pip_docker_compose_state: "absent"
 #============
 keyboard_mac: true
 
-#=============
+# =============
 # role-dns
 # https://github.com/mrlesmithjr/ansible-dnsmasq/blob/master/defaults/main.yml
-#=============
+# =============
 dnsmasq_pri_domain_name: "{{ stack_domain }}"
 dnsmasq_config: True
 
-dnsmasq_bind_interfaces: ["{{ stack_eth }}"]
+# Consul reverse dns lookup
+other_dnsmasq_options:
+  - "rev-server=0.0.0.0/8,127.0.0.1#8600"
+  - "rev-server=10.0.0.0/8,127.0.0.1#8600"
+  - "rev-server=100.64.0.0/10,127.0.0.1#8600"
+  - "rev-server=127.0.0.1/8,127.0.0.1#8600"
+  - "rev-server=169.254.0.0/16,127.0.0.1#8600"
+  - "rev-server=172.16.0.0/12,127.0.0.1#8600"
+  - "rev-server=192.168.0.0/16,127.0.0.1#8600"
+  - "rev-server=224.0.0.0/4,127.0.0.1#8600"
+  - "rev-server=240.0.0.0/4,127.0.0.1#8600"
 
 # ============ #
 #  Hashistack  #
 # ============ #
-#============
+# ============
 # role-consul
 # http://github.com/ansible-community/ansible-consul/blob/master/defaults/main.yml
-#============
+# ============
+consul_domain: consul
 consul_iface: "{{ stack_eth }}"
 consul_datacenter: "{{ datacenter }}"
 consul_acl_datacenter: "{{ datacenter }}"
@@ -76,6 +87,18 @@ consul_client_address: "0.0.0.0"
 consul_dnsmasq_enable: yes
 consul_acl_master_token_display: yes
 consul_syslog_enable: false
+
+#============
+# role-vault
+# https://github.com/ansible-community/ansible-vault/blob/master/defaults/main.yml
+#============
+vault_version: 1.4.2
+vault_datacenter: "{{ datacenter }}"
+vault_domain: "{{ hostvars[groups['vault_instances'][0]]['ansible_host'] }}"
+vault_ui: yes
+vault_cluster_disable: yes
+vault_consul: "{{ consul_leader_addr }}:8500"
+vault_service_registration_consul_address: "{{ consul_leader_addr }}:8500"
 
 #============
 # role-nomad
@@ -104,18 +127,6 @@ nomad_syslog_enable: false
 nomad_ports_http: 4646
 nomad_ports_rpc: 4647
 nomad_ports_serf: 4648
-
-#============
-# role-vault
-# https://github.com/ansible-community/ansible-vault/blob/master/defaults/main.yml
-#============
-vault_version: 1.4.2
-vault_datacenter: "{{ datacenter }}"
-vault_domain: "{{ hostvars[groups['vault_instances'][0]]['ansible_host'] }}"
-vault_ui: yes
-vault_cluster_disable: yes
-vault_consul: "{{ consul_leader_addr }}:8500"
-vault_service_registration_consul_address: "{{ consul_leader_addr }}:8500"
 
 #============
 # arillso.logrotate

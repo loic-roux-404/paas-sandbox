@@ -1,0 +1,5 @@
+build:
+  docker:
+    vault: vault.Dockerfile
+    consul-server: consul.Dockerfile
+    nomad-both: nomad.Dockerfile
