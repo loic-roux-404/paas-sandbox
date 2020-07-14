@@ -3,7 +3,10 @@
   gather_facts: true
   become: yes
   become_user: root
+  vars:
+    ansible_sudo_pass: "{{ stack_nomad_pass|d('nomad') }}"
   roles:
+    - { role: role-dns, tags: [stack] }
     - { role: role-docker, tags: [stack] }
     - { role: role-nomad, tags: [stack] }
     - { role: role-logrotate, tags: [stack] }
@@ -11,13 +14,19 @@
 - hosts: consul_instances
   become: true
   become_user: root
+  vars:
+    ansible_sudo_pass: "{{ stack_consul_pass|d('consul') }}"
   roles:
     - { role: role-dns, tags: [discovery] }
     - { role: role-consul, tags: [discovery] }
+    - { role: role-logrotate, tags: [discovery] }
 
 - hosts: vault_instances
   gather_facts: true
   become: true
   become_user: root
+  vars:
+    ansible_sudo_pass: "{{ stack_vault_pass|d('vault') }}"
   roles:
-    - role: role-vault
+    - { role: role-vault, tags: [vault] }
+    - { role: role-logrotate, tags: [vault] }

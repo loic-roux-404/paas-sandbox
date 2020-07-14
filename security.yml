@@ -7,6 +7,7 @@
         name:
           - sudo
           - zsh
+          - sshpass
         state: latest
   roles:
     - role: role-users

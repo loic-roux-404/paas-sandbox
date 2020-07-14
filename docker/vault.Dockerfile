@@ -1,5 +1,5 @@
 # ==================
-# Docker container to host simple service
+# Docker container to host simple server hashistack instance
 # Use Ansible to update
 # ==================
 FROM debian:stable
@@ -30,7 +30,9 @@ RUN if [ "$PUB" = '' ]; then echo "\033[0;31mMissing env var PUB" && exit 1 ; fi
     && ssh-keygen -t rsa -b 4096 -f /etc/ssh/ssh_host_key \
     && mkdir -p /home/${USER}/.ssh/ \
     && echo -n ${PUB} >> /home/${USER}/.ssh/authorized_keys \
-    && chown -R ${USER}:${USER} /home/${USER}/.ssh/ && chmod 400 /home/${USER}/.ssh/
+    && chown -R ${USER}:${USER} /home/${USER}/.ssh/ \
+    && chmod 750 /home/${USER}/.ssh/ \
+    && chmod 400 /home/${USER}/.ssh/authorized_keys
 
 CMD ["/usr/sbin/sshd","-D"]
 

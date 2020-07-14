@@ -2,6 +2,7 @@ include .manala/ansible.mk
 include .manala/docker.mk
 
 DOCKER_IMG_PREFIX:=404-infra
+DOCKER_CONTEXT:=./docker
 DOCKER_IMAGES:=$(notdir $(basename $(wildcard docker/*.Dockerfile)))
 HEROKU_APP_NAME:=$(DOCKER_IMG_PREFIX)
 vault.sshPort:=22222
@@ -15,15 +16,16 @@ help_more:
 # =============================
 # Additionals playbook-vps commands
 # =============================
-%.debug.vps: debug-deco
-	$(eval OPTIONS+= -e ansible_user=vagrant)
-	$(call playbook_exe)
-
 %.debug.local: debug-deco
 	$(eval INVENTORY:=./inventories/local)
 	$(call playbook_exe)
 
-# Usage : make stack.debug-(vault|consul)
+# Debug stack playbook on containers
+# Usage : make (vault|nomad|consul).tag
+%.tag.stack:
+	$(eval OPTIONS+= -e ansible_user=$*)
+	$(eval OPTIONS+= -e ansible_password=$*)
+	$(MAKE) $*.tag
 
 # ======================
 # Docker services
@@ -41,5 +43,6 @@ export PUB=$(shell cat ~/.ssh/id_rsa.pub)
 
 # Deploy container as an heroku dyno
 deploy:
-	cd docker
-	heroku container:push --recursive -a $(HEROKU_APP_NAME) -e PASS=$(shell utils/vault_pass.sh)
+	$(eval export PASS=$(shell utils/vault_pass.sh))
+	cd docker \
+	&& heroku container:push --recursive -a $(HEROKU_APP_NAME)

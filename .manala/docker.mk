@@ -1,3 +1,4 @@
+DOCKER_CONTEXT:=.
 # ==============
 # Build and run container
 #
@@ -11,8 +12,9 @@ define docker_run
 	ID=$$( \
 		docker -l debug build \
  		--build-arg PUB \
- 		-t=$(IMAGE_TAG):latest \
-		$(DOCKERFILE) \
+ 		-t $(IMAGE_TAG):latest \
+		-f $(DOCKERFILE) \
+		$(DOCKER_CONTEXT) \
 	) && docker run $(PORTS)\
 		--rm \
 		--cap-add IPC_LOCK \
