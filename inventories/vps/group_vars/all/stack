@@ -63,13 +63,8 @@ dnsmasq_config: True
 other_dnsmasq_options:
   - "rev-server=0.0.0.0/8,127.0.0.1#8600"
   - "rev-server=10.0.0.0/8,127.0.0.1#8600"
-  - "rev-server=100.64.0.0/10,127.0.0.1#8600"
   - "rev-server=127.0.0.1/8,127.0.0.1#8600"
-  - "rev-server=169.254.0.0/16,127.0.0.1#8600"
-  - "rev-server=172.16.0.0/12,127.0.0.1#8600"
   - "rev-server=192.168.0.0/16,127.0.0.1#8600"
-  - "rev-server=224.0.0.0/4,127.0.0.1#8600"
-  - "rev-server=240.0.0.0/4,127.0.0.1#8600"
 
 # ============ #
 #  Hashistack  #
@@ -142,6 +137,7 @@ logrotate_applications:
           - /var/log/dpkg.log
           - /var/log/nomad/*.log
           - /var/log/consul/*.log
+          - /var/log/vault/*.log
         options:
           - daily
           - weekly

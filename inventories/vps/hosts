@@ -1,7 +1,7 @@
 server01.consul ansible_host=loicroux.com ansible_user=loic-roux-404
 vault.consul ansible_host=acl-vault-404.herokuapp.com ansible_user=vault
 consul-server.consul ansible_host=consul-server-404.herokuapp.com ansible_user=consul
-nomad-both.consul  ansible_host=nomad-both-404.herokuapp.com ansible_user=nomad
+nomad-server.consul  ansible_host=nomad-both-404.herokuapp.com ansible_user=nomad
 
 [env]
 server01.consul ansible_user=root
@@ -15,7 +15,7 @@ consul_instances
 vault_instances
 
 [docker_instances]
-nomad-both.consul nomad_node_role=server
+nomad-server.consul nomad_node_role=server
 server01.consul nomad_node_role=client
 
 [consul_instances]
