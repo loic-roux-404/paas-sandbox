@@ -4,7 +4,7 @@ SHELL=/bin/bash
 config=$(shell yq merge -x .manala.yaml config.yaml | yq r - $(1))
 # All variables necessary to run and debug ansible playbooks
 PLAYBOOKS=$(basename $(wildcard *.yml))
-DEFAULT_PLAYBOOK=$(call config,ansible.sub_playbook)
+DEFAULT_PLAYBOOK=$(basename $(call config,vagrant.ansible.sub_playbook))
 IP?=$(call config,vagrant.network.ip)
 DOMAIN?=$(call config,vagrant.domain)
 # ansible vars

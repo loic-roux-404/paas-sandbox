@@ -105,13 +105,12 @@ vault_service_registration_consul_address: "{{ consul_leader_addr }}:8500"
 # https://github.com/ansible-community/ansible-nomad/blob/master/defaults/main.yml
 #============
 nomad_version: "0.11.3"
-nomad_group_name: "stack"
+nomad_group_name: "docker_instances"
 nomad_datacenter: "{{ datacenter }}"
 nomad_iface: "{{ stack_ip }}"
 nomad_network_interface: "{{ stack_eth }}"
 nomad_retry_join: yes
 nomad_user: root
-nomad_node_role: both
 nomad_vault_enabled: false
 nomad_vault_allow_unauthenticated: true #FIXME
 nomad_vault_address: "{{ vault_domain }}"
