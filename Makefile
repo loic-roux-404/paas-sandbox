@@ -5,9 +5,15 @@ DOCKER_IMG_PREFIX:=404-infra
 DOCKER_CONTEXT:=./docker
 DOCKER_IMAGES:=$(notdir $(basename $(wildcard docker/*.Dockerfile)))
 HEROKU_APP_NAME:=$(DOCKER_IMG_PREFIX)
-vault.sshPort:=22222
-consul.sshPort:=2222
-nomad.sshPort:=2022
+DOCKER_NETWORK:=stack
+# Container exposed ports
+vault.ports:= -p 22222:22 -p 8200:8200
+consul.ports:= -p 222:22 -p 8600:8600 -p 8300-8302:8300-8302 -p 8500:8500
+nomad.ports:= -p 2022:22 -p 4646:4646 -p 4647:4647 -p 4648:4648 -p 4648:4648
+# container ip on subnet
+consul.ip=2
+vault.ip=3
+nomad.ip=4
 
 help_more:
 	@echo "Fake deploy on vps : $(addsuffix .debug.vps, $(PLAYBOOKS))"
@@ -37,7 +43,8 @@ export PUB=$(shell cat ~/.ssh/id_rsa.pub)
 %.docker-run:
 	$(eval export USER=$*)
 	$(eval IMAGE_TAG:=$(DOCKER_IMG_PREFIX)/$*)
-	$(eval PORTS:=-p $($*.sshPort):22 -p 8300-8600:8300-8600)
+	$(eval PORTS:=$($*.ports))
+	$(eval IP:=$($*.ip))
 	$(eval DOCKERFILE:=docker/$*.Dockerfile)
 	$(call docker_run)
 
