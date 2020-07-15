@@ -1,6 +1,8 @@
 DOCKER_CONTEXT:=.
-DOCKER_SUBNET_PREFIX:=172.19.0
-DOCKER_SUBNET:=$(DOCKER_SUBNET_PREFIX).0/16
+DOCKER_NETWORK:=bridge # host / none / container / your-network
+# Docker subnet prefix
+DSP:=172.19.0
+DOCKER_SUBNET:=$(DSP).0/16
 # ==============
 # Build and run container
 #
@@ -24,7 +26,6 @@ define docker_run
 		-it \
 		--privileged \
 		--network=$(DOCKER_NETWORK) \
-		--ip $(DOCKER_SUBNET_PREFIX).$(IP) \
 		--name $(subst /,-,$(IMAGE_TAG))\
 		-d $(IMAGE_TAG) \
 		&& echo "$${ID}"

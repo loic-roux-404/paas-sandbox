@@ -48,11 +48,21 @@ Later it's can be more logical to split server in two nodes with a master custer
 > Check requirements
 
 - role-docker
-- role-nomad
-<!-- - role-traefik → https://github.com/kibatic/ansible-traefik -->
-- role-vault
-- role-consul
+- role-nomad &rarr; https://github.com/ansible-community/ansible-nomad
+- role-traefik &rarr; https://github.com/kibatic/ansible-traefik
+- role-vault &rarr; https://github.com/ansible-community/ansible-vault
+- role-consul &rarr; https://github.com/ansible-community/ansible-consul
 - role-logrotate
+
+**How hashicorp tools are ordered**
+
+> Every hashitool is a dependancy for a next one
+
+1. Consul : First Always build leader (bootstrap) consul container, it connect everything together
+1. Vault : Allow to enable ACL in nomad
+1. Nomad : Server to manage  client deployers
+
+To build use `make (consul|vault|nomad).docker-run`
 
 ### Vault :
 
@@ -88,3 +98,7 @@ Author Information
 ------------------
 
 [Loic Roux](https://github.com/loic-roux-404)
+
+Credits
+-------
+[marcolancini](https://www.marcolancini.it/2019/blog-offensive-infrastructure-hashistack/)
