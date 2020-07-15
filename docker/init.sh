@@ -21,3 +21,6 @@ useradd -s /bin/bash -m ${USER} && echo "${USER}:${PASS}" | chpasswd && adduser 
     && chown -R ${USER}:${USER} /home/${USER}/.ssh/ \
     && chmod 750 /home/${USER}/.ssh/ \
     && chmod 400 /home/${USER}/.ssh/authorized_keys
+
+
+#&& pip install --upgrade pycrypto cryptography ansible\
