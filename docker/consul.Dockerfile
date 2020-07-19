@@ -9,9 +9,13 @@ ARG PUB
 
 ENV PUB=${PUB} USER=consul PASS=consul
 
-COPY init.sh /root/init.sh
+COPY scripts /root/scripts
 
-RUN chmod +x /root/init.sh && /root/init.sh && rm -rf /root/init.sh
+RUN chmod +x /root/scripts/* \
+    && /root/scripts/user.sh \
+    && /root/scripts/ssh_server.sh \
+    && /root/scripts/authorized_key.sh \
+    && rm -rf /root/scripts
 
 CMD ["/usr/sbin/sshd","-D"]
 
