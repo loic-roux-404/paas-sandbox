@@ -64,6 +64,9 @@ Later it's can be more logical to split server in two nodes with a master custer
 
 To build use `make (consul|vault|nomad).docker-run`
 
+To test these tools we need to use an ansible worker, create it with `make aw`
+Next you can alias usage with for example `alias wk='docker exec ansible-worker'`
+
 ### Vault :
 
 Vault instance is hosted on heroku container

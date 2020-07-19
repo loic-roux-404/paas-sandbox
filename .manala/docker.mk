@@ -1,8 +1,9 @@
 DOCKER_CONTEXT:=.
 DOCKER_NETWORK:=bridge # host / none / container / your-network
 # Docker subnet prefix
-DSP:=172.19.0
+DSP:=172.18.0
 DOCKER_SUBNET:=$(DSP).0/16
+QUIET:=2>/dev/null || true
 # ==============
 # Build and run container
 #
@@ -13,20 +14,25 @@ DOCKER_SUBNET:=$(DSP).0/16
 # DOCKERFILE bar/foo.Dockerfile
 # ==============
 define docker_run
-	docker network create $(DOCKER_NETWORK) --subnet=$(DOCKER_SUBNET) || true; \
+	$(eval NAME:=$(subst /,-,$(IMAGE_TAG)))
+	@docker network create $(DOCKER_NETWORK) --subnet=$(DOCKER_SUBNET) $(QUIET)
+	@docker stop $(NAME) $(QUIET)
 	ID=$$( \
 		docker -l debug build \
- 		--build-arg PUB \
+		$(if $(DOCKER_ARGS) --build-arg $(DOCKER_ARGS),) \
  		-t $(IMAGE_TAG):latest \
 		-f $(DOCKERFILE) \
 		$(DOCKER_CONTEXT) \
-	) && docker run $(PORTS)\
+	) && docker run $(PORTS) \
 		--rm \
 		--cap-add IPC_LOCK \
 		-it \
 		--privileged \
+		$(DOCKER_ENVS) \
+		$(VOLUMES) \
+		$(if $(NET),--ip=$(DSP).$(NET) ,) \
 		--network=$(DOCKER_NETWORK) \
-		--name $(subst /,-,$(IMAGE_TAG))\
+		--name $(NAME) \
 		-d $(IMAGE_TAG) \
 		&& echo "$${ID}"
 endef
