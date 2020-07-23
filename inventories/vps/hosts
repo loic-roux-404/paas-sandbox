@@ -1,5 +1,5 @@
-server01.consul ansible_host=loicroux.com ansible_user=loic-roux-404
-vault.consul ansible_host=acl-vault-404.herokuapp.com ansible_user=vault
+server01.consul      ansible_host=loicroux.com ansible_user=loic-roux-404
+vault.consul         ansible_host=acl-vault-404.herokuapp.com ansible_user=vault
 consul-server.consul ansible_host=consul-server-404.herokuapp.com ansible_user=consul
 nomad-server.consul  ansible_host=nomad-both-404.herokuapp.com ansible_user=nomad
 

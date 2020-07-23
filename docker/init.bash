@@ -1,17 +1,17 @@
 #!/bin/bash
 # ============
 # init container script
-# Usage ./init.bash [ssh-server (bool)]
+# Usage PRIV=(id_rsa) PUB=(authorized_key) ./init.bash [ssh-server (bool)]
 # ============
 
-#[Only debian] : Create user
+# [Only debian] : Create user
 if [ ! -z "$USER" ]
 then
     useradd -s /bin/bash -m ${USER} \
     && echo "${USER}:${PASS}" | chpasswd && adduser ${USER} sudo
 fi
 
-#[Only debian] : Install ssh-server
+# [Only debian] : Install ssh-server
 if [ "$1" = 'true' ]
 then
     apt-get update -y && apt-get upgrade -y && apt-get install -y \
@@ -50,6 +50,7 @@ gen_file() {
 }
 
 SSH_PATH=/root/.ssh
+
 if [ -z "$USER" ]; then USER=root; fi
 
 if [ ! "$USER" = 'root' ]; then SSH_PATH=/home/${USER}/.ssh; fi;

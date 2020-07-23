@@ -5,17 +5,14 @@
 FROM debian:stable
 MAINTAINER Loïc Roux <loic.roux.404@gmail.com>
 
-ARG PUB
+ARG PUB PRIV
 
-ENV PUB=${PUB} USER=vault PASS=vault
+ENV PUB=${PUB} PRIV=${PRIV} USER=vault PASS=vault
 
-COPY scripts /root/scripts
-
-RUN chmod +x /root/scripts/* \
-    && /root/scripts/user.sh \
-    && /root/scripts/ssh_server.sh \
-    && /root/scripts/authorized_key.sh \
-    && rm -rf /root/scripts
+COPY init.bash /root/
+RUN chmod +x /root/init.bash \
+    && PRIV=${PRIV} PUB=${PUB} /root/init.bash true \
+    && rm -rf /root/init.bash
 
 CMD ["/usr/sbin/sshd","-D"]
 

@@ -16,8 +16,7 @@ vault.ip=3
 nomad.ip=4
 
 help_more:
-	@echo "Fake deploy on vps : $(addsuffix .debug.vps, $(PLAYBOOKS))"
-	@echo "Docker service : $(addsuffix .docker-run, $(DOCKER_IMAGES)))"
+	@echo "Docker service : $(addsuffix .docker, $(DOCKER_IMAGES)))"
 
 # =============================
 # Additionals playbook-vps commands
@@ -52,13 +51,15 @@ export PRIV=$(shell cat ~/.ssh/id_rsa)
 	$(call docker_run)
 
 # docker ansible worker
-aw-build:
+aw.docker:
 	$(eval IMAGE_TAG:=aw)
 	$(eval DOCKER_ARGS:=-e PRIV)
 	$(eval DOCKER_ENVS:=-e PRIV=)
 	$(eval VOLUMES:=-v $(PWD):/playbook)
 	$(eval DOCKERFILE:=docker/aw.Dockerfile)
 	$(call docker_run)
+
+all_docker: aw.docker consul.docker vault.docker nomad.docker
 
 # Deploy container as an heroku dyno
 deploy:

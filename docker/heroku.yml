@@ -1,5 +1,10 @@
+# ============
+# Production on heroku
+# Deploy all hashistack leader servers / instances
+# ============
 build:
   docker:
     vault: vault.Dockerfile
-    consul-server: consul.Dockerfile
-    nomad-server: nomad.Dockerfile
+    consul: consul.Dockerfile
+    nomad: nomad.Dockerfile
+    aw: nomad.Dockerfile # Worker to execute playbook on instances
