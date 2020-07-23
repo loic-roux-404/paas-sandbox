@@ -4,7 +4,7 @@ consul-server.consul ansible_host=404-infra-consul.stack ansible_user=consul ans
 nomad-server.consul  ansible_host=404-infra-nomad.stack ansible_user=nomad ansible_port=2022
 
 [env]
-server01.consul ansible_user=vagrant
+server01.consul      ansible_user=vagrant
 
 [security]
 server01.consul
@@ -15,8 +15,8 @@ consul_instances
 vault_instances
 
 [docker_instances]
-nomad-server.consul nomad_node_role=server
-server01.consul     nomad_node_role=client
+nomad-server.consul  nomad_node_role=server
+server01.consul      nomad_node_role=client
 
 [consul_instances]
 consul-server.consul consul_node_role=bootstrap

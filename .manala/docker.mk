@@ -10,8 +10,11 @@ QUIET:=2>/dev/null || true
 # Usage : $(call docker_run)
 # eval following env vars => $(eval KEY=VALUE)
 # IMAGE_TAG = bar/foo
+# === Optional ===
 # PORTS = -p 22222:22
 # DOCKERFILE bar/foo.Dockerfile
+# DOCKER_ENVS = -e KEY
+# VOLUMES = -v $(pwd)/:/var/www
 # ==============
 define docker_run
 	$(eval NAME:=$(subst /,-,$(IMAGE_TAG)))

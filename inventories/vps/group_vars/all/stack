@@ -89,6 +89,7 @@ consul_syslog_enable: false
 #============
 vault_version: 1.4.2
 vault_datacenter: "{{ datacenter }}"
+# TODO : replace by consul dns name (is it possible by using multiple containers ?)
 vault_domain: "{{ hostvars[groups['vault_instances'][0]]['ansible_host'] }}"
 vault_ui: yes
 vault_cluster_disable: yes
@@ -123,7 +124,7 @@ nomad_ports_rpc: 4647
 nomad_ports_serf: 4648
 
 #============
-# arillso.logrotate
+# role-logrotate
 # https://github.com/arillso/ansible.logrotate/blob/master/defaults/main.yml
 #============
 logrotate_use_hourly_rotation: true
