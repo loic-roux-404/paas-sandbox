@@ -44,9 +44,7 @@ users_remove:
 
 # System trick
 ssh_acl_ip:
-  - ippattern: "{{ user1.ip1|d('*') }}"
-    user: "{{ user1.username }}"
-  - ippattern: "{{ user1.ip2|d('*') }}"
+  - ippattern: "*"
     user: "{{ user1.username }}"
   - ippattern: "{{ user1.ip1|d('*') }}"
     user: "root"
