@@ -98,6 +98,9 @@ firewall_allowed_tcp_ports:
   - "8600"              # consul DNS server
 # Apps
   - "8000"
+  - "8080"
+  - "81"
+  - "80"
 
 firewall_allowed_udp_ports: []
 
@@ -122,8 +125,6 @@ firewall_additional_rules:
 # Github
   - "iptables -A INPUT -p tcp -s 140.82.118.3 --dport 22 \
    -m conntrack --ctstate NEW,ESTABLISHED,RELATED -j ACCEPT"
-# Drop rules
-  - "iptables -A INPUT -m conntrack --ctstate INVALID -j DROP"
 # Docker rules
   - iptables -N DOCKER
   - iptables -N DOCKER-ISOLATION-STAGE-1
