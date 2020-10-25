@@ -1,15 +1,5 @@
 Playbook-vps
 ============
-#### ENV :
-
-Simple playbook to create shell / users / ssh keys from github
-
-#### Security:
-Secure the infrastructure client / server instances
-
-#### Stack :
-
---> Objective is to build a simple configuration on top of playbook-vps sub playbooks to provide container orchestration and envs (staging / prod) for apps
 
 TO DO
 ------------
@@ -34,16 +24,32 @@ Roles used by sub-playbook:
 
 ### Env :
 
+Simple playbook to create shell / users / ssh keys from github
+
 - **role-basics** with deps : ansible-role-zsh & weareinteractive.users
 
 ### Security :
+
+Secure the infrastructure client / server instances
 
 - role-firewall (jeff g.)
 - role-security (jeff g.)
 
 ### Stack :
 
+--> Objective is to build a simple configuration on top of playbook-vps sub playbooks to provide container orchestration and envs (staging / prod) for apps
+
 Later it's can be more logical to split server in two nodes with a master custer and client one
+
+#### Monitoring
+
+Use prometheus to measure apps performances and alerts when issues appears.
+
+For functionnal monitoring playbook, we need the following things, just type commands :
+
+- `pip install -r requirements.txt`
+- `export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES`
+- `brew install gnu-tar`
 
 > Check requirements
 
