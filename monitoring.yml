@@ -5,8 +5,7 @@
     prometheus_targets:
       node:
       - targets:
-          - 0.0.0.0:80 # reverse proxy
-          - 0.0.0.0:8080 # site
-          - 0.0.0.0:81 # site
+          - localhost
+          - localhost:81
         labels:
           env: home
