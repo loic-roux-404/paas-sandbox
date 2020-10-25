@@ -96,6 +96,8 @@ firewall_allowed_tcp_ports:
   - "8501"              # consul https
   - "8302"              # consul Serf WAN port
   - "8600"              # consul DNS server
+# Monitoring
+  - "9090"              # prometheus web ui
 # Apps
   - "8000"
   - "8080"

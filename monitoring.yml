@@ -1,0 +1,12 @@
+- hosts: monitoring_instances
+  roles:
+    - role-prometheus
+  vars:
+    prometheus_targets:
+      node:
+      - targets:
+          - 0.0.0.0:80 # reverse proxy
+          - 0.0.0.0:8080 # site
+          - 0.0.0.0:81 # site
+        labels:
+          env: home

@@ -32,6 +32,11 @@ TO DO
 Roles used by sub-playbook:
 ------------
 
+### Debug
+
+To test these playbooks we need to use makefile with multiple commands available by tiping `make`
+To add debug on a playbook you need to fill `dev_hosts` in `inventories/`
+
 ### Env :
 
 - **role-basics** with deps : ansible-role-zsh & weareinteractive.users
@@ -40,6 +45,16 @@ Roles used by sub-playbook:
 
 - role-firewall (jeff g.)
 - role-security (jeff g.)
+
+### Monitoring
+
+- need `requirements.txt` installed
+- To fix possible error `export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES`
+- `brew install gnu-tar` ==> follow [this answer](https://stackoverflow.com/a/54760575/11132253)
+
+```bash
+echo -e 'export PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH" \nexport MANPATH="/usr/local/opt/gnu-tar/libexec/gnuman:$MANPATH" ' >> ~/.bashrc
+```
 
 ### Stack :
 

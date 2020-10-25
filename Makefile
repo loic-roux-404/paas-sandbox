@@ -1,5 +1,5 @@
-include .manala/ansible.mk
-include .manala/docker.mk
+-include .manala/ansible.mk
+-include .manala/docker.mk
 
 DOCKER_IMG_PREFIX:=404-infra
 DOCKER_CONTEXT:=./docker
@@ -59,6 +59,7 @@ aw.docker:
 	$(eval DOCKERFILE:=docker/aw.Dockerfile)
 	$(call docker_run)
 
+# make all_docker -j4
 all_docker: aw.docker consul.docker vault.docker nomad.docker
 
 # Deploy container as an heroku dyno

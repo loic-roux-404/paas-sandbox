@@ -10,7 +10,7 @@
   scm: git
 - name: role-zsh
   src: ssh://git@github.com/viasite-ansible/ansible-role-zsh.git
-  version: "v3.3.1"
+  version: "v3.3.2"
   scm: git
 # External requirements
 - name: role-logrotate
@@ -28,4 +28,7 @@
   scm: git
 - name: role-vault
   src: ssh://git@github.com/ansible-community/ansible-vault.git
+  scm: git
+- name: role-prometheus
+  src: ssh://git@github.com/cloudalchemy/ansible-prometheus.git
   scm: git
