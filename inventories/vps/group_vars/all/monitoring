@@ -1,0 +1,23 @@
+prometheus_targets:
+    node:
+    - targets:
+        - "localhost"
+        - "localhost:81"
+    labels:
+        env: home
+
+route:
+  group_by: [Alertname]
+  # Send all notifications to me.
+  receiver: email-me
+
+prometheus_alertmanager_config:
+    receivers:
+    - name: email-me
+    email_configs:
+    - to: "{{ gmail_account }}"
+      from: "{{ gmail_account }}"
+      smarthost: smtp.gmail.com:587
+      auth_username: "{{ gmail_account }}"
+      auth_identity: "{{ gmail_account }}"
+      auth_password: "{{ gmail_auth_token }}"
