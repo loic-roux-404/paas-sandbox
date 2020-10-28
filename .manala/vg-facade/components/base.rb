@@ -35,7 +35,7 @@ class Base < Component
 			inline: "echo '#{id_rsa_ssh_key}' > #{ssh_path}/id_rsa && chmod 600 #{ssh_path}/id_rsa"
     $vagrant.vm.provision :shell,
       privileged: false,
-			inline: "echo '#{id_rsa_ssh_key_pub}' > #{ssh_path}/authorized_keys && chmod 600 #{ssh_path}/authorized_keys"
+			inline: "echo '#{id_rsa_ssh_key_pub}' >> #{ssh_path}/authorized_keys && chmod 600 #{ssh_path}/authorized_keys"
 	end
 
 	def requirements()

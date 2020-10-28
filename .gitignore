@@ -45,3 +45,6 @@ var/
 # Translations
 *.mo
 *.pot
+
+vault_pass.sh
+

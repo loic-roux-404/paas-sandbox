@@ -30,7 +30,7 @@ HELPER
         @config[index.to_s].to_struct
       end
     rescue ArgumentError
-      raise StandardError.new "Vm not correctly linked"
+      raise StandardError.new "Vm probabbly not correctly linked"
     end
   end
 

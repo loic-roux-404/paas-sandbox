@@ -3,29 +3,31 @@ manala:
   recipe: ops.playbook
 
 repository_save: /Users/loic/Ops/manala-recipes
+gitignore: |
+    vault_pass.sh
 
-ansible:
+ansible: 
   auto_tag: true
   cfg_lines:
       vault_password_file: ./utils/vault_pass.sh
   internal_roles: false
   inventory: ./inventories/vps
 
-vagrant:
+vagrant: 
   project_name: playbook-vps
   box: loic-roux-404/deb64-buster
   box_update: false
   box_version: null
   vb_guest_update: false
   domain: loicroux.test
-  git:
+  git: 
     org: loic-roux-404
     provider: https://github.com
-  paths:
+  paths: 
     guest: /vagrant
     host: ./
     web: ""
-  network:
+  network: 
     dns: true
     fix_routing: true
     ip: 192.168.33.99
@@ -33,8 +35,8 @@ vagrant:
     ssl:
         cert: null
         path: /etc/ssl
-    type: public
-  ansible:
+    type: public 
+  ansible: 
     disabled: true
     inventory: ""
     playbook: ""
@@ -43,7 +45,7 @@ vagrant:
     type: local
     vars:
         keyboard_mac: false
-  fs:
+  fs: 
     opts:
         disabled: true
         ignored:
@@ -56,7 +58,7 @@ vagrant:
         smb_password: null
         smb_username: null
     type: rsync
-  provider:
+  provider:  
     opts:
         cpus: "2"
         memory: "1024"
