@@ -1,5 +1,4 @@
 - hosts: monitoring_instances
   roles:
     - role-prometheus
-  vars:
 

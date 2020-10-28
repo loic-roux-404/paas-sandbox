@@ -9,6 +9,9 @@ server01.consul      ansible_user=vagrant
 [security]
 server01.consul
 
+[monitoring_instances]
+server01.consul
+
 [stack:children]
 docker_instances
 consul_instances
