@@ -6,6 +6,9 @@ nomad-server.consul  ansible_host=nomad-both-404.herokuapp.com ansible_user=noma
 [env]
 server01.consul ansible_user=root
 
+[rev_proxy]
+server01.consul
+
 [security]
 server01.consul
 

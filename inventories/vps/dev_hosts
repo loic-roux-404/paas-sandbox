@@ -6,6 +6,9 @@ nomad-server.consul  ansible_host=404-infra-nomad.stack ansible_user=nomad ansib
 [env]
 server01.consul      ansible_user=vagrant
 
+[rev_proxy]
+server01.consul
+
 [security]
 server01.consul
 

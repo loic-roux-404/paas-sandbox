@@ -9,7 +9,7 @@ gitignore: |
 ansible: 
   auto_tag: true
   cfg_lines:
-      vault_password_file: ./utils/vault_pass.sh
+      vault_password_file: ./vault_pass.sh
   internal_roles: false
   inventory: ./inventories/vps
 

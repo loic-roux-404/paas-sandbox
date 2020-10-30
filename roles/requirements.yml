@@ -29,3 +29,6 @@
 - name: role-vault
   src: ssh://git@github.com/ansible-community/ansible-vault.git
   scm: git
+- name: role-prometheus
+  src: ssh://git@github.com/cloudalchemy/ansible-prometheus.git
+  scm: git
