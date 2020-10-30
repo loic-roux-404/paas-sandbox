@@ -4,6 +4,7 @@
   become_user: root
   tasks:
     - name: Copy config
+      tags: [cnf]
       copy:
         src: "{{ item }}"
         dest: $HOME/
@@ -15,6 +16,7 @@
         - config.json
 
     - name: build container
+      tags: [build]
       docker_image:
         build:
           path: "./"
@@ -27,6 +29,7 @@
         state: present
 
     - name: up docker container
+      tags: [deploy]
       docker_container:
         name: rev_proxy_admin
         image: rev_proxy_admin:latest
@@ -42,7 +45,7 @@
         healthcheck:
           # Check if nginx server is healthy by curl'ing the server.
           # If this fails or timeouts, the healthcheck fails.
-          test: ["CMD", "curl", "--fail", "http://loicroux.com"]
+          test: ["CMD", "curl", "--fail", "http://auth.loicroux.com"]
           interval: 5m30s
           timeout: 10s
           retries: 3
