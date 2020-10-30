@@ -1,3 +1,4 @@
 FROM jc21/nginx-proxy-manager:2.5.0
 
-RUN apk add sqlite
+RUN apk update \
+    && apk add sqlite
