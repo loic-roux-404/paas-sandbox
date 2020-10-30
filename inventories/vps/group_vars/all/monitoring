@@ -2,7 +2,6 @@ prometheus_targets:
     node:
     - targets:
         - "localhost"
-        - "localhost:81"
     labels:
         env: home
 

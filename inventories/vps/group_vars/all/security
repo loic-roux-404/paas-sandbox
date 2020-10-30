@@ -78,15 +78,9 @@ security_fail2ban_enabled: true
 #==================
 firewall_allowed_tcp_ports:
   - "22"
-  - "5342"              # pgsql
-  - "3306"              # mysql / mariadb
   - "25"                # smtp
-  - "587"               # mails
-#- "110"               # pop3 incoming
-# - "995"               # pop3s incoming
   - "80"                # webserver
   - "443"               # ssl
-# - "873"               # rsync port
   - "4646"              # nomad http
   - "4647"              # nomad rpc
   - "4648"              # nomad serf
@@ -96,11 +90,6 @@ firewall_allowed_tcp_ports:
   - "8501"              # consul https
   - "8302"              # consul Serf WAN port
   - "8600"              # consul DNS server
-# Apps
-  - "8000"
-  - "8080"
-  - "81"
-  - "80"
 
 firewall_allowed_udp_ports: []
 
