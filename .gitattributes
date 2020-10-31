@@ -61,6 +61,7 @@
 *.xml      text
 *.yaml     text
 *.yml      text
+secrets    text
 
 # Archives
 *.7z       binary

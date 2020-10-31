@@ -25,6 +25,7 @@
   src: brianshumate.nomad
 - name: role-consul
   src: ssh://git@github.com/ansible-community/ansible-consul.git
+  version: v2.6.1
   scm: git
 - name: role-vault
   src: ssh://git@github.com/ansible-community/ansible-vault.git

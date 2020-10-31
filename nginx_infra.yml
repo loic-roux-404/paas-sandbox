@@ -45,7 +45,7 @@
         healthcheck:
           # Check if nginx server is healthy by curl'ing the server.
           # If this fails or timeouts, the healthcheck fails.
-          test: ["CMD", "curl", "--fail", "http://auth.loicroux.com"]
+          test: ["CMD", "curl", "--fail", "http://loicroux.com"]
           interval: 5m30s
           timeout: 10s
           retries: 3

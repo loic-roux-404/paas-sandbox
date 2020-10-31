@@ -1,1 +1,2 @@
 jmespath
+ansible==2.9.*
