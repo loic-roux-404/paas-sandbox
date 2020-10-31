@@ -15,6 +15,12 @@
         - nginx/Dockerfile
         - nginx/config.json
 
+    - name: restart docker
+      service:
+        name: docker
+        state: restarted
+        enabled: true
+
     - name: build container
       tags: [build]
       docker_image:

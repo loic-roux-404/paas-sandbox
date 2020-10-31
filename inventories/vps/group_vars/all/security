@@ -79,7 +79,7 @@ security_fail2ban_enabled: true
 firewall_allowed_tcp_ports:
   - "22"
   - "25"                # smtp
-  - "80"                # webserver
+  - "80"                # reverse proxy
   - "443"               # ssl
   - "4646"              # nomad http
   - "4647"              # nomad rpc
@@ -105,11 +105,11 @@ firewall_additional_rules:
   - "iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT"
   - "iptables -A OUTPUT -m conntrack --ctstate ESTABLISHED -j ACCEPT"
 # ssh
-  - "iptables -A INPUT -p tcp -s {{ allowed_ip_1 }} --dport 22 \
+  - "iptables -A INPUT -p tcp -s {{ user1.ip2 }} --dport 22 \
     -m conntrack --ctstate NEW,ESTABLISHED,RELATED -j ACCEPT"
   - "iptables -A INPUT -m state --state NEW,ESTABLISHED,RELATED -p tcp \
     --dport 22 -j DROP"
-  - "iptables -A INPUT -p tcp -s {{ allowed_ip_2 }} --dport 22 \
+  - "iptables -A INPUT -p tcp -s {{ user1.ip1 }} --dport 22 \
    -m conntrack --ctstate NEW,ESTABLISHED,RELATED -j ACCEPT"
 # Github
   - "iptables -A INPUT -p tcp -s 140.82.118.3 --dport 22 \

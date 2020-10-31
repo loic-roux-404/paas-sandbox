@@ -1,22 +1,21 @@
 prometheus_targets:
-    node:
-    - targets:
-        - "localhost"
-    labels:
-        env: home
+  node:  # This is a base file name. File is located in "{{ prometheus_config_dir }}/file_sd/<<BASENAME>>.yml"
+    - targets:              #
+        - "localhost"    # All this is a targets section in file_sd format
+      labels:               #
+        env: sites           ## This line loads file created from `prometheus_targets`
 
-route:
-  group_by: [Alertname]
-  # Send all notifications to me.
-  receiver: email-me
-
-prometheus_alertmanager_config:
-    receivers:
-    - name: email-me
-    email_configs:
-    - to: "{{ gmail_account }}"
-      from: "{{ gmail_account }}"
-      smarthost: smtp.gmail.com:587
-      auth_username: "{{ gmail_account }}"
-      auth_identity: "{{ gmail_account }}"
-      auth_password: "{{ gmail_auth_token }}"
+# prometheus_alertmanager_config:
+#     route:
+#       group_by: [Alertname]
+#       # Send all notifications to me.
+#       receiver: email-me
+#     receivers:
+#     - name: email-me
+#     email_configs:
+#     - to: "{{ gmail_account }}"
+#       from: "{{ gmail_account }}"
+#       smarthost: smtp.gmail.com:587
+#       auth_username: "{{ gmail_account }}"
+#       auth_identity: "{{ gmail_account }}"
+#       auth_password: "{{ gmail_auth_token }}"
