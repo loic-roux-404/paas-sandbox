@@ -13,7 +13,7 @@ consul_leader_addr: "{{ hostvars[groups['consul_instances'][0]]['ansible_host'] 
 #=============
 docker__channel: ["nightly"]
 docker__state: "present"
-docker__users: ["{{ user1.username }}"]
+docker__users: ["{{ user1.username | d('root') }}"]
 docker__default_daemon_json: |
   "log-driver": "journald"
 docker__daemon_flags:
@@ -73,7 +73,9 @@ other_dnsmasq_options:
 # role-consul
 # http://github.com/ansible-community/ansible-consul/blob/master/defaults/main.yml
 # ============
+consul_version: 1.8.5
 consul_domain: consul
+consul_bind_address: "{{ stack_ip }}"
 consul_iface: "{{ stack_eth }}"
 consul_datacenter: "{{ datacenter }}"
 consul_acl_datacenter: "{{ datacenter }}"
@@ -87,7 +89,7 @@ consul_syslog_enable: false
 # role-vault
 # https://github.com/ansible-community/ansible-vault/blob/master/defaults/main.yml
 #============
-vault_version: 1.4.2
+vault_version: 1.5.5
 vault_datacenter: "{{ datacenter }}"
 # TODO : replace by consul dns name (is it possible by using multiple containers ?)
 vault_domain: "{{ hostvars[groups['vault_instances'][0]]['ansible_host'] }}"
@@ -100,7 +102,7 @@ vault_service_registration_consul_address: "{{ consul_leader_addr }}:8500"
 # role-nomad
 # https://github.com/ansible-community/ansible-nomad/blob/master/defaults/main.yml
 #============
-nomad_version: "0.11.3"
+nomad_version: "0.11.6"
 nomad_group_name: "docker_instances"
 nomad_datacenter: "{{ datacenter }}"
 nomad_iface: "{{ stack_ip }}"

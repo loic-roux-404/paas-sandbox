@@ -94,7 +94,7 @@ Requirements
 
 `make install`
 
-`make site ANSIBLE_VARS=ansible_user=root`
+For first deploy of this playbook : `make site ANSIBLE_VARS=ansible_user=root`
 
 See [Makefile](Makefile) for debugging and full deploy on a server
 

@@ -3,7 +3,7 @@ SHELL=/bin/bash
 # Executables
 PIP:=pip3
 # read setting from config (touch config.yaml if not exist)
-config=$(shell yq merge -x .manala.yaml config.yaml | yq r - $(1))
+config=$(shell yq -xa merge config.yaml .manala.yaml | yq r - $(1))
 # All variables necessary to run and debug ansible playbooks
 PLAYBOOKS=$(basename $(wildcard *.yml))
 DEFAULT_PLAYBOOK=$(basename $(call config,vagrant.ansible.sub_playbook))
@@ -44,6 +44,7 @@ help:
 	@echo "Ip: $(IP)"
 	@echo "Domain: $(DOMAIN)"
 	@echo "default inventory: $(INVENTORY)"
+	@echo "default playbook: $(DEFAULT_PLAYBOOK)"
 	@echo "[====== DEBUG COMMANDS ========]"
 	@echo "Debug playbook (vagrant) : $(addsuffix .debug, $(PLAYBOOKS))"
 	@echo "Debug inventory vars : $(addsuffix .invs, $(INVS_DEBUG))"
@@ -75,9 +76,12 @@ install:
 # Run specific tag / role name
 # Example : make role-basics.tag ( for role-basics)
 # Role are automaticly tagged with ansible callback plugin auto_tag.py
-%.tag: debug-deco
-	$(eval ARG:='--tag=$*')
+%.tag:
+	$(eval ARG+='--tag=$*')
 	$(call playbook_exe, $(DEFAULT_PLAYBOOK))
+
+%.tag.debug: debug-deco %.tag
+	@echo Done
 
 # =============================
 # Debugging zone on next lines

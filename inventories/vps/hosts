@@ -4,7 +4,7 @@ consul-server.consul ansible_host=consul-server-404.herokuapp.com ansible_user=c
 nomad-server.consul  ansible_host=nomad-both-404.herokuapp.com ansible_user=nomad
 
 [env]
-server01.consul ansible_user=root
+server01.consul
 
 [rev_proxy]
 server01.consul
@@ -22,10 +22,10 @@ vault_instances
 
 [docker_instances]
 nomad-server.consul nomad_node_role=server
-server01.consul nomad_node_role=client
+server01.consul     nomad_node_role=client
 
 [consul_instances]
-server01.consul consul_node_role=client
+server01.consul      consul_node_role=client
 consul-server.consul consul_node_role=bootstrap
 
 [vault_instances]

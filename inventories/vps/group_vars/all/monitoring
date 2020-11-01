@@ -6,16 +6,16 @@ prometheus_targets:
         env: sites           ## This line loads file created from `prometheus_targets`
 
 # prometheus_alertmanager_config:
-#     route:
-#       group_by: [Alertname]
-#       # Send all notifications to me.
-#       receiver: email-me
-#     receivers:
-#     - name: email-me
-#     email_configs:
-#     - to: "{{ gmail_account }}"
-#       from: "{{ gmail_account }}"
-#       smarthost: smtp.gmail.com:587
-#       auth_username: "{{ gmail_account }}"
-#       auth_identity: "{{ gmail_account }}"
-#       auth_password: "{{ gmail_auth_token }}"
+#   route:
+#     group_by: [Alertname]
+#     # Send all notifications to me.
+#     receiver: email-me
+#   receivers:
+#   - name: email-me
+#   email_configs:
+#   - to: "{{ gmail_account }}"
+#     from: "{{ gmail_account }}"
+#     smarthost: smtp.gmail.com:587
+#     auth_username: "{{ gmail_account }}"
+#     auth_identity: "{{ gmail_account }}"
+#     auth_password: "{{ gmail_auth_token }}"

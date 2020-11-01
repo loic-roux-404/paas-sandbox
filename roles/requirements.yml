@@ -21,14 +21,23 @@
   src: geerlingguy.security
 - name: role-docker
   src: nickjj.docker
+- name: role-consul-template
+  src: griggheo.consul-template
+  version: v1.2.4
 - name: role-nomad
   src: brianshumate.nomad
+  version: v1.9.5
 - name: role-consul
   src: ssh://git@github.com/ansible-community/ansible-consul.git
   version: v2.6.1
   scm: git
 - name: role-vault
+  version: v2.5.4
   src: ssh://git@github.com/ansible-community/ansible-vault.git
+  scm: git
+- name: role-traefik
+  version: master
+  src: ssh://git@github.com/kibatic/ansible-traefik.git
   scm: git
 - name: role-prometheus
   src: ssh://git@github.com/cloudalchemy/ansible-prometheus.git

@@ -91,7 +91,7 @@ firewall_allowed_tcp_ports:
   - "8302"              # consul Serf WAN port
   - "8600"              # consul DNS server
 
-firewall_allowed_udp_ports: []
+firewall_allowed_udp_ports: ["80"]
 
 firewall_forwarded_udp_ports: []
 
