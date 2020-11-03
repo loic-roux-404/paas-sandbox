@@ -1,19 +1,20 @@
-server01.consul      ansible_host=loicroux.test ansible_user=vagrant
-vault.consul         ansible_host=404-infra-vault.stack ansible_user=vault ansible_port=22222
-consul-server.consul ansible_host=404-infra-consul.stack ansible_user=consul ansible_port=222
-nomad-server.consul  ansible_host=404-infra-nomad.stack ansible_user=nomad ansible_port=2022
+client01.consul ansible_host=node.loicroux.test ansible_user=loic-roux-404
+master.consul ansible_host=loicroux.test ansible_user=loic-roux-404
+vault.consul    ansible_host=404-infra-vault.stack ansible_user=vault ansible_port=22222
 
 [env]
-server01.consul      ansible_user=vagrant
+master.consul
 
-[rev_proxy]
-server01.consul
+[revproxy_instances]
+master.consul
 
 [security]
-server01.consul
+master.consul
+client01.consul
 
 [monitoring_instances]
-server01.consul
+master.consul
+client01.consul
 
 [stack:children]
 docker_instances
@@ -21,12 +22,12 @@ consul_instances
 vault_instances
 
 [docker_instances]
-nomad-server.consul  nomad_node_role=server
-server01.consul      nomad_node_role=client
+master.consul nomad_node_role=server
+client01.consul nomad_node_role=client
 
 [consul_instances]
-consul-server.consul consul_node_role=bootstrap
-server01.consul      consul_node_role=client
+master.consul consul_node_role=bootstrap
+client01.consul consul_node_role=client
 
 [vault_instances]
-vault.consul
+vault01.consul

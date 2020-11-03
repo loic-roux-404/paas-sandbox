@@ -121,7 +121,8 @@ nomad_ports_serf: 4648
 
 #============
 # role-traefik
-# https://github.com/kibatic/ansible-traefik/blob/master/defaults/main.yml
+# https://github.com/loic-roux-404/role-traefik/blob/main/defaults/main.yml
 #============
+traefik_config: /etc/traefik.toml
 traefik_bind_ip: "{{ stack_ip }}"
 traefik_consul_master: "consul.service.dc1.consul"

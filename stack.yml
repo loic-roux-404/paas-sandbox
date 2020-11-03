@@ -30,6 +30,6 @@
     - name: Copy Traefik Config File
       template:
         src: files/traefik/traefik.toml
-        dest: /etc/traefik.toml
+        dest: "{{ traefik_config }}"
   roles:
     - { role: role-traefik, tags: [revproxy] }

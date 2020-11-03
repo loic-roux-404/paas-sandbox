@@ -66,3 +66,8 @@ deploy:
 	$(eval export PASS=$(shell utils/vault_pass.sh))
 	cd docker \
 	&& heroku container:push --recursive -a $(HEROKU_APP_NAME)
+
+symlinks:
+	ln -s ${HOME}/Ops/ansible/role-traefik/ (pwd)/roles/role-traefik
+	ln -s ${HOME}/Ops/ansible/role-dns/ (pwd)/roles/role-dns
+	ln -s ${HOME}/Ops/ansible/role-basics/ (pwd)/roles.role-basics
