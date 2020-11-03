@@ -1,3 +1,7 @@
+#============
+# role-prometheus
+# http://github.com/cloudalchemy/ansible-prometheus.git/blob/master/defaults/main.yml
+#============
 prometheus_targets:
   node:  # This is a base file name. File is located in "{{ prometheus_config_dir }}/file_sd/<<BASENAME>>.yml"
     - targets:              #
@@ -19,3 +23,29 @@ prometheus_targets:
 #     auth_username: "{{ gmail_account }}"
 #     auth_identity: "{{ gmail_account }}"
 #     auth_password: "{{ gmail_auth_token }}"
+
+#============
+# role-logrotate
+# https://github.com/arillso/ansible.logrotate/blob/master/defaults/main.yml
+#============
+logrotate_use_hourly_rotation: true
+logrotate_applications:
+  - name: all stack logs
+    definitions:
+      - logs:
+          - /var/log/syslog
+          - /var/log/apt/term.log
+          - /var/log/apt/history.log
+          - /var/log/dpkg.log
+          - /var/log/nomad/*.log
+          - /var/log/consul/*.log
+          - /var/log/vault/*.log
+        options:
+          - daily
+          - weekly
+          - size 10M
+          - monthly
+          - missingok
+          - notifempty
+          - compress
+          - copytruncate

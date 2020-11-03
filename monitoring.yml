@@ -1,3 +1,4 @@
 - hosts: monitoring_instances
   roles:
-    - role-prometheus
+    - { role: role-prometheus, tags: [monitoring] }
+    - { role: role-logrotate, tags: [monitoring] }

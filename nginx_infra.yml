@@ -1,4 +1,12 @@
-- hosts: rev_proxy
+- hosts: docker_instances
+  gather_facts: true
+  become: yes
+  become_user: root
+  roles:
+    - { role: role-docker, tags: [stack] }
+    - { role: role-logrotate, tags: [stack] }
+
+- hosts: revproxy_instances
   gather_facts: true
   become: yes
   become_user: root
@@ -25,7 +33,7 @@
       tags: [build]
       docker_image:
         build:
-          path: "./"
+          path: "."
           pull: yes
         name: rev_proxy_admin
         tag: latest

@@ -6,7 +6,6 @@
   roles:
     - { role: role-dns, tags: [discovery] }
     - { role: role-consul, tags: [discovery] }
-    - { role: role-logrotate, tags: [discovery] }
 
 - hosts: vault_instances
   gather_facts: true
@@ -14,14 +13,23 @@
   become_user: root
   roles:
     - { role: role-vault, tags: [vault] }
-    - { role: role-logrotate, tags: [vault] }
 
 - hosts: docker_instances
   gather_facts: true
   become: yes
   become_user: root
   roles:
-    - { role: role-dns, tags: [stack] }
     - { role: role-docker, tags: [stack] }
     - { role: role-nomad, tags: [stack] }
-    - { role: role-logrotate, tags: [stack] }
+
+- hosts: revproxy_instances
+  gather_facts: true
+  become: yes
+  become_user: root
+  pre_tasks:
+    - name: Copy Traefik Config File
+      template:
+        src: files/traefik/traefik.toml
+        dest: /etc/traefik.toml
+  roles:
+    - { role: role-traefik, tags: [revproxy] }

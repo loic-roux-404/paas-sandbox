@@ -1,19 +1,20 @@
-server01.consul      ansible_host=loicroux.com ansible_user=loic-roux-404
-vault.consul         ansible_host=acl-vault-404.herokuapp.com ansible_user=vault
-consul-server.consul ansible_host=consul-server-404.herokuapp.com ansible_user=consul
-nomad-server.consul  ansible_host=nomad-both-404.herokuapp.com ansible_user=nomad
+client01.consul ansible_host=loicroux.com ansible_user=loic-roux-404
+master01.consul ansible_host=loicroux.live ansible_user=loic-roux-404
+vault01.consul  ansible_host=acl-vault-404.herokuapp.com ansible_user=vault
 
 [env]
-server01.consul
+master01.consul
 
-[rev_proxy]
-server01.consul
+[revproxy_instances]
+master01.consul
 
 [security]
-server01.consul
+master01.consul
+client01.consul
 
 [monitoring_instances]
-server01.consul
+master01.consul
+client01.consul
 
 [stack:children]
 docker_instances
@@ -21,12 +22,12 @@ consul_instances
 vault_instances
 
 [docker_instances]
-nomad-server.consul nomad_node_role=server
-server01.consul     nomad_node_role=client
+master01.consul nomad_node_role=server
+client01.consul nomad_node_role=client
 
 [consul_instances]
-server01.consul      consul_node_role=client
-consul-server.consul consul_node_role=bootstrap
+master01.consul consul_node_role=bootstrap
+client01.consul consul_node_role=client
 
 [vault_instances]
-vault.consul
+vault01.consul

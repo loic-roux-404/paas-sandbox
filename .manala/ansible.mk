@@ -26,7 +26,7 @@ INVS_DEBUG:=graph list
 # Build command
 playbook_exe= ANSIBLE_STDOUT_CALLBACK=$(ANSIBLE_STDOUT_CALLBACK) \
 	ANSIBLE_FORCE_COLOR=$(ANSIBLE_FORCE_COLOR) \
-	ansible-playbook $(OPTIONS) \
+	ansible-playbook $(OPTIONS) $(TAG)\
 	$(if $(INVENTORY), \
 		-i $(INVENTORY)$(if $(HOST),$(HOST),) \
 	,) \
@@ -77,11 +77,11 @@ install:
 # Example : make role-basics.tag ( for role-basics)
 # Role are automaticly tagged with ansible callback plugin auto_tag.py
 %.tag:
-	$(eval ARG+='--tag=$*')
+	$(eval TAG:= -t $*)
 	$(call playbook_exe, $(DEFAULT_PLAYBOOK))
 
 %.tag.debug: debug-deco %.tag
-	@echo Done
+	@echo '[ Executed tag $* ]'
 
 # =============================
 # Debugging zone on next lines

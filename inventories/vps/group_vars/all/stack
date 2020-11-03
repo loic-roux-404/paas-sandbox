@@ -38,19 +38,13 @@ docker__cron_jobs:
 # pip dependencies
 docker__pip_dependencies:
   - "gcc"
-  - "python-setuptools"
   - "python{{ '3' if ansible_python.version.major == 3 else '' }}-dev"
   - "python{{ '3' if ansible_python.version.major == 3 else '' }}-pip"
   - "virtualenv"
 # Pip config
-docker__pip_packages: []
+docker__pip_packages: [setuptools, docker]
 docker__pip_docker_state: "present"
 docker__pip_docker_compose_state: "absent"
-
-#============
-# role-basics
-#============
-keyboard_mac: true
 
 # =============
 # role-dns
@@ -126,27 +120,8 @@ nomad_ports_rpc: 4647
 nomad_ports_serf: 4648
 
 #============
-# role-logrotate
-# https://github.com/arillso/ansible.logrotate/blob/master/defaults/main.yml
+# role-traefik
+# https://github.com/kibatic/ansible-traefik/blob/master/defaults/main.yml
 #============
-logrotate_use_hourly_rotation: true
-logrotate_applications:
-  - name: all stack logs
-    definitions:
-      - logs:
-          - /var/log/syslog
-          - /var/log/apt/term.log
-          - /var/log/apt/history.log
-          - /var/log/dpkg.log
-          - /var/log/nomad/*.log
-          - /var/log/consul/*.log
-          - /var/log/vault/*.log
-        options:
-          - daily
-          - weekly
-          - size 10M
-          - monthly
-          - missingok
-          - notifempty
-          - compress
-          - copytruncate
+traefik_bind_ip: "{{ stack_ip }}"
+traefik_consul_master: "consul.service.dc1.consul"
