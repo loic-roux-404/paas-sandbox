@@ -7,8 +7,6 @@ DOCKER_IMAGES:=$(notdir $(basename $(wildcard docker/*.Dockerfile)))
 HEROKU_APP_NAME:=$(DOCKER_IMG_PREFIX)
 # Container exposed ports
 vault.ports:= -p 22222:22 -p 8200:8200
-consul.ports:= -p 222:22 -p 8600:8600 -p 8300-8302:8300-8302 -p 8500:8500
-nomad.ports:= -p 2022:22 -p 4646:4646 -p 4647:4647 -p 4648:4648 -p 4648:4648
 # Container ip on subnet
 DOCKER_NETWORK:=stack
 consul.ip=2

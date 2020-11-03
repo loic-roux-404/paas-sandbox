@@ -7,12 +7,12 @@
     - { role: role-dns, tags: [discovery] }
     - { role: role-consul, tags: [discovery] }
 
-- hosts: vault_instances
-  gather_facts: true
-  become: true
-  become_user: root
-  roles:
-    - { role: role-vault, tags: [vault] }
+# - hosts: vault_instances
+#   gather_facts: true
+#   become: true
+#   become_user: root
+#   roles:
+#     - { role: role-vault, tags: [vault] }
 
 - hosts: docker_instances
   gather_facts: true
@@ -26,10 +26,5 @@
   gather_facts: true
   become: yes
   become_user: root
-  pre_tasks:
-    - name: Copy Traefik Config File
-      template:
-        src: files/traefik/traefik.toml
-        dest: "{{ traefik_config }}"
   roles:
     - { role: role-traefik, tags: [revproxy] }
