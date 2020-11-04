@@ -81,6 +81,11 @@ Vault instance is hosted on heroku container
 1. `PUB=$(cat ~/.ssh/id_rsa.pub) heroku container:push vault -a acl-vault`
 1. `heroku container:release -a acl-vault`
 
+### Nginx infra
+> Nginx proxy manager based infra
+
+- `ansible-galaxy collection install community.general`
+
 ### Secure user creation
 
 1. `htpasswd -nb vagrant toto`

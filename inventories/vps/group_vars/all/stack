@@ -40,9 +40,8 @@ docker__pip_dependencies:
   - "gcc"
   - "python{{ '3' if ansible_python.version.major == 3 else '' }}-dev"
   - "python{{ '3' if ansible_python.version.major == 3 else '' }}-pip"
-  - "virtualenv"
 # Pip config
-docker__pip_packages: [setuptools, docker]
+docker__pip_packages: [virtualenv, setuptools, docker]
 docker__pip_docker_state: "present"
 docker__pip_docker_compose_state: "absent"
 

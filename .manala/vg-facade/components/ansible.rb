@@ -2,7 +2,7 @@
 class Ansible < Component
   PLAYBOOK_PATH = "/tmp"
   DEFAULT_INVENTORY = 'inventory'
-  GALAXY_ROLE_FILE_DEFAULT = 'roles/requirements.yml'
+  GALAXY_ROLE_FILE_DEFAULT = 'requirements.yaml'
 
   def initialize(cnf, git)
     @git = git

@@ -1,11 +1,14 @@
 client01.consul ansible_host=loicroux.com ansible_user=loic-roux-404
 master.consul ansible_host=loicroux.live ansible_user=loic-roux-404
-vault01.consul  ansible_host=acl-vault-404.herokuapp.com ansible_user=vault
+vault01.consul ansible_host=acl-vault-404.herokuapp.com ansible_user=vault
 
 [env]
 master.consul
 
 [revproxy_instances]
+master.consul
+
+[nginx_instances]
 master.consul
 
 [security]

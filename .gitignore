@@ -1,6 +1,6 @@
 .DS_Store
 roles/*
-!roles/requirements.yml
+!roles/requirements.yaml
 .vagrant/
 .ext_roles
 utils/vault_pass.sh
