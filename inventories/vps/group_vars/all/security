@@ -80,6 +80,9 @@ firewall_allowed_tcp_ports:
   - "22"
   - "25"                # smtp
   - "80"                # reverse proxy
+  - "81"                # reverse proxy
+  - "8080"                # reverse proxy
+  - "53"                # reverse proxy
   - "443"               # ssl
   - "4646"              # nomad http
   - "4647"              # nomad rpc

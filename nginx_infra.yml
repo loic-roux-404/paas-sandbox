@@ -67,6 +67,6 @@
           DISABLE_IPV6: 'true'
         volumes:
         # Make sure this config.json file exists as per instructions above:
-          - ./config.json:/app/config/production.json
-          - ./data:/data
-          - ./letsencrypt:/etc/letsencrypt
+          - "/root/config.json:/app/config/production.json"
+          - "/root/data:/data"
+          - "/root/letsencrypt:/etc/letsencrypt"
