@@ -57,13 +57,13 @@ packages:
   - man
   - apache2-utils
   - dnsutils
-  - yarn
 
 # remove default webserver and unused python versions
 remove_packages:
   - "apache*"
   - "php*"
   - "python2*"
+  - cmdtest
 
 pip_packages:
  - "setuptools"
@@ -71,3 +71,19 @@ pip_packages:
 motd_message_1: VPS owned by lastico
 motd_message_2: Docker prod for multiple apps
 motd_message_3: Unauthorized access is punished
+
+#==================
+# role-tools
+# https://github.com/loic-roux-404/role-tools
+#==================
+tools_user: "{{ user1.username }}"
+node_version: lts # semantic version | lts | (latest / current)
+yarn_version: latest # semantic version | latest
+golang_version: latest # semantic version | latest
+# [{
+#    name: package_name
+#    version: git version
+# }]
+golang_packages:
+  - name: github.com/gohugoio/hugo
+    version: v0.76.3

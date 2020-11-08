@@ -3,6 +3,7 @@
   gather_facts: true
   become: yes
   pre_tasks:
+    # TODO check if we wan use that in env and remove users here
     - package:
         name:
           - sudo

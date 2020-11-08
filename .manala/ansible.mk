@@ -46,8 +46,9 @@ help:
 	@echo "default inventory: $(INVENTORY)"
 	@echo "default playbook: $(DEFAULT_PLAYBOOK)"
 	@echo "[====== DEBUG COMMANDS ========]"
-	@echo "Debug playbook (vagrant) : $(addsuffix .debug, $(PLAYBOOKS))"
-	@echo "Debug inventory vars : $(addsuffix .invs, $(INVS_DEBUG))"
+	@echo "playbook (vagrant) : $(addsuffix .debug, $(PLAYBOOKS))"
+	@echo "inventory hosts : $(addsuffix .invs, $(INVS_DEBUG))"
+	@echo "host vars : inventory-hostname.facts"
 	@echo "[==============================]"
 
 .DEFAULT_GOAL := help
@@ -101,3 +102,7 @@ debug-deco:
 # More info about playbook env : graph.invs list.invs
 %.invs:
 	ansible-inventory -i $(INVENTORY) --$* $(ARG)
+
+.PRECIOUS: hostname-from-inventory.facts
+%.facts:
+	ansible -i $(INVENTORY) $* -m setup

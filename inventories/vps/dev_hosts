@@ -1,6 +1,6 @@
-client01.consul ansible_host=node.loicroux.test ansible_user=loic-roux-404
+client01.consul ansible_host=loicroux.test ansible_user=loic-roux-404
 master.consul ansible_host=loicroux.test ansible_user=loic-roux-404
-vault.consul    ansible_host=404-infra-vault.stack ansible_user=vault ansible_port=22222
+vault.consul ansible_host=404-infra-vault.stack ansible_user=vault ansible_port=22222
 
 [env]
 master.consul
