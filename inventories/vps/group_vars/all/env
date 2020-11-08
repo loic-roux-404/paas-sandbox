@@ -50,6 +50,7 @@ zsh_aliases:
 # role-basics
 # https://github.com/loic-roux-404/role-basics
 #==================
+users_no_ssh: [root, superman]
 packages:
   - dnsutils
   - python3
