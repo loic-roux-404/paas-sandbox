@@ -9,8 +9,8 @@ master.consul
 master.consul
 
 [security]
-master.consul
-client01.consul
+master.consul ansible_user=vagrant
+client01.consul ansible_user=vagrant
 
 [monitoring_instances]
 master.consul

@@ -2,6 +2,9 @@
 # Required ansible collections
 roles:
   # Github roles
+  - name: role-users
+    src: weareinteractive.users
+    version: 1.17.0
   - name: role-basics
     src: ssh://git@github.com/loic-roux-404/role-basics.git
     version: "configs"
@@ -21,8 +24,9 @@ roles:
     src: geerlingguy.firewall
     version: 2.5.0
   - name: role-security
-    src: geerlingguy.security
-    version: 2.0.1
+    src: ssh://git@github.com/loic-roux-404/role-security.git
+    scm: git
+    version: master
   - name: role-docker
     src: nickjj.docker
     version: v2.0.0

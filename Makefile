@@ -9,9 +9,9 @@ HEROKU_APP_NAME:=$(DOCKER_IMG_PREFIX)
 vault.ports:= -p 22222:22 -p 8200:8200
 # Container ip on subnet
 DOCKER_NETWORK:=stack
-consul.ip=2
+# suffixes for ips
+aw.ip=2
 vault.ip=3
-nomad.ip=4
 
 help_more:
 	@echo "Docker service : $(addsuffix .docker, $(DOCKER_IMAGES)))"
@@ -19,8 +19,9 @@ help_more:
 # =============================
 # Additionals playbook-vps commands
 # =============================
-%.debug.local: debug-deco
-	$(eval INVENTORY:=./inventories/local)
+
+%.debug.packer: debug-deco
+	$(eval INVENTORY:=./inventories/packer)
 	$(call playbook_exe)
 
 # Debug stack playbook on containers
@@ -66,6 +67,9 @@ deploy:
 	&& heroku container:push --recursive -a $(HEROKU_APP_NAME)
 
 symlinks:
-	ln -s ${HOME}/Ops/ansible/role-traefik/ (pwd)/roles/role-traefik
-	ln -s ${HOME}/Ops/ansible/role-dns/ (pwd)/roles/role-dns
-	ln -s ${HOME}/Ops/ansible/role-basics/ (pwd)/roles.role-basics
+	ln -s ~/Ops/ansible/role-traefik/ (pwd)/roles/role-traefik
+	ln -s ~/Ops/ansible/role-dns/ (pwd)/roles/role-dns
+	ln -s ~/Ops/ansible/role-basics/ (pwd)/roles/role-basics
+	ln -s ~/Ops/ansible/role-tools/ (pwd)/roles/role-tools
+	ln -s ~/Ops/ansible/role-security/ (pwd)/roles/role-security
+	ln -s ~/Ops/ansible/role-zsh/ (pwd)/roles/role-zsh

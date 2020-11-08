@@ -1,9 +1,10 @@
 ---
+# First playbook needed to be applied
 - hosts: security
   gather_facts: true
   become: yes
+  become_user: root
   pre_tasks:
-    # TODO check if we wan use that in env and remove users here
     - package:
         name:
           - sudo

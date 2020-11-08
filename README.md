@@ -3,8 +3,7 @@ Playbook-vps
 
 TO DO
 ------------
-- vault
-- consul & nomad server on heroku container
+- vault server on heroku container
 - list a test host file
 - Create consul cluster before vault and unidirectional connect
 - Secure nomad with vault
@@ -18,6 +17,10 @@ TO DO
 - Vault CA Authority
 - Make app playbook template with nomad job
 - split app logs
+
+### Init stack
+
+- First do `make site` (`make site.debug` to test on vm). It install users and apply security configs like for ssh.
 
 Roles used by sub-playbook:
 ------------
@@ -91,6 +94,10 @@ Vault instance is hosted on heroku container
 1. `htpasswd -nb vagrant toto`
 1.  Open `ansible-vault edit inventories/vps/group_vars/all/secrets`
 1. `user1.password: $apr1$4mjrgol9$toKJeYzjKhS3qcWJl8Tvb`
+
+### Troubleshoot
+
+To fix debug vagrant dns issues : `sudo killall -HUP mDNSResponder`
 
 Requirements
 ------------
