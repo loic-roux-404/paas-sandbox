@@ -1,8 +1,8 @@
 ---
 # First playbook needed to be applied
 - hosts: security
-  gather_facts: true
-  become: yes
+  gather_facts: True
+  become: True
   become_user: root
   pre_tasks:
     - package:

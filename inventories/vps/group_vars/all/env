@@ -77,7 +77,6 @@ motd_message_3: Unauthorized access is punished
 # role-tools
 # https://github.com/loic-roux-404/role-tools
 #==================
-tools_user: "{{ user1.username }}"
 node_version: lts # semantic version | lts | (latest / current)
 yarn_version: latest # semantic version | latest
 golang_version: latest # semantic version | latest
