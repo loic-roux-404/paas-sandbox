@@ -3,20 +3,19 @@
 # ansible-role-zsh
 # https://github.com/viasite-ansible/ansible-role-zsh
 #==================
-zsh_version: '' # FIX : overrided
+zsh_user: "{{ user1.username }}"
+zsh_antigen_theme: "romkatv/powerlevel10k powerlevel10k"
 zsh_antigen_bundles:
   - { name: docker, command: docker }
   - git-extras
-  - { name: symfony2, command: symfony }
-  - { name: viasite-ansible/zsh-ansible-server, command: ansible-deploy }
   - { name: zsh-users/zsh-autosuggestions, when: "{{ zsh_version is version_compare('5.0', '>=') }}" }
-  - popstas/zsh-command-time
   - { name: zdharma/fast-syntax-highlighting@v1.2, when: "{{ zsh_version is version_compare('4.3.17', '>=') }}" }
   - zsh_reload
+  - { name: golang, command: go }
 
 zsh_antigen_bundles_extras: []
 
-zsh_shared: yes
+zsh_shared: no
 zsh_aliases:
   - { alias: 'dfh', action: 'df -h | grep -v docker' }
   - { alias: p, action: "ps aux | grep" }
