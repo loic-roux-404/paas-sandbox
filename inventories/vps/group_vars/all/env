@@ -79,10 +79,11 @@ motd_message_3: Unauthorized access is punished
 node_version: lts # semantic version | lts | (latest / current)
 yarn_version: latest # semantic version | latest
 golang_version: latest # semantic version | latest
-# [{
-#    name: package_name
-#    version: git version
-# }]
 golang_packages:
   - name: github.com/gohugoio/hugo
     version: v0.76.3
+    flags: "--tags extended"
+    deps:
+      - gcc # for libsass
+      - g++ # same
+    state: present
