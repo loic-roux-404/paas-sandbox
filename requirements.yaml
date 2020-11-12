@@ -47,6 +47,7 @@ roles:
   - name: role-prometheus
     src: ssh://git@github.com/cloudalchemy/ansible-prometheus.git
     scm: git
+# replace zsh by role: gantsign.oh-my-zsh
 
 collections:
   - name: community.general

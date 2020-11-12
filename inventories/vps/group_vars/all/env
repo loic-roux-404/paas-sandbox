@@ -6,14 +6,13 @@
 zsh_user: "{{ user1.username }}"
 zsh_antigen_theme: "romkatv/powerlevel10k powerlevel10k"
 zsh_antigen_bundles:
+  - common-aliases
   - { name: docker, command: docker }
   - git-extras
   - { name: zsh-users/zsh-autosuggestions, when: "{{ zsh_version is version_compare('5.0', '>=') }}" }
   - { name: zdharma/fast-syntax-highlighting@v1.2, when: "{{ zsh_version is version_compare('4.3.17', '>=') }}" }
   - zsh_reload
   - { name: golang, command: go }
-
-zsh_antigen_bundles_extras: []
 
 zsh_shared: no
 zsh_aliases:
