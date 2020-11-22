@@ -1,2 +1,4 @@
 jmespath
 ansible==2.10.*
+mitogen
+jq
