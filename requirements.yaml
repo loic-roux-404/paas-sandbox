@@ -55,3 +55,4 @@ roles:
 
 collections:
   - name: community.general
+  - name: community.docker.docker_swarm

@@ -3,3 +3,4 @@
 - import_playbook: monitoring.yml
 - import_playbook: env.yml
 - import_playbook: stack.yml
+- import_playbook: coolify.yml

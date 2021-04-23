@@ -1,31 +1,7 @@
 ---
-- hosts: consul_instances
-  become: true
-  gather_facts: true
-  become_user: root
-  roles:
-    - { role: role-dns, tags: [discovery] }
-    - { role: role-consul, tags: [discovery] }
-
-# need container up
-# - hosts: vault_instances
-#   gather_facts: true
-#   become: true
-#   become_user: root
-#   roles:
-#     - { role: role-vault, tags: [vault] }
-
 - hosts: docker_instances
   gather_facts: true
   become: yes
   become_user: root
   roles:
     - { role: role-docker, tags: [stack] }
-    - { role: role-nomad, tags: [stack] }
-
-- hosts: revproxy_instances
-  gather_facts: true
-  become: yes
-  become_user: root
-  roles:
-    - { role: role-traefik, tags: [revproxy] }

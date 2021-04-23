@@ -4,8 +4,6 @@ datacenter: dc1
 stack_ip: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
 stack_eth: "{{ ansible_default_ipv4.interface|default(ansible_interfaces[0]) }}"
 stack_domain: "{{ ansible_host }}"
-# Review system for multiple instance cluster
-consul_leader_addr: "{{ hostvars[groups['consul_instances'][0]]['ansible_host'] }}"
 
 # ============
 # nickjj.docker
@@ -58,70 +56,3 @@ other_dnsmasq_options:
   - "rev-server=10.0.0.0/8,127.0.0.1#8600"
   - "rev-server=127.0.0.1/8,127.0.0.1#8600"
   - "rev-server=192.168.0.0/16,127.0.0.1#8600"
-
-# ============ #
-#  Hashistack  #
-# ============ #
-# ============
-# role-consul
-# http://github.com/ansible-community/ansible-consul/blob/master/defaults/main.yml
-# ============
-consul_version: 1.8.5
-consul_domain: consul
-consul_bind_address: "{{ stack_ip }}"
-consul_iface: "{{ stack_eth }}"
-consul_datacenter: "{{ datacenter }}"
-consul_acl_datacenter: "{{ datacenter }}"
-consul_recursors: ['1.1.1.1', '1.0.0.1']
-consul_client_address: "0.0.0.0"
-consul_dnsmasq_enable: yes
-consul_acl_master_token_display: yes
-consul_syslog_enable: false
-
-#============
-# role-vault
-# https://github.com/ansible-community/ansible-vault/blob/master/defaults/main.yml
-#============
-vault_version: 1.5.5
-vault_datacenter: "{{ datacenter }}"
-# TODO : replace by consul dns name (is it possible by using multiple containers ?)
-vault_domain: "{{ hostvars[groups['vault_instances'][0]]['ansible_host'] }}"
-vault_ui: yes
-vault_cluster_disable: yes
-vault_consul: "{{ consul_leader_addr }}:8500"
-vault_service_registration_consul_address: "{{ consul_leader_addr }}:8500"
-
-#============
-# role-nomad
-# https://github.com/ansible-community/ansible-nomad/blob/master/defaults/main.yml
-#============
-nomad_version: "0.11.6"
-nomad_group_name: "docker_instances"
-nomad_datacenter: "{{ datacenter }}"
-nomad_iface: "{{ stack_ip }}"
-nomad_network_interface: "{{ stack_eth }}"
-nomad_retry_join: yes
-nomad_user: root
-nomad_vault_enabled: false
-nomad_vault_allow_unauthenticated: true #FIXME
-nomad_vault_address: "{{ vault_domain }}"
-nomad_bind_address: "0.0.0.0"
-nomad_advertise_address: "{{ stack_ip }}"
-nomad_use_consul: true
-nomad_options: { 'driver.raw_exec.enable': '1' }
-nomad_network_speed: 10
-nomad_bootstrap_expect: 1
-nomad_docker_enable: true
-permanent: true
-nomad_syslog_enable: false
-nomad_ports_http: 4646
-nomad_ports_rpc: 4647
-nomad_ports_serf: 4648
-
-#============
-# role-traefik
-# https://github.com/loic-roux-404/role-traefik/blob/main/defaults/main.yml
-#============
-traefik_config: files/traefik/traefik.toml
-traefik_bind_ip: "{{ stack_ip }}"
-traefik_consul_master: "consul.service.dc1.consul"

@@ -1,0 +1,8 @@
+- hosts: coolify_instances
+  gather_facts: true
+  become: yes
+  become_user: root
+  tags: [coolify]
+  tasks:
+    - name: coolify install
+      shell: /bin/bash -c "$(curl -fsSL https://get.coollabs.io/coolify/install.sh)"
