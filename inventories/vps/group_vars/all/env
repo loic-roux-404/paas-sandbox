@@ -80,9 +80,10 @@ yarn_version: latest # semantic version | latest
 golang_version: latest # semantic version | latest
 golang_packages:
   - name: github.com/gohugoio/hugo
-    version: v0.78.2
+    version: v0.82.1
     flags: "--tags extended"
     deps:
       - gcc # for libsass
       - g++ # same
     state: present
+# TODO dart sass
