@@ -1,7 +1,8 @@
 .DS_Store
 .vagrant/
 .ext_roles
-utils/vault_pass.sh
+roles
+vault_pass.sh
 config.yaml
 
 # virtualenv
@@ -42,7 +43,13 @@ var/
 
 # Translations
 *.mo
-*.potfiles/data/*
+*.pot
+
+# vagrant module
+.manala/vg-facade
+
+files/data/*
 files/letsencrypt/*
 vault_pass.sh
 files/letsencrypt/*
+

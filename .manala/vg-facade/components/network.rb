@@ -35,6 +35,7 @@ class Network < Component
   end
 
   def dns
+    $vagrant.vm.hostname = @domain
     $vagrant.landrush.enabled = true
     $vagrant.landrush.tld = @domain
   end

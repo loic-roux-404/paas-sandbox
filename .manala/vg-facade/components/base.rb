@@ -6,12 +6,10 @@ class Base < Component
 		@UPDATE_VBGUEST = ENV['VBGUEST_UPDATE'] || cnf.vb_guest_update
 		@UPDATE_BOX = ENV['BOX_UPDATE'] || cnf.box_update
 		super(cnf)
-
 		self.dispatch_all
 	end
 
 	def base_box()
-		$vagrant.vm.hostname = @cnf.domain
 		$vagrant.vm.box = @cnf.box || DEFAULT_BOX
 		@cnf.box_version ? $vagrant.vm.box_version = @cnf.box_version : nil
     	$vagrant.vm.box_check_update = @UPDATE_BOX
@@ -35,7 +33,7 @@ class Base < Component
 			inline: "echo '#{id_rsa_ssh_key}' > #{ssh_path}/id_rsa && chmod 600 #{ssh_path}/id_rsa"
     $vagrant.vm.provision :shell,
       privileged: false,
-			inline: "echo '#{id_rsa_ssh_key_pub}' > #{ssh_path}/authorized_keys && chmod 600 #{ssh_path}/authorized_keys"
+			inline: "echo '#{id_rsa_ssh_key_pub}' >> #{ssh_path}/authorized_keys && chmod 600 #{ssh_path}/authorized_keys"
 	end
 
 	def requirements()

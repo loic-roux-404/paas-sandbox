@@ -1,36 +1,47 @@
 # Base makefile for ansible / vagrant projects
 SHELL=/bin/bash
+# Executables
+PIP:=pip3
+
+# Functions
 # read setting from config (touch config.yaml if not exist)
-config=$(shell yq merge -x .manala.yaml config.yaml | yq r - $(1))
+config=$(shell yq -xa merge config.yaml .manala.yaml | yq r - $(1))
+
+define parse_ansible_vars
+	$(foreach var, $1, -e $(subst ",,$(var)))
+endef
+
 # All variables necessary to run and debug ansible playbooks
 PLAYBOOKS=$(basename $(wildcard *.yml))
 DEFAULT_PLAYBOOK=$(basename $(call config,vagrant.ansible.sub_playbook))
 IP?=$(call config,vagrant.network.ip)
 DOMAIN?=$(call config,vagrant.domain)
 # ansible vars
-OPTIONS:=$(foreach var, $(ANSIBLE_VARS), -e $(subst ",,$(var)))
+OPTIONS:=$(call parse_ansible_vars, $(ANSIBLE_VARS))
 # Environment variables of ansible
 ANSIBLE_STDOUT_CALLBACK:=default
 ANSIBLE_FORCE_COLOR:=true
 # Default Inventory
 INVENTORY?=$(call config,ansible.inventory)
-DEV_INVENTORY:=$(call config,ansible.inventory)/dev_hosts
 HOST:=
 ROLES:=$(notdir $(basename $(wildcard roles/role-*) ))
-TAGS+=$(ROLES)
+TAGS+=$(ROLES) # Need callback plugin
 # Debug command list
 INVS_DEBUG:=graph list
 
 # Build command
-playbook_exe= ANSIBLE_STDOUT_CALLBACK=$(ANSIBLE_STDOUT_CALLBACK) \
+define playbook_exe
+	ANSIBLE_STDOUT_CALLBACK=$(ANSIBLE_STDOUT_CALLBACK) \
 	ANSIBLE_FORCE_COLOR=$(ANSIBLE_FORCE_COLOR) \
-	ansible-playbook $(OPTIONS) \
-	$(if $(INVENTORY), \
-		-i $(INVENTORY)$(if $(HOST),$(HOST),) \
-	,) \
-	$(if $(1),$(1).yml,$*.yml) $(ARG)
+	ansible-playbook $(OPTIONS) $(TAG)\
+	$(if $(INVENTORY),-i $(INVENTORY)$(or $(HOST),),) \
+	$(if $1,$1.yml,$*.yml) \
+	$(ARG)
+endef
 # Prompt exe
-prompt?=echo -ne "\x1b[33m $(1) Sure ? [y/N]\x1b[m" && read ans && [ $${ans:-N} = y ]
+define prompt
+	echo -ne "\x1b[33m $1 Sure ? [y/N]\x1b[m" && read ans && [ $${ans:-N} = y ]
+endef
 
 help:
 	@echo "[======== Ansible Help ========]"
@@ -42,9 +53,11 @@ help:
 	@echo "Ip: $(IP)"
 	@echo "Domain: $(DOMAIN)"
 	@echo "default inventory: $(INVENTORY)"
+	@echo "default playbook: $(DEFAULT_PLAYBOOK)"
 	@echo "[====== DEBUG COMMANDS ========]"
-	@echo "Debug playbook (vagrant) : $(addsuffix .debug, $(PLAYBOOKS))"
-	@echo "Debug inventory vars : $(addsuffix .invs, $(INVS_DEBUG))"
+	@echo "playbook (vagrant) : $(addsuffix .debug, $(PLAYBOOKS))"
+	@echo "inventory hosts : $(addsuffix .invs, $(INVS_DEBUG))"
+	@echo "host vars : inventory-hostname.facts"
 	@echo "[==============================]"
 
 .DEFAULT_GOAL := help
@@ -53,7 +66,7 @@ help:
 $(PLAYBOOKS): % : %.run
 
 install:
-	ansible-galaxy install -r roles/requirements.yml $(ARG)
+	ansible-galaxy install -r requirements.yaml $(ARG)
 	$(PIP) install -r requirements.txt || true
 	$(foreach var,$(shell ls -d *roles/role*/requirements.txt),$(PIP) install -r $(var))
 	$(foreach var,$(shell ls -d *.ext_roles/role*/requirements.txt),$(PIP) install -r $(var))
@@ -64,7 +77,6 @@ install:
 %.run:
 	@$(call prompt)
 	@$(call playbook_exe)
-
 # avoid prompt (Use this in automated processes)
 %.run-f:
 	@$(call playbook_exe)
@@ -73,17 +85,20 @@ install:
 # Run specific tag / role name
 # Example : make role-basics.tag ( for role-basics)
 # Role are automaticly tagged with ansible callback plugin auto_tag.py
-%.tag: debug-deco
-	$(eval ARG:='--tag=$*')
+%.tag:
+	$(eval TAG:= -t $*)
 	$(call playbook_exe, $(DEFAULT_PLAYBOOK))
+
+%.tag.debug: debug-deco %.tag
+	@echo '[ Executed tag $* ]'
 
 # =============================
 # Debugging zone on next lines
 # =============================
 debug-deco:
 	$(eval ANSIBLE_STDOUT_CALLBACK:=yaml)
-	$(eval INVENTORY:=$(DEV_INVENTORY))
-
+	$(eval OPTIONS+=\
+		$(call parse_ansible_vars, ansible_user=vagrant ansible_host=localhost))
 
 .PRECIOUS: $(addsuffix .invs, $(PLAYBOOKS))
 # Launch playbook in debug mode : formatted yaml &
@@ -95,3 +110,7 @@ debug-deco:
 # More info about playbook env : graph.invs list.invs
 %.invs:
 	ansible-inventory -i $(INVENTORY) --$* $(ARG)
+
+.PRECIOUS: hostname-from-inventory.facts
+%.facts:
+	ansible -i $(INVENTORY) $* -m setup
