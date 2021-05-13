@@ -6,7 +6,6 @@ class Base < Component
 		@UPDATE_VBGUEST = ENV['VBGUEST_UPDATE'] || cnf.vb_guest_update
 		@UPDATE_BOX = ENV['BOX_UPDATE'] || cnf.box_update
 		super(cnf)
-
 		self.dispatch_all
 	end
 

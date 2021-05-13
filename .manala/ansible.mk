@@ -2,37 +2,46 @@
 SHELL=/bin/bash
 # Executables
 PIP:=pip3
+
+# Functions
 # read setting from config (touch config.yaml if not exist)
 config=$(shell yq -xa merge config.yaml .manala.yaml | yq r - $(1))
+
+define parse_ansible_vars
+	$(foreach var, $1, -e $(subst ",,$(var)))
+endef
+
 # All variables necessary to run and debug ansible playbooks
 PLAYBOOKS=$(basename $(wildcard *.yml))
 DEFAULT_PLAYBOOK=$(basename $(call config,vagrant.ansible.sub_playbook))
 IP?=$(call config,vagrant.network.ip)
 DOMAIN?=$(call config,vagrant.domain)
 # ansible vars
-OPTIONS:=$(foreach var, $(ANSIBLE_VARS), -e $(subst ",,$(var)))
+OPTIONS:=$(call parse_ansible_vars, $(ANSIBLE_VARS))
 # Environment variables of ansible
 ANSIBLE_STDOUT_CALLBACK:=default
 ANSIBLE_FORCE_COLOR:=true
 # Default Inventory
 INVENTORY?=$(call config,ansible.inventory)
-DEV_INVENTORY:=$(call config,ansible.inventory)/dev_hosts
 HOST:=
 ROLES:=$(notdir $(basename $(wildcard roles/role-*) ))
-TAGS+=$(ROLES)
+TAGS+=$(ROLES) # Need callback plugin
 # Debug command list
 INVS_DEBUG:=graph list
 
 # Build command
-playbook_exe= ANSIBLE_STDOUT_CALLBACK=$(ANSIBLE_STDOUT_CALLBACK) \
+define playbook_exe
+	ANSIBLE_STDOUT_CALLBACK=$(ANSIBLE_STDOUT_CALLBACK) \
 	ANSIBLE_FORCE_COLOR=$(ANSIBLE_FORCE_COLOR) \
 	ansible-playbook $(OPTIONS) $(TAG)\
-	$(if $(INVENTORY), \
-		-i $(INVENTORY)$(if $(HOST),$(HOST),) \
-	,) \
-	$(if $(1),$(1).yml,$*.yml) $(ARG)
+	$(if $(INVENTORY),-i $(INVENTORY)$(or $(HOST),),) \
+	$(if $1,$1.yml,$*.yml) \
+	$(ARG)
+endef
 # Prompt exe
-prompt?=echo -ne "\x1b[33m $(1) Sure ? [y/N]\x1b[m" && read ans && [ $${ans:-N} = y ]
+define prompt
+	echo -ne "\x1b[33m $1 Sure ? [y/N]\x1b[m" && read ans && [ $${ans:-N} = y ]
+endef
 
 help:
 	@echo "[======== Ansible Help ========]"
@@ -68,7 +77,6 @@ install:
 %.run:
 	@$(call prompt)
 	@$(call playbook_exe)
-
 # avoid prompt (Use this in automated processes)
 %.run-f:
 	@$(call playbook_exe)
@@ -89,8 +97,8 @@ install:
 # =============================
 debug-deco:
 	$(eval ANSIBLE_STDOUT_CALLBACK:=yaml)
-	$(eval INVENTORY:=$(DEV_INVENTORY))
-
+	$(eval OPTIONS+=\
+		$(call parse_ansible_vars, ansible_user=vagrant ansible_host=localhost))
 
 .PRECIOUS: $(addsuffix .invs, $(PLAYBOOKS))
 # Launch playbook in debug mode : formatted yaml &

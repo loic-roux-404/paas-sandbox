@@ -3,7 +3,7 @@
   "files.associations": {
     "Vagrantfile": "ruby",
     "[.appveyor|.travis].yml": "yaml",
-    ".yaml": "yaml",
+    ".[ya|y]ml": "yaml",
     "/**/hosts": "ini",
     "**/defaults/**/*": "ansible",
     "**/tasks/**/*.yml": "ansible",

@@ -3,7 +3,8 @@ roles/*
 !roles/requirements.yaml
 .vagrant/
 .ext_roles
-utils/vault_pass.sh
+roles
+vault_pass.sh
 config.yaml
 
 # virtualenv
@@ -45,6 +46,9 @@ var/
 # Translations
 *.mo
 *.pot
+
+# vagrant module
+.manala/vg-facade
 
 vault_pass.sh
 
