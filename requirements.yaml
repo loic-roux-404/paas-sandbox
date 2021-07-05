@@ -17,6 +17,10 @@ roles:
     version: master
     src: ssh://git@github.com/loic-roux-404/role-traefik.git
     scm: git
+  - name: role-tools
+    version: master
+    src: ssh://git@github.com/loic-roux-404/role-tools.git
+    scm: git
   # External requirements
   - name: role-logrotate
     src: arillso.logrotate

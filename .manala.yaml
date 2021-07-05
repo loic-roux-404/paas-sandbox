@@ -9,7 +9,7 @@ gitignore: |
 ansible: 
   auto_tag: true
   cfg_lines:
-      strategy: mitogen_linear
+    #      strategy: mitogen_linear
       vault_password_file: ./vault_pass.sh
   internal_roles: false
   inventory: ./inventories/vps
