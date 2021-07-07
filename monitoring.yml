@@ -2,5 +2,5 @@
   gather_facts: True
   become: True
   roles:
-    - { role: role-prometheus, tags: [monitoring] }
-    - { role: role-logrotate, tags: [monitoring] }
+    # - { role: role-prometheus, tags: [monitoring] }
+    - { role: role-logrotate, tags: [monitoring, log] }

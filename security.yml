@@ -10,6 +10,7 @@
           - sudo
           - zsh
           - sshpass
+          - whois
         state: latest
   roles:
     - role: role-users

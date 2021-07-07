@@ -13,10 +13,6 @@ roles:
     src: ssh://git@github.com/loic-roux-404/role-dns.git
     version: "master"
     scm: git
-  - name: role-traefik
-    version: master
-    src: ssh://git@github.com/loic-roux-404/role-traefik.git
-    scm: git
   - name: role-tools
     version: master
     src: ssh://git@github.com/loic-roux-404/role-tools.git
@@ -33,21 +29,10 @@ roles:
     version: master
   - name: role-docker
     src: nickjj.docker
-    version: v2.0.0
-  - name: role-consul-template
-    src: griggheo.consul-template
-    version: 1.2.4
-  - name: role-nomad
-    src: brianshumate.nomad
-    version: v1.9.5
-  - name: role-consul
-    src: ssh://git@github.com/ansible-community/ansible-consul.git
-    version: v2.6.1
-    scm: git
-  - name: role-vault
-    version: v2.5.4
-    src: ssh://git@github.com/ansible-community/ansible-vault.git
-    scm: git
+    version: v2.1.0
+  # - name: role-consul-template
+  #   src: griggheo.consul-template
+  #   version: 1.2.4
   - name: role-prometheus
     src: ssh://git@github.com/cloudalchemy/ansible-prometheus.git
     scm: git
@@ -55,4 +40,3 @@ roles:
 
 collections:
   - name: community.general
-  - name: community.docker.docker_swarm

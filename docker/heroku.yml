@@ -1,0 +1,7 @@
+# ============
+# Deploy vault
+# ============
+build:
+  docker:
+    vault: vault.Dockerfile
+    ansible-worker: ansible-worker.Dockerfile

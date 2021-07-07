@@ -5,7 +5,7 @@
 # create user from github with correct auth key
 users:
   - username: "{{ user1.username }}"
-    password: "{{ user1.password }}"
+    password: "{{ lookup('pipe', 'mkpasswd -S %s %s' % (password_salt, user1.password)) }}"
     group: "{{ user1.username }}"
     groups: ["sudo"]
     uid: 1667
@@ -73,24 +73,21 @@ security_fail2ban_enabled: true
 # role-firewall
 #==================
 firewall_allowed_tcp_ports:
-  - "22"
-  - "25"                # smtp
-  - "80"                # reverse proxy
-  - "81"                # reverse proxy
-  - "8080"              # reverse proxy
-  - "53"                # reverse proxy
-  - "443"               # ssl
-  - "4646"              # nomad http
-  - "4647"              # nomad rpc
-  - "4648"              # nomad serf
-  - "8300"              # consul RPC server
-  - "8301"              # consul Serf LAN port
-  - "8500"              # consul (api / ui)
-  - "8501"              # consul https
-  - "8302"              # consul Serf WAN port
-  - "8600"              # consul DNS server
+  - "22"    # ssh
+  - "25"    # smtp
+  - "80"    # reverse proxy
+  - "81"    # reverse proxy
+  - "8080"  # reverse proxy
+  - "53"    # reverse proxy
+  - "443"   # ssl
+  - "2376"  # docker machine
+  - "2377"  # for docker swarm manager nodes
+  - "7946"  # swarm discovery
 
-firewall_allowed_udp_ports: ["80"]
+firewall_allowed_udp_ports:
+  - "80"
+  - "7946" # swarm discovery
+  - "4789" # swarm ingress controller
 
 firewall_forwarded_udp_ports: []
 

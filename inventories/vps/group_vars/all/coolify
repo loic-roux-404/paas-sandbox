@@ -4,6 +4,7 @@ datacenter: dc1
 stack_ip: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
 stack_eth: "{{ ansible_default_ipv4.interface|default(ansible_interfaces[0]) }}"
 stack_domain: "{{ ansible_host }}"
+# Review system for multiple instance cluster
 
 # ============
 # nickjj.docker
@@ -44,15 +45,37 @@ docker__pip_docker_state: "present"
 docker__pip_docker_compose_state: "present"
 
 # =============
-# role-dns
-# https://github.com/mrlesmithjr/ansible-dnsmasq/blob/master/defaults/main.yml
+# role-coolify
+# https://github.com/loic-roux-404/role-coolify/blob/master/defaults/main.yml
 # =============
-dnsmasq_pri_domain_name: "{{ stack_domain }}"
-dnsmasq_config: True
 
-# Consul reverse dns lookup
-other_dnsmasq_options:
-  - "rev-server=0.0.0.0/8,127.0.0.1#8600"
-  - "rev-server=10.0.0.0/8,127.0.0.1#8600"
-  - "rev-server=127.0.0.1/8,127.0.0.1#8600"
-  - "rev-server=192.168.0.0/16,127.0.0.1#8600"
+coolify_env:
+  # Domain where your Coolify instance will be available and reachable.
+  # It's the same as you set in Github OAuth App and Github App as <domain>.
+  DOMAIN:
+  ## Let's Encrypt contact email required
+  EMAIL:
+
+  # JWT Token Sign Key for logging you in to Coolify's frontend
+  JWT_SIGN_KEY: jwt-key
+  # Encryption key for SECRETS - do NOT share it with others!
+  SECRETS_ENCRYPTION_KEY: jwt-encrypt-key
+
+  # Mongodb
+  # Values in case if you are using our Mongodb installation - CHANGE user and password fields!
+  MONGODB_HOST: coollabs-mongodb
+  MONGODB_PORT: 27017
+  MONGODB_USER: supercooldbuser
+  MONGODB_PASSWORD: developmentPassword4db
+  MONGODB_DB: coolLabs-prod
+
+  # Frontend only variables
+  VITE_GITHUB_APP_CLIENTID: ''
+  VITE_GITHUB_APP_NAME: ''
+
+  # Github OAuth & App secrets and private key - you can get it from Github.
+  GITHUB_APP_CLIENT_SECRET: ''
+  GITHUP_APP_WEBHOOK_SECRET: ''
+
+  # It should look like this. Newlines breaks with \n
+  GITHUB_APP_PRIVATE_KEY: ''

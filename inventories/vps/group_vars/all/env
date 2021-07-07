@@ -87,3 +87,10 @@ golang_packages:
       - g++ # same
     state: present
 # TODO dart sass
+
+# =============
+# role-dns
+# https://github.com/mrlesmithjr/ansible-dnsmasq/blob/master/defaults/main.yml
+# =============
+dnsmasq_pri_domain_name: "{{ stack_domain }}"
+dnsmasq_config: True

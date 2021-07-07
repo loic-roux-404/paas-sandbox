@@ -1,5 +1,5 @@
 client01.consul ansible_host=loicroux.com ansible_user=loic-roux-404
-master.consul ansible_host=loicroux.live ansible_user=loic-roux-404
+master.consul ansible_host=loicroux.com ansible_user=loic-roux-404
 
 [env]
 master.consul
