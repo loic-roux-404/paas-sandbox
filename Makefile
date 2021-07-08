@@ -24,13 +24,6 @@ help_more:
 	$(eval INVENTORY:=./inventories/packer)
 	$(call playbook_exe)
 
-# Debug stack playbook on containers
-# Usage : make (vault|nomad|consul).tag
-%.tag.stack:
-	$(eval OPTIONS+= -e ansible_user=$*)
-	$(eval OPTIONS+= -e ansible_password=$*)
-	$(MAKE) $*.tag
-
 # ======================
 # Docker services
 # ======================
@@ -58,7 +51,7 @@ aw.docker:
 	$(eval DOCKERFILE:=docker/aw.Dockerfile)
 	$(call docker_run)
 
-all_docker: aw.docker consul.docker vault.docker nomad.docker
+all_docker: ansible-worker.docker vault.docker
 
 # Deploy container as an heroku dyno
 deploy:

@@ -21,6 +21,7 @@ OPTIONS:=$(call parse_ansible_vars, $(ANSIBLE_VARS))
 # Environment variables of ansible
 ANSIBLE_STDOUT_CALLBACK:=default
 ANSIBLE_FORCE_COLOR:=true
+ANSIBLE_BECOME_METHOD:=
 # Default Inventory
 INVENTORY?=$(call config,ansible.inventory)
 HOST:=
@@ -31,6 +32,7 @@ INVS_DEBUG:=graph list
 
 # Build command
 define playbook_exe
+	$(if $(ANSIBLE_BECOME_METHOD),ANSIBLE_BECOME_METHOD=$(ANSIBLE_BECOME_METHOD),) \
 	ANSIBLE_STDOUT_CALLBACK=$(ANSIBLE_STDOUT_CALLBACK) \
 	ANSIBLE_FORCE_COLOR=$(ANSIBLE_FORCE_COLOR) \
 	ansible-playbook $(OPTIONS) $(TAG)\
@@ -96,6 +98,7 @@ install:
 # Debugging zone on next lines
 # =============================
 debug-deco:
+	$(eval ANSIBLE_BECOME_METHOD:=sudo)
 	$(eval ANSIBLE_STDOUT_CALLBACK:=yaml)
 	$(eval OPTIONS+=\
 		$(call parse_ansible_vars, ansible_user=vagrant ansible_host=localhost))

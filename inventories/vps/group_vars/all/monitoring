@@ -37,9 +37,6 @@ logrotate_applications:
           - /var/log/apt/term.log
           - /var/log/apt/history.log
           - /var/log/dpkg.log
-          - /var/log/nomad/*.log
-          - /var/log/consul/*.log
-          - /var/log/vault/*.log
         options:
           - daily
           - weekly

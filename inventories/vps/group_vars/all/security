@@ -5,7 +5,7 @@
 # create user from github with correct auth key
 users:
   - username: "{{ user1.username }}"
-    password: "{{ lookup('pipe', 'mkpasswd -S %s %s' % (password_salt, user1.password)) }}"
+    password: "{{ user1.password }}"
     group: "{{ user1.username }}"
     groups: ["sudo"]
     uid: 1667
@@ -64,7 +64,7 @@ security_sudoers_passworded: ["superman"]
 
 # module to ignore from apt auto upgrade
 security_autoupdate_blacklist: []
-security_autoupdate_mail_to: "loic.roux.404@gmail.com"
+security_autoupdate_mail_to: "{{ user1.email }}"
 security_autoupdate_mail_on_error: true
 # module with IP black list
 security_fail2ban_enabled: true
@@ -76,16 +76,16 @@ firewall_allowed_tcp_ports:
   - "22"    # ssh
   - "25"    # smtp
   - "80"    # reverse proxy
-  - "81"    # reverse proxy
-  - "8080"  # reverse proxy
-  - "53"    # reverse proxy
+  #- "81"    # reverse proxy
+  #- "8080"  # reverse proxy
+  - "53"    # dns
   - "443"   # ssl
   - "2376"  # docker machine
   - "2377"  # for docker swarm manager nodes
   - "7946"  # swarm discovery
 
 firewall_allowed_udp_ports:
-  - "80"
+  - "80"   # reverse proxy
   - "7946" # swarm discovery
   - "4789" # swarm ingress controller
 

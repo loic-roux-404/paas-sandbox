@@ -1,10 +1,4 @@
 ---
-# Base variables
-datacenter: dc1
-stack_ip: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
-stack_eth: "{{ ansible_default_ipv4.interface|default(ansible_interfaces[0]) }}"
-stack_domain: "{{ ansible_host }}"
-# Review system for multiple instance cluster
 
 # ============
 # nickjj.docker
@@ -37,7 +31,7 @@ docker__cron_jobs:
 # pip dependencies
 docker__pip_dependencies:
   - "gcc"
-  - "python{{ '3' if ansible_python.version.major == 3 else '' }}-dev"
+  #- "python{{ '3' if ansible_python.version.major == 3 else '' }}-dev"
   - "python{{ '3' if ansible_python.version.major == 3 else '' }}-pip"
 # Pip config
 docker__pip_packages: [virtualenv, setuptools, docker]
@@ -52,9 +46,9 @@ docker__pip_docker_compose_state: "present"
 coolify_env:
   # Domain where your Coolify instance will be available and reachable.
   # It's the same as you set in Github OAuth App and Github App as <domain>.
-  DOMAIN:
+  DOMAIN: "{{ ansible_host }}"
   ## Let's Encrypt contact email required
-  EMAIL:
+  EMAIL: "{{ user1.email }}"
 
   # JWT Token Sign Key for logging you in to Coolify's frontend
   JWT_SIGN_KEY: jwt-key
@@ -65,17 +59,17 @@ coolify_env:
   # Values in case if you are using our Mongodb installation - CHANGE user and password fields!
   MONGODB_HOST: coollabs-mongodb
   MONGODB_PORT: 27017
-  MONGODB_USER: supercooldbuser
-  MONGODB_PASSWORD: developmentPassword4db
+  MONGODB_USER: "{{ coolify_mongo.user }}"
+  MONGODB_PASSWORD: "{{ coolify_mongo.password }}"
   MONGODB_DB: coolLabs-prod
 
   # Frontend only variables
-  VITE_GITHUB_APP_CLIENTID: ''
-  VITE_GITHUB_APP_NAME: ''
+  VITE_GITHUB_APP_CLIENTID: "{{ gh_app.clientid }}"
+  VITE_GITHUB_APP_NAME: "{{ gh_app.clientid }}"
 
   # Github OAuth & App secrets and private key - you can get it from Github.
-  GITHUB_APP_CLIENT_SECRET: ''
-  GITHUP_APP_WEBHOOK_SECRET: ''
+  GITHUB_APP_CLIENT_SECRET: "{{ gh_app.client_secret }}"
+  GITHUP_APP_WEBHOOK_SECRET: "{{ gh_app.webhook_secret }}"
 
   # It should look like this. Newlines breaks with \n
-  GITHUB_APP_PRIVATE_KEY: ''
+  GITHUB_APP_PRIVATE_KEY: "{{ lookup('unvault', 'files/key/coolify-loic-roux-404.2021-07-08.private-key.pem') }}"

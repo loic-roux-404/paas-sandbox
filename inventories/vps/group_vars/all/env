@@ -92,5 +92,5 @@ golang_packages:
 # role-dns
 # https://github.com/mrlesmithjr/ansible-dnsmasq/blob/master/defaults/main.yml
 # =============
-dnsmasq_pri_domain_name: "{{ stack_domain }}"
+dnsmasq_pri_domain_name: "{{ ansible_host }}"
 dnsmasq_config: True

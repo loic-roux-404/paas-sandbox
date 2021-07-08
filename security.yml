@@ -5,12 +5,16 @@
   become: True
   become_user: root
   pre_tasks:
-    - package:
+    - name: Upgrade debian
+      ansible.builtin.apt:
+        upgrade: safe
+      when: ansible_os_family == 'Debian'
+
+    - name: Install required playbook packages
+      ansible.builtin.package:
         name:
           - sudo
           - zsh
-          - sshpass
-          - whois
         state: latest
   roles:
     - role: role-users
