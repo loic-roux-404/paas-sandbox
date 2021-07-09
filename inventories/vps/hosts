@@ -6,11 +6,11 @@ master.consul ansible_user=root
 
 [security]
 master.consul ansible_user=root
-client01.consul ansible_user=root
+#client01.consul ansible_user=root
 
 [monitoring_instances]
 master.consul ansible_user=root
-client01.consul ansible_user=root
+#client01.consul ansible_user=root
 
 [docker_instances]
 client01.consul ansible_user=loic-roux-404
