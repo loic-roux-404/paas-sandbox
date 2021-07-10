@@ -3,7 +3,10 @@ Playbook-vps
 
 TO DO
 ------------
-- [ ] Test coolify
+- [ ] coolify functionnal
+- [ ] Create Role swarm to manage nodes
+- [ ] [Role swarm] Image Registery creation on master
+- [ ] Test a swarm cluster with two nodes
 
 **Less emergency**
 
