@@ -65,7 +65,7 @@ coolify_env:
 
   # Frontend only variables
   VITE_GITHUB_APP_CLIENTID: "{{ gh_app.clientid }}"
-  VITE_GITHUB_APP_NAME: "{{ gh_app.clientid }}"
+  VITE_GITHUB_APP_NAME: "{{ gh_app.name }}"
 
   # Github OAuth & App secrets and private key - you can get it from Github.
   GITHUB_APP_CLIENT_SECRET: "{{ gh_app.client_secret }}"

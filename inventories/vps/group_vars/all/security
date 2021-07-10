@@ -76,8 +76,7 @@ firewall_allowed_tcp_ports:
   - "22"    # ssh
   - "25"    # smtp
   - "80"    # reverse proxy
-  #- "81"    # reverse proxy
-  #- "8080"  # reverse proxy
+  - "3000"  # Coolify
   - "53"    # dns
   - "443"   # ssl
   - "2376"  # docker machine

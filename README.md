@@ -21,6 +21,10 @@ TO DO
 - `pip install -r requirements.txt`
 
 - First do `make site` (`make site.debug` to test on vm). It install users and apply security configs like for ssh.
+- For coolify in debug **use eth1** as advertise address for docker swarm :
+```sh
+make site.debug ANSIBLE_VARS=coolify_swarm_addr=eth1
+```
 
 Roles used by sub-playbook:
 ------------
