@@ -42,13 +42,14 @@ docker__pip_docker_compose_state: "present"
 # role-coolify
 # https://github.com/loic-roux-404/role-coolify/blob/master/defaults/main.yml
 # =============
-
+coolify_git_org: loic-roux-404
+coolify_version: fix-missing-mongo
 coolify_env:
   # Domain where your Coolify instance will be available and reachable.
   # It's the same as you set in Github OAuth App and Github App as <domain>.
   DOMAIN: "{{ ansible_host }}"
   ## Let's Encrypt contact email required
-  EMAIL: "{{ user1.email }}"
+  LETSENCRYPT_EMAIL: "{{ user1.email }}"
 
   # JWT Token Sign Key for logging you in to Coolify's frontend
   JWT_SIGN_KEY: jwt-key
@@ -57,7 +58,6 @@ coolify_env:
 
   # Mongodb
   # Values in case if you are using our Mongodb installation - CHANGE user and password fields!
-  MONGODB_HOST: coollabs-mongodb
   MONGODB_PORT: 27017
   MONGODB_USER: "{{ coolify_mongo.user }}"
   MONGODB_PASSWORD: "{{ coolify_mongo.password }}"
@@ -72,4 +72,4 @@ coolify_env:
   GITHUP_APP_WEBHOOK_SECRET: "{{ gh_app.webhook_secret }}"
 
   # It should look like this. Newlines breaks with \n
-  GITHUB_APP_PRIVATE_KEY: "{{ lookup('unvault', 'files/key/coolify-loic-roux-404.2021-07-08.private-key.pem') }}"
+  GITHUB_APP_PRIVATE_KEY: "{{ lookup('unvault', 'files/keys/coolify-loic-roux-404.2021-07-08.private-key.pem') }}"
