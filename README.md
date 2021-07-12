@@ -4,9 +4,11 @@ Playbook-vps
 TO DO
 ------------
 - [ ] coolify functionnal
+- [ ] test webhook `/api/v1/webhooks/`
 - [ ] Create Role swarm to manage nodes
 - [ ] [Role swarm] Image Registery creation on master
 - [ ] Test a swarm cluster with two nodes
+- [ ] Vault / docker secrets
 
 **Less emergency**
 

@@ -8,7 +8,7 @@ users:
     password: "{{ user1.password }}"
     group: "{{ user1.username }}"
     groups: ["sudo"]
-    uid: 1667
+    uid: 1001
     append: yes
     home_mode: "0750"
     home_create: yes

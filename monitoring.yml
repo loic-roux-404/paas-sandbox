@@ -1,4 +1,4 @@
-- hosts: monitoring_instances
+- hosts: monitoring
   gather_facts: True
   become: True
   roles:

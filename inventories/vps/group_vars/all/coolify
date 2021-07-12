@@ -1,5 +1,4 @@
 ---
-
 # ============
 # nickjj.docker
 # https://github.com/nickjj/ansible-docker
@@ -42,6 +41,9 @@ docker__pip_docker_compose_state: "present"
 # role-coolify
 # https://github.com/loic-roux-404/role-coolify/blob/master/defaults/main.yml
 # =============
+coolify_git_org: loic-roux-404
+coolify_version: test
+coolify_user: "{{ user1.username }}"
 coolify_env:
   # Domain where your Coolify instance will be available and reachable.
   # It's the same as you set in Github OAuth App and Github App as <domain>.
@@ -57,8 +59,9 @@ coolify_env:
   # Mongodb
   # Values in case if you are using our Mongodb installation - CHANGE user and password fields!
   MONGODB_PORT: 27017
-  MONGODB_USERNAME: "{{ coolify_mongo.user }}"
+  MONGODB_USER: "{{ coolify_mongo.user }}"
   MONGODB_PASSWORD: "{{ coolify_mongo.password }}"
+  MONGODB_ROOT_PASSWORD: "{{ coolify_mongo.password }}_adm"
   MONGODB_DB: coolLabs-prod
 
   # Frontend only variables

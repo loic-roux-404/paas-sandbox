@@ -15,7 +15,7 @@ HELPER
   def initialize
     @default = YAML.load_file($__dir__+ DEFAULT_CONFIG)[CONFIG_OBJECT_KEY]
     self.check_user_cnf
-    @user_config = YAML.load_file($__dir__ + USER_CONFIG)
+    @user_config = YAML.load_file($__dir__ + USER_CONFIG)[CONFIG_OBJECT_KEY]
     @config = @default.deep_merge(@user_config)
   end
 

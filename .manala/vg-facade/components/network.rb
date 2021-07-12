@@ -9,28 +9,29 @@ class Network < Component
     redirect_ports
     cnf.dns ? dns : nil
     @ssl ? ssl : nil
+    ssh_persist_user
   end
 
   def network_public
-    network_private
     # Automatic interfaces
     preferred_interfaces = ['eth0.*', 'eth\d.*', 'enp0s.*', 'enp\ds.*', 'en0.*', 'en\d.*']
     host_interfaces = %x( VBoxManage list bridgedifs | grep ^Name ).gsub(/Name:\s+/, '').split("\n")
     network_interface_to_use = preferred_interfaces.map{ |pi|
-      host_interfaces.find { |vm| vm =~ /#{Regexp.new(pi)}/ }
-    }.compact[0]
+    host_interfaces.find { |vm| vm =~ /#{Regexp.new(pi)}/ }
+  }.compact[0]
 
-    $vagrant.vm.network :public_network, bridge: network_interface_to_use #, adapter: "1"
-    if @cnf.fix_routing
-      routing
-    end
+  $vagrant.vm.network :public_network, bridge: network_interface_to_use , adapter: "2"
+  self.network_private("3")
+  if @cnf.fix_routing
+    routing
   end
+end
 
-  def network_private
+  def network_private(adapter = "2")
     if !@cnf.ip
-      $vagrant.vm.network :private_network, type: 'dhcp'
+      $vagrant.vm.network :private_network, type: 'dhcp', adapter: adapter
     else
-      $vagrant.vm.network :private_network, ip: @cnf.ip
+      $vagrant.vm.network :private_network, ip: @cnf.ip, adapter: adapter
     end
   end
 
@@ -63,6 +64,11 @@ class Network < Component
       run: "always",
       path: File.join(__dir__, "../", "/utils/routing.py"),
       args: "#{@gateway}"
+  end
+
+  def ssh_persist_user
+    $script = "su -s /bin/sh -c 'echo \"AllowUsers vagrant@*\" >> /etc/ssh/sshd_config'"
+    $vagrant.vm.provision :shell, inline: $script
   end
 
   def ssl

@@ -8,9 +8,9 @@ master.consul ansible_user=root
 master.consul ansible_user=root
 #client01.consul ansible_user=root
 
-[monitoring_instances]
+[monitoring]
 master.consul ansible_user=root
 #client01.consul ansible_user=root
 
-[docker_instances]
+[coolify]
 client01.consul ansible_user=loic-roux-404

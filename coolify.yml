@@ -1,6 +1,6 @@
 ---
 
-- hosts: docker_instances
+- hosts: coolify
   gather_facts: true
   become: yes
   become_user: root
