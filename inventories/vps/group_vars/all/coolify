@@ -44,6 +44,8 @@ docker__pip_docker_compose_state: "present"
 coolify_git_org: loic-roux-404
 coolify_version: test
 coolify_user: "{{ user1.username }}"
+coolify_github_app_name: "coolify-{{ user1.username }}"
+coolify_github_api_token: "{{ user1.github_token }}"
 coolify_env:
   # Domain where your Coolify instance will be available and reachable.
   # It's the same as you set in Github OAuth App and Github App as <domain>.
