@@ -1,16 +1,16 @@
-client01.consul ansible_host=loicroux.com
-master.consul ansible_host=loicroux.com
+# client01.consul ansible_host=loicroux.com
+master.consul ansible_host=loicroux.com  ansible_user=loic-roux-404
 
 [env]
-master.consul ansible_user=root
+master.consul
 
 [security]
-master.consul ansible_user=root
+master.consul
 #client01.consul ansible_user=root
 
 [monitoring]
-master.consul ansible_user=root
+master.consul
 #client01.consul ansible_user=root
 
 [coolify]
-client01.consul ansible_user=loic-roux-404
+master.consul

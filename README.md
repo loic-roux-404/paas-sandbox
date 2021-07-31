@@ -3,6 +3,7 @@ Playbook-vps
 
 TO DO
 ------------
+- [ ] use simpler : https://github.com/gantsign/ansible-role-oh-my-zsh
 - [ ] coolify functionnal
 - [ ] test webhook `/api/v1/webhooks/`
 - [ ] Create Role swarm to manage nodes
@@ -21,14 +22,25 @@ TO DO
 
 ### Init stack
 
-- `conda create --name=$(basename "$PWD") python=3.8`
+- `conda create -y -n=$(basename "$PWD") python=3.8`
 - `conda activate $(basename "$PWD")`
-- `pip install -r requirements.txt`
+- `make install`
 
-- First do `make site` (`make site.debug` to test on vm). It install users and apply security configs like for ssh.
-- For coolify in debug **use eth1** as advertise address for docker swarm :
+To Provision of a contabo server from scratch `make site ANSIBLE_VARS=ansible_user=root`
+
+Creates :
+- security config
+- user creation
+- shell environment and utilities
+- docker and coolify
+- monitoring tools
+
+If first provision is ok (users created), Do a `make site` (`make site.debug` to test on vm).
+**Coolify**
+
+- In debug **use eth1** as advertise address for docker swarm :
 ```sh
-make site.debug ANSIBLE_VARS=coolify_swarm_addr=eth1
+make coolify.test # you can enable github app form server with ANSIBLE_VARS+=github_app_server_enable=True
 ```
 
 Roles used by sub-playbook:
@@ -61,7 +73,7 @@ For functionnal monitoring playbook, we need the following things, just type com
 
 - `pip install -r requirements.txt`
 - `export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES`
-- `brew install gnu-tar`
+- `brew install gnu-tar` (mac os)
 
 > Check requirements
 

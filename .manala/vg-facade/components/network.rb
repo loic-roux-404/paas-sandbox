@@ -3,6 +3,7 @@ class Network < Component
 
   def initialize(cnf, domain)
     @domain = domain
+    @gateway = self._get_gw
     super(cnf)
 
     self.dispatch(cnf.type)
@@ -12,26 +13,24 @@ class Network < Component
     ssh_persist_user
   end
 
-  def network_public
+  def network_public # should be named bridged
+    # TODO make a cidr matcher to choose an ip in gateway range
     # Automatic interfaces
     preferred_interfaces = ['eth0.*', 'eth\d.*', 'enp0s.*', 'enp\ds.*', 'en0.*', 'en\d.*']
     host_interfaces = %x( VBoxManage list bridgedifs | grep ^Name ).gsub(/Name:\s+/, '').split("\n")
-    network_interface_to_use = preferred_interfaces.map{ |pi|
-    host_interfaces.find { |vm| vm =~ /#{Regexp.new(pi)}/ }
-  }.compact[0]
+    eth_to_use = preferred_interfaces.map{ |pi|
+    host_interfaces.find { |vm| vm =~ /#{Regexp.new(pi)}/ }}.compact[0]
 
-  $vagrant.vm.network :public_network, bridge: network_interface_to_use , adapter: "2"
-  self.network_private("3")
-  if @cnf.fix_routing
+    $vagrant.vm.network :public_network, :adapter => 2, bridge: eth_to_use, ip: @cnf.ip
+
     routing
   end
-end
 
-  def network_private(adapter = "2")
+  def network_private
     if !@cnf.ip
-      $vagrant.vm.network :private_network, type: 'dhcp', adapter: adapter
+      $vagrant.vm.network :private_network, :adapter => 2, type: 'dhcp'
     else
-      $vagrant.vm.network :private_network, ip: @cnf.ip, adapter: adapter
+      $vagrant.vm.network :private_network, :adapter => 2, ip: @cnf.ip
     end
   end
 
@@ -43,7 +42,7 @@ end
 
   def redirect_ports
     @cnf.ports.each do |port|
-      $vagrant.vm.network :forwarded_port, id: defined?(port.id) ? port.id : nil,
+      $vagrant.vm.network :forwarded_port, id: defined?(port.id) ? port.id : Time.now.to_i,
         guest: port.guest,
         host: port.host,
         auto_correct: defined?(port.auto_correct) ? port.auto_correct : true,
@@ -51,18 +50,10 @@ end
     end
   end
 
-  # Fix routing bad default gateway
   def routing
-    if Vagrant::Util::Platform.darwin?
-      @gateway = `route -n get default | grep 'gateway' | awk '{print $2}'`.delete("\n")
-    elsif Vagrant::Util::Platform.linux?
-      # Not tested
-      @gateway = `ip route show`[/default.*/][/\d+\.\d+\.\d+\.\d+/]
-    end
-
     $vagrant.vm.provision :shell,
-      run: "always",
-      path: File.join(__dir__, "../", "/utils/routing.py"),
+      run: 'always',
+      path: File.join(__dir__, "../", "/utils/routing.sh"),
       args: "#{@gateway}"
   end
 
@@ -92,6 +83,15 @@ end
     end
   end
 
+  def _get_gw
+    if Vagrant::Util::Platform.darwin?
+      `route -n get default | grep 'gateway' | awk '{print $2}'`.delete("\n")
+    elsif Vagrant::Util::Platform.linux?
+      # Not tested
+      `ip route show`[/default.*/][/\d+\.\d+\.\d+\.\d+/]
+    end
+  end
+
   def requirements
     if !self.is_valid_type(@cnf.type)
       raise ConfigError.new(
@@ -107,6 +107,10 @@ end
 
     if @cnf.ssl.path && @cnf.ssl.cert
       @ssl = true
+    end
+
+    if !@cnf.ip && @cnf.type == 'public'
+      raise ConfigError.new(["network.type"], "choose ip in the range of #{@gateway} with public net")
     end
 
     @cnf.ports.each do |port|

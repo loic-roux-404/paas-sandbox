@@ -2,28 +2,44 @@
 # role-users
 # https://github.com/weareinteractive/ansible-users.git
 #=========================
-# create user from github with correct auth key
+monitoring_user: "analyst"
+backup_user: "superman"
+app_user: "{{ user1 }}"
+security_user: "bodyguard"
+
 users:
-  - username: "{{ user1.username }}"
-    password: "{{ user1.password }}"
-    group: "{{ user1.username }}"
+  - username: "{{ app_user.username }}"
+    password: "{{ app_user.password }}"
+    group: "{{ app_user.username }}"
     groups: ["sudo"]
     uid: 1001
     append: yes
     home_mode: "0750"
     home_create: yes
-    home: "/home/{{ user1.username }}"
+    home: "/home/{{ app_user.username }}"
     authorized_keys:
-      - "https://github.com/{{ user1.username }}.keys"
+      - "https://github.com/{{ app_user.username }}.keys"
     ssh_key_generate: yes
-    github_user_token: "{{ user1.github_token }}"
+    github_user_token: "{{ app_user.github_token }}"
     update_password: always
 
-  - username: "superman"
+  - username: "{{ backup_user }}"
     password: "{{ user2.password }}"
-    uid: 1101
+    uid: 1002
     home_create: no
-    groups: ["sudo"]
+    groups: []
+
+  - username: "{{ monitoring_user }}"
+    password: "{{ app_user.password }}"
+    uid: 1003
+    home_create: no
+    groups: []
+
+  - username: "{{ security_user }}"
+    password: "{{ user2.password }}"
+    uid: 1667
+    home_create: no
+    groups: []
 
 users_home_files:
   - "files/.inputrc"
@@ -38,11 +54,46 @@ users_authorized_keys_exclusive: yes
 
 users_remove: []
 
+# ===========
+# role-users
+# https://github.com/weareinteractive/ansible-sudo
+#=========================
+# sudo_defaults:
+#  - defaults: env_reset
+#  - name: app_user
+#    defaults: requiretty
+# sudo_users:
+#  - name: '%group1'
+#  - name: 'bar'
+#    nopasswd: yes
+#  - name: '%group2'
+#    commands: '/bin/ls'
+#  - name: '%group3'
+#    commands:
+#      - /bin/ls
+#      - /bin/df
+#  - name: '%group4'
+#    hosts: 127.0.0.1
+
+# package name (version)
+sudo_package: sudo
+# list of username or %groupname
+sudo_users: []
+# list of username or %groupname and their defaults
+sudo_defaults: []
+# default sudoers file
+sudo_sudoers_file: ansible
+# path of the sudoers.d directory
+sudo_sudoers_d_path: /etc/sudoers.d
+# delete other files in `sudo_sudoers_d_path`
+purge_other_sudoers_files: no
+
+# role-basics
 # System trick
 ssh_acl_ip:
   - ippattern: "*"
-    user: "{{ user1.username }}"
-  - ippattern: "{{ user1.ip1|d('*') }}"
+    user: "{{ app_user.username }}"
+  - ippattern: "{{ app_user.ip1|d('*') }}"
     user: "root"
 
 #============
@@ -53,18 +104,21 @@ security_ssh_password_authentication: "yes"
 security_ssh_permit_root_login: "no"
 security_ssh_usedns: "no"
 security_ssh_permit_empty_password: "no"
-security_ssh_challenge_response_auth: "yes"
+security_ssh_challenge_response_auth: "no"
 security_ssh_gss_api_authentication: "no"
-security_ssh_x11_forwarding: "yes"
+security_ssh_x11_forwarding: "no"
 
 security_ssh_restart_handler_state: restarted
 
-security_sudoers_passwordless: ["{{ user1.username }}"]
-security_sudoers_passworded: ["superman"]
+security_sudoers_passwordless: ["{{ app_user.username }}"]
+security_sudoers_passworded:
+  - "{{ monitoring_user}}"
+  - "{{ backup_user }}"
+  - "{{ security_user }}"
 
 # module to ignore from apt auto upgrade
 security_autoupdate_blacklist: []
-security_autoupdate_mail_to: "{{ user1.email }}"
+security_autoupdate_mail_to: "{{ app_user.email }}"
 security_autoupdate_mail_on_error: true
 # module with IP black list
 security_fail2ban_enabled: true
@@ -100,11 +154,11 @@ firewall_additional_rules:
   - "iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT"
   - "iptables -A OUTPUT -m conntrack --ctstate ESTABLISHED -j ACCEPT"
 # ssh
-  - "iptables -A INPUT -p tcp -s {{ user1.ip2 }} --dport 22 \
+  - "iptables -A INPUT -p tcp -s {{ app_user.ip2 }} --dport 22 \
     -m conntrack --ctstate NEW,ESTABLISHED,RELATED -j ACCEPT"
   - "iptables -A INPUT -m state --state NEW,ESTABLISHED,RELATED -p tcp \
     --dport 22 -j DROP"
-  - "iptables -A INPUT -p tcp -s {{ user1.ip1 }} --dport 22 \
+  - "iptables -A INPUT -p tcp -s {{ app_user.ip1 }} --dport 22 \
    -m conntrack --ctstate NEW,ESTABLISHED,RELATED -j ACCEPT"
 # Github
   - "iptables -A INPUT -p tcp -s 140.82.118.3 --dport 22 \

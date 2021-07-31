@@ -65,7 +65,7 @@ remove_packages:
   - cmdtest
 
 pip_packages:
- - "setuptools"
+ - setuptools
 
 motd_message_1: VPS owned by lastico
 motd_message_2: Docker prod for multiple apps
@@ -92,5 +92,9 @@ golang_packages:
 # role-dns
 # https://github.com/mrlesmithjr/ansible-dnsmasq/blob/master/defaults/main.yml
 # =============
+dnsmasq_bind_interfaces: ["{{ ansible_default_ipv4['interface'] }}"]
 dnsmasq_pri_domain_name: "{{ ansible_host }}"
+dnsmasq_pri_bind_address: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
 dnsmasq_config: True
+dnsmasq_read_etc_hosts: False
+dnsmasq_log_queries: True

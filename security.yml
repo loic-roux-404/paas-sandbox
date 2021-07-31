@@ -9,15 +9,19 @@
       ansible.builtin.package:
         name:
           - sudo
-          - sshpass
           - zsh
+          - acl # avoid perms issue with ansible
         state: latest
   roles:
     - role: role-upgrade
-      tags: [system, security]
+      tags: [system]
     - role: role-users
-      tags: [system, security]
+      tags: [system, users]
+    - role: role-basics
+      tags: [system, users]
+    - role: role-sudo
+      tags: [system]
     - role: role-security
-      tags: [network-security, security]
+      tags: [network]
     - role: role-firewall
-      tags: [network-security, security]
+      tags: [network]

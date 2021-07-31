@@ -27,8 +27,8 @@ help_more:
 coolify.test: debug-deco
 	ANSIBLE_VARS+='\
 		coolify_swarm_addr=eth1 \
-		coolify_github_app_name=coolify-loic-roux-404-test \
-		coolify_github_app_url=localhost:8080'
+		github_app_name=coolify-loic-roux-404-test \
+		github_app_url=localhost:8080'
 	$(call playbook_exe, coolify)
 
 # ======================

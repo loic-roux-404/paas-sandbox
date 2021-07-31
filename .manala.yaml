@@ -36,12 +36,14 @@ vagrant:
   network:
     dns: true
     fix_routing: true
-    ip: 192.168.33.200
+    ip: ~
     ports:
       - guest: 3000,
         host: 8080
       - guest: 27017,
         host: 27017
+      - guest: 2000,
+        host: 2000
     ssl:
         cert: null
         path: /etc/ssl

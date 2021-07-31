@@ -4,13 +4,12 @@ roles:
   # Github roles
   - name: role-users
     src: weareinteractive.users
-    version: 1.17.0
   - name: role-basics
     src: ssh://git@github.com/loic-roux-404/role-basics.git
-    version: "configs"
+    version: "master"
     scm: git
   - name: role-dns
-    src: ssh://git@github.com/loic-roux-404/role-dns.git
+    src: ssh://git@github.com/mrlesmithjr/ansible-dnsmasq.git
     version: "master"
     scm: git
   - name: role-tools
@@ -22,23 +21,19 @@ roles:
     src: arillso.logrotate
   - name: role-firewall
     src: geerlingguy.firewall
-    version: 2.5.0
   - name: role-security
-    src: ssh://git@github.com/loic-roux-404/role-security.git
-    scm: git
+    src: geerlingguy.firewall
+  - name: role-sudo
+    src: weareinteractive.sudo
     version: master
   - name: role-docker
     src: nickjj.docker
-    version: v2.1.0
-  # - name: role-consul-template
-  #   src: griggheo.consul-template
-  #   version: 1.2.4
   - name: role-prometheus
-    src: ssh://git@github.com/cloudalchemy/ansible-prometheus.git
-    scm: git
+    src: cloudalchemy.prometheus
 # replace zsh by role: gantsign.oh-my-zsh
 
 collections:
   - name: community.general
+  - name: community.docker
   - name: ansible.netcommon
   - name: ansible.posix

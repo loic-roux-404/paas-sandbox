@@ -74,8 +74,8 @@ help:
 $(PLAYBOOKS): % : %.run
 
 install:
-	ansible-galaxy install -r requirements.yaml $(ARG)
 	$(PIP) install -r requirements.txt || true
+	ansible-galaxy install -r requirements.yaml $(ARG)
 	$(foreach var,$(shell ls -d *roles/role*/requirements.txt),$(PIP) install -r $(var))
 	$(foreach var,$(shell ls -d *.ext_roles/role*/requirements.txt),$(PIP) install -r $(var))
 
