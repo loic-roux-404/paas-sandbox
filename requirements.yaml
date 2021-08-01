@@ -15,6 +15,21 @@ roles:
   - name: role-tools
     version: master
     src: ssh://git@github.com/loic-roux-404/role-tools.git
+  - name: role-coolify
+    version: master
+    src: ssh://git@github.com/loic-roux-404/role-coolify.git
+    scm: git
+  - name: role-github-app
+    version: master
+    src: ssh://git@github.com/loic-roux-404/role-github-app.git
+    scm: git
+  - name: role-upgrade
+    version: master
+    src: ssh://git@github.com/loic-roux-404/role-upgrade.git
+    scm: git
+  - name: role-shell
+    version: master
+    src: ssh://git@github.com/loic-roux-404/role-shell.git
     scm: git
   # External requirements
   - name: role-logrotate

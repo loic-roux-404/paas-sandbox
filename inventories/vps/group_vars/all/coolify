@@ -30,10 +30,10 @@ docker__cron_jobs:
 # pip dependencies
 docker__pip_dependencies:
   - "gcc"
-  #- "python{{ '3' if ansible_python.version.major == 3 else '' }}-dev"
+  - "python{{ '3' if ansible_python.version.major == 3 else '' }}-virtualenv"
   - "python{{ '3' if ansible_python.version.major == 3 else '' }}-pip"
 # Pip config
-docker__pip_packages: [virtualenv, setuptools, docker]
+docker__pip_packages: [setuptools, docker]
 docker__pip_docker_state: "present"
 docker__pip_docker_compose_state: "present"
 
@@ -41,15 +41,13 @@ docker__pip_docker_compose_state: "present"
 # role-coolify
 # https://github.com/loic-roux-404/role-coolify/blob/master/defaults/main.yml
 # =============
-coolify_git_org: loic-roux-404
-coolify_version: test
+#coolify_git_org: loic-roux-404
+coolify_version: v1.0.22
 coolify_user: "{{ user1.username }}"
 coolify_github_app_name: "coolify-{{ user1.username }}"
 coolify_github_api_token: "{{ user1.github_token }}"
 coolify_env:
-  # Domain where your Coolify instance will be available and reachable.
-  # It's the same as you set in Github OAuth App and Github App as <domain>.
-  DOMAIN: "{{ hostvars[inventory_hostname].ansible_host }}"
+
   ## Let's Encrypt contact email required
   EMAIL: "{{ user1.email }}"
 

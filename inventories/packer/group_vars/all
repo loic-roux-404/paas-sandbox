@@ -95,8 +95,7 @@ remove_packages:
   - "apache*"
   - "php*"
 
-pip_packages:
- - virtualenv
+pip_packages: []
 
 motd_message_1: Debian buster VPS
 motd_message_2: For testing / development

@@ -1,10 +1,14 @@
 ---
 
 - hosts: coolify
-  gather_facts: true
-  become: yes
-  become_user: root
+  gather_facts: True
+  pre_tasks:
+    - name: Force virtualenv correct install
+      ansible.builtin.pip:
+        name: virtualenv
+        state: forcereinstall
+      become: yes
+      become_user: root
   roles:
     - { role: role-upgrade, tags: [stack, upgrade] }
-    - { role: role-docker, tags: [stack] }
     - { role: role-coolify, tags: [stack, app] }
