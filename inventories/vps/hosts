@@ -1,16 +1,16 @@
 # client01.consul ansible_host=loicroux.com
 master.consul ansible_host=loicroux.com  ansible_user=loic-roux-404
 
-[env]
+[stack]
 master.consul
 
 [security]
 master.consul
-#client01.consul ansible_user=root
+#client01.consul
 
 [monitoring]
 master.consul
-#client01.consul ansible_user=root
+#client01.consul
 
 [swarm]
 master.consul

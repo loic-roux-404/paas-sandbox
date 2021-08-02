@@ -36,24 +36,30 @@ Creates :
 Roles used by sub-playbook:
 ------------
 
-### Env :
+### Stack :
 
-Simple playbook to create shell / users / ssh keys from github
+Simple playbook to create shell / users and install language tools
 
-- **role-basics** with deps : ansible-role-zsh & weareinteractive.users
+- role-shell (comport ansible-zsh role)
+- role-tools
+- role-dns for more configurable dnsmasq
 
 ### Security :
 
 Secure the infrastructure client / server instances
 
+- **role-basics** with deps : weareinteractive.users
 - role-firewall (jeff g.)
 - role-security (jeff g.)
 
-### Stack :
+### Swarm :
 
 --> Objective is to build a simple configuration on top of playbook-vps sub playbooks to provide container orchestration and envs (staging / prod) for apps
 
 Later it's can be more logical to split server in two nodes with a master custer and client one
+
+- role-docker
+- role-swarmlet : PaaS tool
 
 #### Monitoring
 

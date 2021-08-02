@@ -1,5 +1,5 @@
 ---
-- hosts: env
+- hosts: stack
   gather_facts: True
   become: True
   roles:
