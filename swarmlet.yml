@@ -1,0 +1,8 @@
+---
+
+- hosts: swarm
+  gather_facts: True
+  roles:
+    - { role: role-upgrade, tags: [stack, upgrade] }
+    - { role: role-docker, tags: [stack, upgrade] }
+    - { role: role-swarmlet, tags: [stack, app] }

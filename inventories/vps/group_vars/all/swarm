@@ -38,39 +38,6 @@ docker__pip_docker_state: "present"
 docker__pip_docker_compose_state: "present"
 
 # =============
-# role-coolify
-# https://github.com/loic-roux-404/role-coolify/blob/master/defaults/main.yml
+# role-swarmlet
+# https://github.com/loic-roux-404/role-swarmlet/blob/master/defaults/main.yml
 # =============
-#coolify_git_org: loic-roux-404
-coolify_version: v1.0.22
-coolify_user: "{{ user1.username }}"
-coolify_github_app_name: "coolify-{{ user1.username }}"
-coolify_github_api_token: "{{ user1.github_token }}"
-coolify_env:
-
-  ## Let's Encrypt contact email required
-  EMAIL: "{{ user1.email }}"
-
-  # JWT Token Sign Key for logging you in to Coolify's frontend
-  JWT_SIGN_KEY: jwt-key
-  # Encryption key for SECRETS - do NOT share it with others!
-  SECRETS_ENCRYPTION_KEY: jwt-encrypt-key
-
-  # Mongodb
-  # Values in case if you are using our Mongodb installation - CHANGE user and password fields!
-  MONGODB_PORT: 27017
-  MONGODB_USER: "{{ coolify_mongo.user }}"
-  MONGODB_PASSWORD: "{{ coolify_mongo.password }}"
-  MONGODB_ROOT_PASSWORD: "{{ coolify_mongo.password }}_adm"
-  MONGODB_DB: coolLabs-prod
-
-  # Frontend only variables
-  VITE_GITHUB_APP_CLIENTID: "{{ gh_app.clientid }}"
-  VITE_GITHUB_APP_NAME: "{{ gh_app.name }}"
-
-  # Github OAuth & App secrets and private key - you can get it from Github.
-  GITHUB_APP_CLIENT_SECRET: "{{ gh_app.client_secret }}"
-  GITHUP_APP_WEBHOOK_SECRET: "{{ gh_app.webhook_secret }}"
-
-  # It should look like this. Newlines breaks with \n
-  GITHUB_APP_PRIVATE_KEY: "{{ lookup('unvault', 'files/keys/coolify-loic-roux-404.2021-07-08.private-key.pem') }}"

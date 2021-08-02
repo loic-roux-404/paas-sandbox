@@ -2,4 +2,4 @@
 - import_playbook: security.yml
 - import_playbook: monitoring.yml
 - import_playbook: env.yml
-- import_playbook: coolify.yml
+- import_playbook: swarmlet.yml

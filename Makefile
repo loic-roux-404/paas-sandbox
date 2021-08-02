@@ -24,13 +24,6 @@ help_more:
 	$(eval INVENTORY:=./inventories/packer)
 	$(call playbook_exe)
 
-coolify.test: debug-deco
-	ANSIBLE_VARS+='\
-		coolify_swarm_addr=eth1 \
-		github_app_name=coolify-loic-roux-404-test \
-		github_app_url=localhost:8080'
-	$(call playbook_exe, coolify)
-
 # ======================
 # Docker services
 # ======================

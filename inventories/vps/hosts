@@ -12,5 +12,5 @@ master.consul
 master.consul
 #client01.consul ansible_user=root
 
-[coolify]
+[swarm]
 master.consul

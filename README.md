@@ -4,8 +4,6 @@ Playbook-vps
 TO DO
 ------------
 - [ ] use simpler : https://github.com/gantsign/ansible-role-oh-my-zsh
-- [ ] coolify functionnal
-- [ ] test webhook `/api/v1/webhooks/`
 - [ ] Create Role swarm to manage nodes
 - [ ] [Role swarm] Image Registery creation on master
 - [ ] Test a swarm cluster with two nodes
@@ -32,16 +30,8 @@ Creates :
 - security config
 - user creation
 - shell environment and utilities
-- docker and coolify
+- docker and swarmlet
 - monitoring tools
-
-If first provision is ok (users created), Do a `make site` (`make site.debug` to test on vm).
-**Coolify**
-
-- In debug **use eth1** as advertise address for docker swarm :
-```sh
-make coolify.test # you can enable github app form server with ANSIBLE_VARS+=github_app_server_enable=True
-```
 
 Roles used by sub-playbook:
 ------------

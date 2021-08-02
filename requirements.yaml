@@ -15,9 +15,9 @@ roles:
   - name: role-tools
     version: master
     src: ssh://git@github.com/loic-roux-404/role-tools.git
-  - name: role-coolify
+  - name: role-swarmlet
     version: master
-    src: ssh://git@github.com/loic-roux-404/role-coolify.git
+    src: ssh://git@github.com/loic-roux-404/role-swarmlet.git
     scm: git
   - name: role-github-app
     version: master
@@ -52,3 +52,4 @@ collections:
   - name: community.docker
   - name: ansible.netcommon
   - name: ansible.posix
+  - name: community.crypto.openssh_keypair
