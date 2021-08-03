@@ -2,10 +2,10 @@
 - hosts: stack
   gather_facts: True
   become: True
+  become_user: root
   roles:
+    - { role: role-upgrade, tags: [system, deps] }
     - role: role-shell
-      tags: [shell]
+      tags: [system, shell]
     - role: role-tools
       tags: [system, app]
-    - role: role-dns
-      tags: [system]

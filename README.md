@@ -9,22 +9,14 @@ TO DO
 - [ ] Test a swarm cluster with two nodes
 - [ ] Vault / docker secrets
 
-**Less emergency**
-
-- Nomad Simple container management system
-- UI to manage deployments between different environments => auto CI deploy template
-- Vault system with dynamic secret and project protection
-- Vault CA Authority
-- Make app playbook template with nomad job
-- split app logs
-
 ### Init stack
 
+- If server not provisionned `brew install esolitos/ipa/sshpass`
 - `conda create -y -n=$(basename "$PWD") python=3.8`
 - `conda activate $(basename "$PWD")`
 - `make install`
 
-To Provision of a contabo server from scratch `make site ANSIBLE_VARS=ansible_user=root`
+To Provision of a server from scratch `make site ANSIBLE_VARS=ansible_user=root ansible_password=vps-root-pass`
 
 Creates :
 - security config

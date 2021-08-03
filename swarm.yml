@@ -1,8 +1,13 @@
 ---
-
 - hosts: swarm
   gather_facts: True
+  become: True
+  become_user: root
+  pre_tasks:
+      - name: Patch broken mirror (TEMP)
+        shell: echo '' > /etc/apt/sources.list.d/backports.list
   roles:
-    - { role: role-upgrade, tags: [stack, upgrade] }
-    - { role: role-docker, tags: [stack, upgrade] }
+    - { role: role-upgrade, tags: [system, deps] }
+    - { role: role-tools, tags: [system, deps] }
+    - { role: role-docker, tags: [stack, app] }
     - { role: role-swarmlet, tags: [stack, app] }

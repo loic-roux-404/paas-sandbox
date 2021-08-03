@@ -5,19 +5,11 @@
   become: True
   become_user: root
   pre_tasks:
-    - name: Install required playbook packages
-      ansible.builtin.package:
-        name:
-          - sudo
-          - zsh
-          - acl # avoid perms issue with ansible
-        state: latest
   roles:
     - role: role-upgrade
       tags: [system]
+      vars: { apt_install: [sudo, zsh, acl] }
     - role: role-users
-      tags: [system, users]
-    - role: role-basics
       tags: [system, users]
     - role: role-sudo
       tags: [system]
@@ -25,3 +17,7 @@
       tags: [network]
     - role: role-firewall
       tags: [network]
+    - role: role-dns
+      tags: [network]
+    - role: role-basics
+      tags: [system, network, users]

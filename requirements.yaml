@@ -15,18 +15,16 @@ roles:
   - name: role-tools
     version: master
     src: ssh://git@github.com/loic-roux-404/role-tools.git
-  - name: role-swarmlet
-    version: master
-    src: ssh://git@github.com/loic-roux-404/role-swarmlet.git
-    scm: git
+  # - name: role-swarmlet
+  #   version: master
+  #   src: ssh://git@github.com/loic-roux-404/role-swarmlet.git
+  #   scm: git
   - name: role-github-app
     version: master
     src: ssh://git@github.com/loic-roux-404/role-github-app.git
     scm: git
   - name: role-upgrade
-    version: master
-    src: ssh://git@github.com/loic-roux-404/role-upgrade.git
-    scm: git
+    src: oefenweb.apt
   - name: role-shell
     version: master
     src: ssh://git@github.com/loic-roux-404/role-shell.git
@@ -52,4 +50,4 @@ collections:
   - name: community.docker
   - name: ansible.netcommon
   - name: ansible.posix
-  - name: community.crypto.openssh_keypair
+  - name: community.crypto

@@ -1,4 +1,30 @@
 # ===========
+# role-upgrade
+# https://github.com/Oefenweb/ansible-apt
+#=========================
+apt_manage_sources_list: True
+apt_debian_contrib_nonfree_enable: false
+
+apt_install:
+  - wget
+  - zip
+  - unzip
+  - gnupg2
+  - vim
+  - dnsutils
+  - python3
+  - python3-pip
+  - man
+  - apache2-utils
+  - dnsutils
+
+apt_remove:
+  - apache*
+  - "php*"
+  - "python2*"
+  - cmdtest
+
+# ===========
 # role-users
 # https://github.com/weareinteractive/ansible-users.git
 #=========================
@@ -11,7 +37,6 @@ users:
   - username: "{{ app_user.username }}"
     password: "{{ app_user.password }}"
     group: "{{ app_user.username }}"
-    groups: ["sudo"]
     uid: 1001
     append: yes
     home_mode: "0750"
@@ -27,19 +52,16 @@ users:
     password: "{{ user2.password }}"
     uid: 1002
     home_create: no
-    groups: []
 
   - username: "{{ monitoring_user }}"
     password: "{{ app_user.password }}"
     uid: 1003
     home_create: no
-    groups: []
 
   - username: "{{ security_user }}"
     password: "{{ user2.password }}"
     uid: 1667
     home_create: no
-    groups: []
 
 users_home_files:
   - "files/.inputrc"
@@ -55,7 +77,7 @@ users_authorized_keys_exclusive: yes
 users_remove: []
 
 # ===========
-# role-users
+# role-sudo
 # https://github.com/weareinteractive/ansible-sudo
 #=========================
 # sudo_defaults:
@@ -78,7 +100,13 @@ users_remove: []
 # package name (version)
 sudo_package: sudo
 # list of username or %groupname
-sudo_users: []
+sudo_users:
+  - name: "{{ app_user.username }}"
+    nopasswd: True
+    # commands: ""
+  - name: "{{ monitoring_user}}"
+  - name: "{{ backup_user }}"
+  - name: "{{ security_user }}"
 # list of username or %groupname and their defaults
 sudo_defaults: []
 # default sudoers file
@@ -109,12 +137,6 @@ security_ssh_gss_api_authentication: "no"
 security_ssh_x11_forwarding: "no"
 
 security_ssh_restart_handler_state: restarted
-
-security_sudoers_passwordless: ["{{ app_user.username }}"]
-security_sudoers_passworded:
-  - "{{ monitoring_user}}"
-  - "{{ backup_user }}"
-  - "{{ security_user }}"
 
 # module to ignore from apt auto upgrade
 security_autoupdate_blacklist: []

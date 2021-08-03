@@ -48,24 +48,6 @@ zsh_aliases:
 # role-basics
 # https://github.com/loic-roux-404/role-basics
 #==================
-users_no_ssh: [root, superman]
-packages:
-  - dnsutils
-  - python3
-  - python3-pip
-  - man
-  - apache2-utils
-  - dnsutils
-
-# remove default webserver and unused python versions
-remove_packages:
-  - "apache*"
-  - "php*"
-  - "python2*"
-  - cmdtest
-
-pip_packages:
- - setuptools
 
 motd_message_1: VPS owned by lastico
 motd_message_2: Docker prod for multiple apps
@@ -75,6 +57,9 @@ motd_message_3: Unauthorized access is punished
 # role-tools
 # https://github.com/loic-roux-404/role-tools
 #==================
+pip_packages:
+ - setuptools
+
 node_version: lts # semantic version | lts | (latest / current)
 yarn_version: latest # semantic version | latest
 golang_version: latest # semantic version | latest
