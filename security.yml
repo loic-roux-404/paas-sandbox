@@ -8,7 +8,6 @@
   roles:
     - role: role-upgrade
       tags: [system]
-      vars: { apt_install: [sudo, zsh, acl] }
     - role: role-users
       tags: [system, users]
     - role: role-sudo
@@ -16,8 +15,6 @@
     - role: role-security
       tags: [network]
     - role: role-firewall
-      tags: [network]
-    - role: role-dns
       tags: [network]
     - role: role-basics
       tags: [system, network, users]

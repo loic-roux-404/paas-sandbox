@@ -3,9 +3,12 @@
 # https://github.com/Oefenweb/ansible-apt
 #=========================
 apt_manage_sources_list: True
-apt_debian_contrib_nonfree_enable: false
+apt_debian_contrib_nonfree_enable: False
+apt_backports_enable: True
 
 apt_install:
+  - sudo
+  - acl
   - wget
   - zip
   - unzip
@@ -152,7 +155,6 @@ firewall_allowed_tcp_ports:
   - "22"    # ssh
   - "25"    # smtp
   - "80"    # reverse proxy
-  - "3000"  # Coolify
   - "53"    # dns
   - "443"   # ssl
   - "2376"  # docker machine

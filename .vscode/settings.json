@@ -24,6 +24,5 @@
     "editor.defaultFormatter": "SimonSiefke.prettier-vscode"
   },
   "telemetry.enableCrashReporter": false,
-  "telemetry.enableTelemetry": false,
-  "python.pythonPath": "/usr/local/Caskroom/miniconda/base/envs/playbook-vps/bin/python"
+  "telemetry.enableTelemetry": false
 }

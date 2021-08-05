@@ -17,7 +17,7 @@ Installation:
 2. Add the following two lines to your `ansible.cfg` file:
 
 callback_plugins = plugins/callbacks
-callback_enabled = auto_tags
+callback_whitelist = auto_tags
 """
 from __future__ import print_function
 from ansible.plugins.callback import CallbackBase

@@ -1,5 +1,5 @@
 ---
 - import_playbook: security.yml
-- import_playbook: monitoring.yml
 - import_playbook: stack.yml
 - import_playbook: swarm.yml
+- import_playbook: monitoring.yml

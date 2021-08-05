@@ -41,3 +41,8 @@ docker__pip_docker_compose_state: "present"
 # role-swarmlet
 # https://github.com/loic-roux-404/role-swarmlet/blob/master/defaults/main.yml
 # =============
+swarmlet_email: "{{ user1.email }}"
+swarmlet_modules: "portainer swarmprom"
+# TODO remove after debug
+swarmlet_state: install
+swarmlet_username: "{{ user1.username }}"

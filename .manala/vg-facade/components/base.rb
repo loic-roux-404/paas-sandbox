@@ -9,7 +9,7 @@ class Base < Component
 		self.dispatch_all
 	end
 
-  def base_box()
+	def base_box()
 		$vagrant.vm.box = @cnf.box || DEFAULT_BOX
 		@cnf.box_version ? $vagrant.vm.box_version = @cnf.box_version : nil
     	$vagrant.vm.box_check_update = @UPDATE_BOX

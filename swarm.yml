@@ -1,13 +1,19 @@
 ---
 - hosts: swarm
   gather_facts: True
-  become: True
+  become: true
   become_user: root
   pre_tasks:
-      - name: Patch broken mirror (TEMP)
-        shell: echo '' > /etc/apt/sources.list.d/backports.list
+    - name: fix virtualenv bad install
+      pip:
+        name: virtualenv
+        state: forcereinstall
   roles:
-    - { role: role-upgrade, tags: [system, deps] }
-    - { role: role-tools, tags: [system, deps] }
-    - { role: role-docker, tags: [stack, app] }
-    - { role: role-swarmlet, tags: [stack, app] }
+    - role: role-upgrade
+      tags: [system, deps]
+    - role: role-dns
+      tags: [network]
+    - role: role-docker
+      tags: [swarm, apps]
+    - role: role-swarmlet
+      tags: [swarm, apps, swarmlet]

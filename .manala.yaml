@@ -7,7 +7,7 @@ gitignore: |
     vault_pass.sh
 
 ansible:
-  auto_tag: true
+  auto_tag: false
   cfg_lines:
       # strategy: mitogen_linear (not compatible with ansible 2.10 / py 3.8)
       vault_password_file: ./vault_pass.sh
@@ -16,7 +16,7 @@ ansible:
   privilege_escalation:
       become: true
       become_ask_pass: false
-      become_method: ansible.builtin.enable
+      become_method: sudo
       become_user: root
 
 vagrant:
@@ -38,11 +38,11 @@ vagrant:
     fix_routing: true
     ip: ~
     ports:
-      - guest: 3000,
+      - guest: 3000
         host: 8080
-      - guest: 27017,
+      - guest: 27017
         host: 27017
-      - guest: 2000,
+      - guest: 2000
         host: 2000
     ssl:
         cert: null

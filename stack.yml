@@ -4,7 +4,8 @@
   become: True
   become_user: root
   roles:
-    - { role: role-upgrade, tags: [system, deps] }
+    - role: role-upgrade
+      tags: [system, deps]
     - role: role-shell
       tags: [system, shell]
     - role: role-tools
