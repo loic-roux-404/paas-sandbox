@@ -43,5 +43,5 @@ docker__pip_docker_compose_state: "present"
 # =============
 swarmlet_email: "{{ user1.email }}"
 swarmlet_modules: "portainer swarmprom"
-swarmlet_state: install
+swarmlet_state: present
 swarmlet_username: "{{ user1.username }}"
