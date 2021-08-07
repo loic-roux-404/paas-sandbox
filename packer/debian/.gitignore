@@ -1,0 +1,16 @@
+*.build
+*build_*
+*.export
+*.vmdk
+*.tested
+*.uploaded
+*.released
+*.box.in/
+*.ovf
+*.SHA256SUM.gpg
+.token
+.qcow2
+.img
+*_qemu
+*_virtualbox-ovf
+*_qemu

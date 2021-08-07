@@ -1,0 +1,42 @@
+#!/bin/bash
+
+set -eu
+
+provider=$1
+name=$2
+boxname="test-$name"
+boxfile=$3
+
+testdir=test-$name
+
+cleanup() {
+  set -x
+  if [ -f $testdir/Vagrantfile ]; then
+    (cd $testdir && vagrant destroy -f)
+  fi
+  rm -rf $testdir
+  vagrant box remove $boxname || true
+}
+trap cleanup INT TERM EXIT
+
+set -x
+export VAGRANT_DEFAULT_PROVIDER="$provider"
+vagrant box add $boxname $boxfile
+mkdir $testdir
+
+(
+  cd $testdir
+  vagrant init $boxname
+  vagrant up --no-provision
+  vagrant ssh -- true
+  vagrant ssh -- sudo true
+  vagrant ssh -- cat /etc/debian_version
+  vagrant ssh -c "sh /vagrant/package_report"
+  vagrant ssh -- sudo apt-get --quiet --yes install debconf-utils figlet
+  # test that we have the debconf front end set to the defauilt of 'Dialog'
+  # see man debconf-set-selections (1) for regexp format
+  vagrant ssh -c "sudo debconf-get-selections | egrep '^debconf.?debconf/frontend.?select.?Dialog$'"
+  # test that this box version matches the latest major / minor release
+  vagrant ssh -c "cat /etc/debian_version"
+  vagrant ssh -c "lsb_release --release --codename | figlet"
+)

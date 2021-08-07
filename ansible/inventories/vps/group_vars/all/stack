@@ -1,0 +1,85 @@
+---
+#==================
+# ansible-role-zsh
+# https://github.com/viasite-ansible/ansible-role-zsh
+#==================
+zsh_user: "{{ user1.username }}"
+zsh_antigen_theme: "romkatv/powerlevel10k powerlevel10k"
+zsh_antigen_bundles:
+  - common-aliases
+  - { name: docker, command: docker }
+  - git-extras
+  - { name: zsh-users/zsh-autosuggestions, when: "{{ zsh_version is version_compare('5.0', '>=') }}" }
+  - { name: zdharma/fast-syntax-highlighting@v1.2, when: "{{ zsh_version is version_compare('4.3.17', '>=') }}" }
+  - zsh_reload
+  - { name: golang, command: go }
+
+zsh_shared: no
+zsh_aliases:
+  - { alias: 'dfh', action: 'df -h | grep -v docker' }
+  - { alias: p, action: "ps aux | grep" }
+  # Search files in the current folder
+  - { alias: f, action: "find . | grep " }
+  # Show open ports
+  - {alias: openports, action: 'netstat -nape --inet' }
+  # Alias's to show disk space and space used in a folder
+  - { alias: diskspace, action: "du -S | sort -n -r |more" }
+  - { alias: folders, action: "du -h --max-depth=1" }
+  # search in all files
+  # ftext function
+  - { alias: mkdirg, action: "mkdirg" }
+  # Alias's to modified commands
+  - { alias: cp , action: 'cp -i' }
+  - { alias: mv , action : 'mv -i' }
+  - { alias: rm, action: 'rm -iv' }
+  - { alias: mkdir, action: 'mkdir -p' }
+  - { alias: vi, action: 'sudo vim' }
+  - { alias: tail, action: 'sudo tail' }
+  - { alias: apt-get, action: 'sudo apt-get' }
+  - { alias: apt, action: 'sudo apt' }
+  # Search command line history
+  - { alias: h, action: "history | grep " }
+  - { alias: docker, action: "sudo docker" }
+  - { alias: apt, action: "sudo apt" }
+  - { alias: apt-get, action: "sudo apt-get" }
+  - { alias: chown, action: "sudo chown" }
+
+#==================
+# role-shell
+# https://github.com/loic-roux-404/role-shell
+#==================
+
+motd_message_1: VPS owned by lastico
+motd_message_2: Docker prod for multiple apps
+motd_message_3: Unauthorized access is punished
+
+#==================
+# role-tools
+# https://github.com/loic-roux-404/role-tools
+#==================
+pip_packages:
+ - setuptools
+
+node_version: lts # semantic version | lts | (latest / current)
+yarn_version: latest # semantic version | latest
+golang_version: latest # semantic version | latest
+golang_packages:
+  - name: github.com/gohugoio/hugo
+    version: v0.82.1
+    flags: "--tags extended"
+    deps:
+      - gcc # for libsass
+      - g++ # same
+    state: present
+# TODO dart sass
+
+# =============
+# role-dns
+# https://github.com/mrlesmithjr/ansible-dnsmasq/blob/master/defaults/main.yml
+# =============
+dnsmasq_bind_interfaces: ["{{ ansible_default_ipv4['interface'] }}"]
+dnsmasq_pri_domain_name: "{{ ansible_host }}"
+dnsmasq_pri_bind_address: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
+dnsmasq_config: True
+dnsmasq_read_etc_hosts: False
+dnsmasq_log_queries: True
