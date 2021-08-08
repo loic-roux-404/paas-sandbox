@@ -126,6 +126,8 @@ ssh_acl_ip:
     user: "{{ app_user.username }}"
   - ippattern: "{{ app_user.ip1|d('*') }}"
     user: "root"
+  - ippattern: "*"
+    user: "git"
 
 #============
 # role-security

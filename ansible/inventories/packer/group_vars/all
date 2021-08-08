@@ -82,7 +82,7 @@ zsh_aliases:
 # role-basics
 # https://github.com/loic-roux-404/role-basics
 #==================
-packages:
+apt_install:
   - man
   - vim
   - wget
@@ -90,8 +90,7 @@ packages:
   - curl
   - git
 
-# remove default webserver and unused python versions
-remove_packages:
+apt_remove:
   - "apache*"
   - "php*"
 
