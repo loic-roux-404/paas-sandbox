@@ -1,11 +1,10 @@
 
 TO DO
 ------------
-- [ ] use simpler : https://github.com/gantsign/ansible-role-oh-my-zsh
-- [ ] Create Role swarm to manage nodes
-- [ ] [Role swarm] Image Registery creation on master
-- [ ] Test a swarm cluster with two nodes
+- [ ] [Role dokku] dokku and webhook + ui
 - [ ] Vault / docker secrets
+- [ ] Test a swarm cluster with two nodes
+- [ ] use simpler : https://github.com/gantsign/ansible-role-oh-my-zsh
 
 ### Init stack
 
@@ -14,13 +13,13 @@ TO DO
 - `conda activate $(basename "$PWD")`
 - `make install`
 
-To Provision of a server from scratch `make site ANSIBLE_VARS=ansible_user=root ansible_password=vps-root-pass`
+To Provision of a server from scratch `make site ANSIBLE_VARS=ansible_user=root ansible_password=root-pass`
 
 Creates :
 - security config
 - user creation
 - shell environment and utilities
-- docker and swarmlet
+- docker and dokku
 - monitoring tools
 
 Roles used by sub-playbook:
@@ -44,12 +43,12 @@ Secure the infrastructure client / server instances
 
 ### Swarm :
 
---> Objective is to build a simple configuration on top of playbook-vps sub playbooks to provide container orchestration and envs (staging / prod) for apps
+--> Objective is to build a simple configuration on top of playbook-paas sub playbooks to provide container orchestration and envs (staging / prod) for apps
 
 Later it's can be more logical to split server in two nodes with a master custer and client one
 
 - role-docker
-- role-swarmlet : PaaS tool
+- role-dokku : PaaS tool
 
 #### Monitoring
 
@@ -69,7 +68,7 @@ For functionnal monitoring playbook, we need the following things, just type com
 ### Secure user creation
 
 1. `htpasswd -nb vagrant toto`
-1.  Open `ansible-vault edit inventories/vps/group_vars/all/secrets`
+1.  Open `ansible-vault edit inventories/paas/group_vars/all/secrets`
 1. `user1.password: $apr1$4mjrgol9$toKJeYzjKhS3qcWJl8Tvb`
 
 ### Troubleshoot

@@ -2,6 +2,4 @@
   gather_facts: True
   become: True
   roles:
-    # not tested
-    #- { role: role-swarmlet-monitoring, tags: [monitoring] }
     - { role: role-logrotate, tags: [monitoring, log] }

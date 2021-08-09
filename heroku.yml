@@ -1,0 +1,14 @@
+# ============
+# Deploy vault
+# ============
+build:
+  # config:
+  #   FOO: bar
+  docker:
+    ansible: docker/ansible/Dockerfile
+run:
+  docker:
+    vault:
+      image: vault:1.8.1
+    ansible:
+      - command: -i inventories/paas

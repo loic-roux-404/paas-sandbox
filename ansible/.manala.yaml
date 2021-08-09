@@ -12,7 +12,7 @@ ansible:
       # strategy: mitogen_linear (not compatible with ansible 2.10 / py 3.8)
       vault_password_file: ./vault_pass.sh
   internal_roles: false
-  inventory: ./inventories/vps
+  inventory: ./inventories/paas
   privilege_escalation:
       become: true
       become_ask_pass: false
@@ -20,7 +20,7 @@ ansible:
       become_user: root
 
 vagrant:
-  project_name: playbook-vps
+  project_name: playbook-paas
   box: loic-roux-404/deb64-buster
   box_update: false
   box_version: null

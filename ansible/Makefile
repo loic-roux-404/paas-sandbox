@@ -17,7 +17,7 @@ help_more:
 	@echo "Docker service : $(addsuffix .docker, $(DOCKER_IMAGES)))"
 
 # =============================
-# Additionals playbook-vps commands
+# Additionals playbook commands
 # =============================
 
 %.debug.packer: debug-deco
@@ -59,7 +59,3 @@ deploy:
 	cd docker \
 	&& heroku container:push --recursive -a $(HEROKU_APP_NAME)
 
-# Usage : make update_secrets.swarm SECRET:=swarmlet-user-secrets DATA:=pass
-update_secrets.swarm:
-	$(eval OPTIONS:='--extra-vars="swarmlet_update_secrets_all_enable=true"')
-	$(call playbook_exe, swarm)

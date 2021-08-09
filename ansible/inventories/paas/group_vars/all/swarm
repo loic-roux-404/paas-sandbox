@@ -39,9 +39,9 @@ docker__pip_docker_compose_state: "present"
 
 # =============
 # role-swarmlet
-# https://github.com/loic-roux-404/role-swarmlet/blob/master/defaults/main.yml
+# https://github.com/loic-roux-404/role-dokku/blob/master/defaults/main.yml
 # =============
-swarmlet_email: "{{ user1.email }}"
-swarmlet_modules: "portainer swarmprom"
-swarmlet_state: present
-swarmlet_username: "{{ user1.username }}"
+dokku_email: "{{ user1.email }}"
+dokku_modules: "portainer swarmprom"
+dokku_state: present
+dokku_username: "{{ user1.username }}"
