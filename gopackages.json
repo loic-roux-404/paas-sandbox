@@ -1,0 +1,7 @@
+[
+    {
+        "name": "github.com/bazelbuild/bazelisk",
+        "version": "4.1.0",
+        "state": "present"
+    }
+]

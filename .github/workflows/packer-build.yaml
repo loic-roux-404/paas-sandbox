@@ -13,8 +13,8 @@ jobs:
         distrib:
           - VERSION: buster
             NAME: debian
-            VAGRANT_CLOUD_TAG: loic-roux-404/deb64-buster 
-            
+            VAGRANT_CLOUD_TAG: loic-roux-404/deb64-buster
+
           - VERSION: focal
             NAME: ubuntu
 
@@ -25,13 +25,10 @@ jobs:
           sudo apt update
           sudo apt install moreutils
           sudo apt install -y unzip curl jq zsh
-      - name: Install packer
-        id: packer-install
-        run: |
-          curl -LO https://raw.github.com/robertpeteuil/packer-installer/master/packer-install.sh > install.sh
-          sudo chmod +x install.sh && ./install.sh -a -i ${{ env.PACKER_VERSION }}
+      - uses: hashicorp-contrib/setup-packer@v1
+        with:
+          packer-version: ${{ env.PACKER_VERSION }}
       - name: Build image
         run: |
           cd debian && \
           VAGRANT_CLOUD_TOKEN=${{ secrets.VAGRANT_CLOUD_TOKEN }} make ${{ matrix.distrib.VERSION }}
-

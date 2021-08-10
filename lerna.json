@@ -1,8 +1,0 @@
-{
-  "packages": [
-    "ansible",
-    "packer",
-    "docker"
-  ],
-  "version": "independent"
-}

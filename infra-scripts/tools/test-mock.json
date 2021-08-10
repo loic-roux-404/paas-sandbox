@@ -1,0 +1,13 @@
+[
+  {
+    "name": "github.com/gohugoio/hugo",
+    "version": "$HUGO_VERSION",
+    "flags": "--tags extended,other-tag",
+    "deps": [
+      "gcc",
+      "g++",
+      "dart-sass-embedded.sh"
+    ],
+    "state": "present"
+  }
+]

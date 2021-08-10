@@ -5,10 +5,10 @@ build:
   # config:
   #   FOO: bar
   docker:
-    ansible: docker/ansible/Dockerfile
+    ansibleworker: ansible/Dockerfile
 run:
   docker:
     vault:
       image: vault:1.8.1
-    ansible:
+    ansibleworker:
       - command: -i inventories/paas

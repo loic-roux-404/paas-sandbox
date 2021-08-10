@@ -2,4 +2,6 @@
   gather_facts: True
   become: True
   roles:
+    # TODO : create a role to install monitoring tools on dokku
+    # inspiration : https://richardwillis.info/blog/monitor-dokku-server-prometheus-loki-grafana
     - { role: role-logrotate, tags: [monitoring, log] }

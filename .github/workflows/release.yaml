@@ -1,0 +1,62 @@
+name: Bump version and release
+
+on:
+    push:
+        branches:
+            - main
+            - beta
+            - next
+            - next-major
+            - alpha
+            - '*.*.*'
+
+jobs:
+    release:
+        name: Publish release - github
+        if: contains(github.event.pull_request.labels.*.name, 'skip-release') == false
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+              with:
+                persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+                fetch-depth: 0
+
+            - name: log commit in common
+              id: history-check
+              run: |
+                echo '::set-output name=PUSH::false'
+                git fetch origin;
+                [[ -z $(git branch -a --list origin/beta) ]] && exit 0;
+                [[ $(git rev-parse --verify HEAD) = $(git rev-parse --verify origin/beta) ]] \
+                  && echo 'History OK' && exit 0 || git reset --hard origin/beta && \
+                  echo '::set-output name=PUSH::true'
+
+            - name: Push changes
+              uses: ad-m/github-push-action@master
+              if: steps.history-check.outputs.PUSH == true
+              with:
+                github_token: ${{ secrets.GITHUB_TOKEN }}
+                branch: ${{ github.ref }}
+                force: true
+
+            - uses: actions/setup-node@v2
+            - uses: actions/cache@v2
+              with:
+                  path: ~/.npm
+                  key: ${{ runner.os }}-node
+                  restore-keys: |
+                    ${{ runner.os }}-node
+
+            - name: semver plugins
+              run: |
+                npm i '@semantic-release/changelog' \
+                    '@semantic-release/exec' \
+                    '@semantic-release/commit-analyzer' \
+                    '@semantic-release/github' \
+                    '@semantic-release/npm' \
+                    '@semantic-release/release-notes-generator'
+                sudo npm i -g '@qiwi/multi-semantic-release' semantic-release
+
+            - run: multi-semantic-release
+              env:
+                GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
