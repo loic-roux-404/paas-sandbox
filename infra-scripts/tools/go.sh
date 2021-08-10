@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # Install go environment with go modules
 # =======
 # Target : vps / container / CI
@@ -11,7 +13,7 @@
 
 # Defaults, we use env and gopackages list
 PKG_MANAGER=${PKG_MANAGER:-apt}
-SH_PATH=$(dirname "$0")
+SH_PATH=${1:-$(dirname "$0")}
 GO_VERSION=${GO_VERSION:-'latest'}
 # Reexport an already set go env (used by g)
 export GOPATH=${GOPATH:-'/opt/go/packages'}
@@ -70,9 +72,9 @@ install_single_gopackage() (
     # Use environment variable if it exists
     # Return empty if version is invalid
     function set_version() {
-      local version=${1#'$'}
+      [[ $1 =~ ^\$ ]] && local version=${1#'$'}
       local final_v="${!version:-$version}"
-      [[ $final_v =~ ^[0-9]+\.[0-9]+ ]] && echo $final_v
+      [[ $final_v =~ ^[0-9]+\.[0-9]+ ]] && echo "v$final_v" || echo $final_v
     }
 
     function install_single_build_dep() {
@@ -108,14 +110,15 @@ install_single_gopackage() (
     }
     # Var Assigments
     local name=$(jq -r '.name' <<<$1;)
-    local version=$(jq -r '.version' <<<$1;)
+    local version=$(jq -r '.version // empty' <<<$1;)
     # Check if version is env variable
     version=$(set_version "$version")
+    version=${version:-master}
     # Additional command flags
-    local flags=$(jq -r '.flags' <<<$1;)
-    local deps=$(jq -r '.deps' <<<$1;)
+    local flags=$(jq -r '.flags // empty' <<<$1;)
+    local deps=$(jq -r '.deps // empty' <<<$1;)
     # State and default value
-    local state=$(jq -r '.state' <<<$1;)
+    local state=$(jq -r '.state // empty' <<<$1;)
     local state=${state:-present}
     # Get the single binary exe
     local bin_name=$(echo $name | tr "/" " " | awk '{print $3}';)
@@ -130,11 +133,11 @@ install_single_gopackage() (
 
     echo "[ Process go package : ${name}@${version} ]";
     validate_version $version;
-    build_deps "$deps";
+    [ ! -z $deps ] && build_deps "$deps";
 
     # Create the binary
     if [ "$state" = "present"  ]; then
-      go get ${flags} ${name}@v${version};
+      go get ${flags} ${name}@${version};
     elif [ "$state" = "absent"  ]; then
       rm -f ${GOPATH}/bin/${bin_name} ${GOPATH}/pkg/mod/${name};
     fi
