@@ -1,7 +1,7 @@
 
 TO DO
 ------------
-- [ ] [Role dokku] dokku and webhook + ui
+- [ ] [Role ledokku] dokku role preconf + ledokku ui + github secret + cron change jwt
 - [ ] Vault / docker secrets
 - [ ] Test a swarm cluster with two nodes
 - [ ] use simpler : https://github.com/gantsign/ansible-role-oh-my-zsh
@@ -13,7 +13,7 @@ TO DO
 - `conda activate $(basename "$PWD")`
 - `make install`
 
-To Provision of a server from scratch `make site ANSIBLE_VARS=ansible_user=root ansible_password=root-pass`
+To Provision of a server from scratch `make site ANSIBLE_VARS='ansible_user=root ansible_password=root-pass'`
 
 Creates :
 - security config

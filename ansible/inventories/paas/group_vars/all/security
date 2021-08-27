@@ -20,6 +20,7 @@ apt_install:
   - man
   - apache2-utils
   - dnsutils
+  - rsync
 
 apt_remove:
   - apache*

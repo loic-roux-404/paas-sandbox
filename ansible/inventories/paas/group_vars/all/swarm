@@ -45,3 +45,13 @@ dokku_email: "{{ user1.email }}"
 dokku_modules: "portainer swarmprom"
 dokku_state: present
 dokku_username: "{{ user1.username }}"
+
+dokku_env:
+  GITHUB_APP_CLIENTID: '{{ gh_app.clientid }}'
+
+  # Github OAuth & App secrets and private key - you can get it from Github.
+  GITHUB_APP_CLIENT_SECRET: "{{ gh_app.client_secret }}"
+  GITHUP_APP_WEBHOOK_SECRET: "{{ gh_app.webhook_secret }}"
+
+  # It should look like this. Newlines breaks with \n
+  GITHUB_APP_PEM: ''

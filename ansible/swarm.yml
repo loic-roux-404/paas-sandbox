@@ -15,5 +15,5 @@
       tags: [network]
     - role: role-docker
       tags: [swarm, apps]
-    - role: role-dokku
-      tags: [swarm, apps, dokku]
+    - role: role-ledokku
+      tags: [swarm, apps]

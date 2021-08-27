@@ -43,6 +43,9 @@ roles:
     src: nickjj.docker
   - name: role-prometheus
     src: cloudalchemy.prometheus
+  - name: role-dokku
+    src: dokku_bot.ansible_dokku
+    version: v2021.5.8
 # replace zsh by role: gantsign.oh-my-zsh
 
 collections:
