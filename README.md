@@ -20,7 +20,7 @@ Install project with :
 - bash / zsh : `./infra-scripts/tools/go.sh $(pwd)`
 - fish : `./infra-scripts/tools/go.sh (pwd)`
 
-Now you can run commands with : `bazelisk`, for a less confuse use you can do
+Now you can run commands with : `bazelisk`, for a more consistent use you can do :
 
 - fish: `echo 'alias bazel="bazelisk"' >> ~/.config/fish/config.fish`
 - bash / zsh : `echo 'alias bazel="bazelisk"' >> ~/.bash_profile`

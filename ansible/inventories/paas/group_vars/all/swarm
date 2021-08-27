@@ -54,4 +54,4 @@ dokku_env:
   GITHUP_APP_WEBHOOK_SECRET: "{{ gh_app.webhook_secret }}"
 
   # It should look like this. Newlines breaks with \n
-  GITHUB_APP_PEM: ''
+  GITHUB_APP_PEM: "{{ lookup('unvault', 'files/keys/coolify-loic-roux-404.2021-07-08.private-key.pem') }}"
