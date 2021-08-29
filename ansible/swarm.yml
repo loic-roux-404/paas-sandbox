@@ -3,17 +3,14 @@
   gather_facts: True
   become: true
   become_user: root
-  pre_tasks:
-    - name: fix virtualenv bad install
-      pip:
-        name: virtualenv
-        state: forcereinstall
   roles:
     - role: role-upgrade
       tags: [system, deps]
     - role: role-dns
-      tags: [network]
-    - role: role-docker
-      tags: [swarm, apps]
+      tags: [network, dns]
     - role: role-ledokku
-      tags: [swarm, apps]
+      tags: [apps, paas]
+  post_tasks:
+  - name: Create crons
+    include_tasks: tasks/cron.yml
+    tags: [system, cron, swarm]

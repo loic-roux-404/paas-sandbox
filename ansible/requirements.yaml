@@ -15,13 +15,9 @@ roles:
   - name: role-tools
     version: master
     src: ssh://git@github.com/loic-roux-404/role-tools.git
-  - name: role-dokku
+  - name: role-ledokku
     version: master
-    src: ssh://git@github.com/loic-roux-404/role-dokku.git
-    scm: git
-  - name: role-github-app
-    version: master
-    src: ssh://git@github.com/loic-roux-404/role-github-app.git
+    src: ssh://git@github.com/loic-roux-404/role-ledokku.git
     scm: git
   - name: role-upgrade
     src: oefenweb.apt
@@ -34,15 +30,11 @@ roles:
     src: arillso.logrotate
   - name: role-firewall
     src: geerlingguy.firewall
-  - name: role-security
-    src: geerlingguy.firewall
   - name: role-sudo
     src: weareinteractive.sudo
     version: master
   - name: role-docker
     src: nickjj.docker
-  - name: role-prometheus
-    src: cloudalchemy.prometheus
   - name: role-dokku
     src: dokku_bot.ansible_dokku
     version: v2021.5.8

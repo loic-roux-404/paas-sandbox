@@ -1,10 +1,12 @@
 
 TO DO
 ------------
-- [ ] [Role ledokku] dokku role preconf + ledokku ui + github secret + cron change jwt
+- [ ] Immutable and secure sudoers
+- [x] [Role ledokku] dokku role preconf + ledokku ui + github secret + cron change jwt
 - [ ] Vault / docker secrets
-- [ ] Test a swarm cluster with two nodes
-- [ ] use simpler : https://github.com/gantsign/ansible-role-oh-my-zsh
+- [ ] Monitoring
+- [ ] Scaling
+- [ ] Replace actual role-zsh with https://github.com/gantsign/ansible-role-oh-my-zsh
 
 ### Init stack
 
@@ -20,7 +22,7 @@ Creates :
 - user creation
 - shell environment and utilities
 - docker and dokku
-- monitoring tools
+- monitoring tools (not yet implemented)
 
 Roles used by sub-playbook:
 ------------
@@ -47,7 +49,7 @@ Secure the infrastructure client / server instances
 
 Later it's can be more logical to split server in two nodes with a master custer and client one
 
-- role-docker
+- role-dns
 - role-dokku : PaaS tool
 
 #### Monitoring
@@ -62,7 +64,6 @@ For functionnal monitoring playbook, we need the following things, just type com
 
 > Check requirements
 
-- role-docker
 - role-logrotate
 
 ### Secure user creation
