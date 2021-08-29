@@ -12,5 +12,5 @@
       tags: [apps, paas]
   post_tasks:
   - name: Create crons
-    include_tasks: tasks/cron.yml
+    include_tasks: tasks/crons.yml
     tags: [system, cron, swarm]
