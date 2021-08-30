@@ -33,8 +33,8 @@ roles:
   - name: role-sudo
     src: weareinteractive.sudo
     version: master
-  - name: role-docker
-    src: nickjj.docker
+  # - name: role-docker
+  #   src: nickjj.docker
   - name: role-dokku
     src: dokku_bot.ansible_dokku
     version: v2021.5.8
