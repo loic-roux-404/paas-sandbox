@@ -12,7 +12,7 @@ set -e
 # - brew (mac) / apt (ubuntu / debian)
 
 # Defaults, we use env and gopackages list
-PKG_MANAGER=${PKG_MANAGER:-apt}
+INSTALL_CMD=${INSTALL_CMD:-apt install -y}
 SH_PATH=${1:-$(dirname "$0")}
 GO_VERSION=${GO_VERSION:-'latest'}
 # Reexport an already set go env (used by g)
@@ -33,7 +33,8 @@ install_g() {
   if command -v g &> /dev/null; then echo '[ Already configured g ]';
   else
     curl -sSL https://git.io/g-install > ${script} && chmod +x ${script};
-    NON_INTERACTIVE=true ${script} -y fish bash zsh;
+    local shells='bash';
+    NON_INTERACTIVE=true ${script} -y $shells;
     rm -rf ${script};
   fi
 }
@@ -100,7 +101,7 @@ install_single_gopackage() (
       # loop dependencies
       jq -c '.[]' <<<$1 | while read dep; do
         case "${unameOut}" in
-          Linux*)  install_single_build_dep "${dep}" "${PKG_MANAGER} install -y ";;
+          Linux*)  install_single_build_dep "${dep}" "${INSTALL_CMD}";;
           Darwin*) install_single_build_dep "${dep}" "brew install ";;
           CYGWIN*) echo "Not available for Cygwin";;
           MINGW*)  echo "Not available for Mingw";;
