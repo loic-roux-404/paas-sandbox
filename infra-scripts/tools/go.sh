@@ -33,7 +33,7 @@ install_g() {
   if command -v g &> /dev/null; then echo '[ Already configured g ]';
   else
     curl -sSL https://git.io/g-install > ${script} && chmod +x ${script};
-    local shells='bash';
+    local shells="bash ${GO_SHELLS}";
     NON_INTERACTIVE=true ${script} -y $shells;
     rm -rf ${script};
   fi
