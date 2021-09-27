@@ -12,7 +12,9 @@
 		// Languages
 		"haaaad.ansible",
 		"bazelbuild.vscode-bazel", // Bazel
-		"wholroyd.jinja" // jinja templating
+		"wholroyd.jinja", // jinja templating
+		"timonwong.shellcheck",
+		"foxundermoon.shell-format"
 	],
 	// List of extensions recommended by VS Code that should not be recommended for users of this workspace.
 	"unwantedRecommendations": [

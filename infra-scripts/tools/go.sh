@@ -20,15 +20,17 @@ export GOPATH=${GOPATH:-'/opt/go/packages'}
 export GOROOT=${GOROOT:-"/opt/go/go-$GO_VERSION"}
 export GO111MODULE=${GO111MODULE:-'on'}
 export CGO_ENABLED=1
+declare ENV_FILE
 # Source hugo site env
-if [ ! -z ${ENV_FILE+x} ]; then source ${ENV_FILE}; fi
+# shellcheck source=/dev/null
+if [ -n "${ENV_FILE+x}" ]; then source "${ENV_FILE}"; fi
 
 # Install g (simple go version manager)
 install_g() {
   local script=/tmp/g-install
   echo '[ Install g : the go version manager ]';
 
-  mkdir -p ${GOPATH} ${GOROOT};
+  mkdir -p "${GOPATH}" "${GOROOT}";
 
   if command -v g &> /dev/null; then echo '[ Already configured g ]';
   else
@@ -52,7 +54,7 @@ install_go() {
   fi
 
   if [ "$CURRENT_GO_VERSION" != "$GO_VERSION" ]; then
-    g install -y ${GO_VERSION};
+    g install -y "${GO_VERSION}";
   fi
 }
 
@@ -75,7 +77,7 @@ install_single_gopackage() (
     function set_version() {
       [[ $1 =~ ^\$ ]] && local version=${1#'$'}
       local final_v="${!version:-$version}"
-      [[ $final_v =~ ^[0-9]+\.[0-9]+ ]] && echo "v$final_v" || echo $final_v
+      [[ $final_v =~ ^[0-9]+\.[0-9]+ ]] && echo "v$final_v" || echo "$final_v"
     }
 
     function install_single_build_dep() {
@@ -83,14 +85,15 @@ install_single_gopackage() (
       local manager=$2
       echo "[ Processing associated dependency : $dep]";
 
-      if $(eval command -v ${dep} &>/dev/null;); then
+      if command -v "${dep}" &>/dev/null; then
         echo "[ Already installed dependency : $dep]";
         return 0
       fi
 
-      local script_dep=$(eval printf "%s/%s" ${SH_PATH} ${dep};)
-      if [ -f $script_dep ]; then
-        ./$script_dep;
+      local script_dep=""
+      script_dep=$(eval printf "%s/%s" "${SH_PATH}" "${dep}";)
+      if [ -f "$script_dep" ]; then
+        ./"$script_dep";
       else
         eval "${manager} ${dep}";
       fi
@@ -99,48 +102,48 @@ install_single_gopackage() (
     function build_deps() {
       unameOut="$(uname -s;)"
       # loop dependencies
-      jq -c '.[]' <<<$1 | while read dep; do
+      jq -c '.[]' <<<"$1" | while read -r dep; do
         case "${unameOut}" in
           Linux*)  install_single_build_dep "${dep}" "${INSTALL_CMD}";;
           Darwin*) install_single_build_dep "${dep}" "brew install ";;
           CYGWIN*) echo "Not available for Cygwin";;
           MINGW*)  echo "Not available for Mingw";;
-          *)       machine="UNKNOWN:${unameOut}"
+          *)       echo "UNKNOWN:${unameOut}"
         esac
       done
     }
     # Var Assigments
-    local name=$(jq -r '.name' <<<$1;)
-    local version=$(jq -r '.version // empty' <<<$1;)
+    local name=$(jq -r '.name' <<<"$1";)
+    local version=$(jq -r '.version // empty' <<<"$1";)
     # Check if version is env variable
     version=$(set_version "$version")
     version=${version:-master}
     # Additional command flags
-    local flags=$(jq -r '.flags // empty' <<<$1;)
-    local deps=$(jq -r '.deps // empty' <<<$1;)
+    local flags=$(jq -r '.flags // empty' <<<"$1";)
+    local deps=$(jq -r '.deps // empty' <<<"$1";)
     # State and default value
-    local state=$(jq -r '.state // empty' <<<$1;)
+    local state=$(jq -r '.state // empty' <<<"$1";)
     local state=${state:-present}
     # Get the single binary exe
-    local bin_name=$(echo $name | tr "/" " " | awk '{print $3}';)
+    local bin_name=$(echo "$name" | tr "/" " " | awk '{print $3}';)
 
     # Check correct version
     function validate_version() {
-      if [ -z ${1} ]; then
+      if [ -z "${1}" ]; then
         echo "[ Invalid version $1, check if env variable is defined ]";
         exit 1;
       fi
     }
 
     echo "[ Process go package : ${name}@${version} ]";
-    validate_version $version;
-    [ ! -z $deps ] && build_deps "$deps";
+    validate_version "$version";
+    [ -n "$deps" ] && build_deps "$deps";
 
     # Create the binary
     if [ "$state" = "present"  ]; then
-      go get ${flags} ${name}@${version};
+      go get "${flags}" "${name}@${version}";
     elif [ "$state" = "absent"  ]; then
-      rm -f ${GOPATH}/bin/${bin_name} ${GOPATH}/pkg/mod/${name};
+      rm -f "${GOPATH}/bin/${bin_name}" "${GOPATH}/pkg/mod/${name}";
     fi
 )
 
@@ -148,7 +151,7 @@ install_single_gopackage() (
 gopackages() {
   local deps_file="${SH_PATH}/gopackages.json"
 
-  jq -c '.[]' ${deps_file} | while read package; do
+  jq -c '.[]' "${deps_file}" | while read -r package; do
     install_single_gopackage "$package";
   done
 }
@@ -157,4 +160,6 @@ install_g;
 install_go;
 gopackages;
 
-[ $? -eq 0 ] && echo "[ DONE : Installed go stack ]" || exit $?
+ec=$?
+
+[ "$ec" -eq 0 ] && echo "[ DONE : Installed go stack ]" || exit $?

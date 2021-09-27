@@ -1,5 +1,6 @@
 {
   "yaml.format.enable": true,
+  "shellcheck.exclude": ["SC2155"],
   "files.associations": {
     "Vagrantfile": "ruby",
     "[.appveyor|.travis].yml": "yaml",

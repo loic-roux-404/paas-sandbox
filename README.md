@@ -9,6 +9,7 @@ Composed of multiple parts
 - [Ansible playbook](./ansible)
 - [Packer templates](./packer)
 - [Infra scripts](./infra-scripts)
+- [Web assembly as service](./waas)
 
 ## Monorepo
 
