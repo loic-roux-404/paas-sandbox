@@ -11,24 +11,30 @@ jobs:
       max-parallel: 2
       matrix:
         distrib:
-          - VERSION: buster
-            NAME: debian
-            VAGRANT_CLOUD_TAG: loic-roux-404/deb64-buster
+          # - VERSION: buster
+          #   NAME: debian
+          #   VAGRANT_CLOUD_TAG: loic-roux-404/deb64-buster
+          #   release: 10.8.0
 
-          - VERSION: focal
-            NAME: ubuntu
+          - VERSION: bulleye
+            NAME: debian
+            VAGRANT_CLOUD_TAG: loic-roux-404/deb64-bulleye
+            release: 10.1.0
+
+          # - VERSION: focal
+          #   NAME: ubuntu
+          #   VAGRANT_CLOUD_TAG: loic-roux-404/ubuntu64-focal
+          #   release: 20.0.0
 
     steps:
       - uses: actions/checkout@v1
-      - name: Install dependencies
-        run: |
-          sudo apt update
-          sudo apt install moreutils
-          sudo apt install -y unzip curl jq zsh
+
       - uses: hashicorp-contrib/setup-packer@v1
         with:
           packer-version: ${{ env.PACKER_VERSION }}
+
       - name: Build image
         run: |
-          cd debian && \
-          VAGRANT_CLOUD_TOKEN=${{ secrets.VAGRANT_CLOUD_TOKEN }} make ${{ matrix.distrib.VERSION }}
+          cd packer/ansible && \
+          VAGRANT_CLOUD_TOKEN=${{ secrets.VAGRANT_CLOUD_TOKEN }} \
+            ./run.sh

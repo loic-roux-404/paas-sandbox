@@ -6,8 +6,8 @@
 ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
 
 Vagrant.configure("2") do |config|
-    config.vm.box = "loic-roux-404/deb-g4"
-    #config.vm.box_version = "0.10.3"
+    config.vm.box = "loic-roux-404/deb64-buster"
+    config.vm.box_version = "0.10.3"
     config.vm.box_check_update = false
     #config.vbguest.auto_update = false
 
@@ -15,13 +15,13 @@ Vagrant.configure("2") do |config|
     id_rsa_ssh_key     = File.read(id_rsa_path)
     id_rsa_ssh_key_pub = File.read(File.join(Dir.home, ".ssh", "id_rsa.pub"))
     insecure_key_path  = File.join(Dir.home, ".vagrant.d", "insecure_private_key")
-  
+
     config.ssh.insert_key = false
     config.ssh.forward_agent = true
     config.ssh.private_key_path = [id_rsa_path, insecure_key_path]
 
     config.vm.provider "virtualbox" do |vb|
-        vb.customize ["modifyvm", :id, "--name", "libguest-vm"]
+        vb.customize ["modifyvm", :id, "--name", "packer-vm"]
         vb.customize ["modifyvm", :id, "--memory", "2048"]
         vb.customize ["modifyvm", :id, "--cpus", "2"]
         vb.customize ["modifyvm", :id, "--ioapic", "on"]
@@ -29,23 +29,6 @@ Vagrant.configure("2") do |config|
 
     config.vm.synced_folder ".", "/vagrant", disabled: true
 
-    if !ENV['NO_CONV']
-        HOME = '/home/vagrant'
-        v2ovf = "import2vbox.pl"
-
-        config.vm.provision "file", source: "./#{ENV['VM_NAME']}.vmdk", destination: "#{HOME}/#{ENV['VM_NAME']}.vmdk"
-        config.vm.provision "file", source: "./scripts/#{v2ovf}", destination: "#{HOME}/#{v2ovf}"
-        
-        # fix ssh common issues
-        ssh_path = "/home/vagrant/.ssh"
-        config.vm.provision :shell, :inline => "echo '#{id_rsa_ssh_key}' > #{ssh_path}/id_rsa && chmod 600 #{ssh_path}/id_rsa"
-        config.vm.provision :shell, :inline => "echo '#{id_rsa_ssh_key_pub}' > #{ssh_path}/authorized_keys && chmod 600 #{ssh_path}/authorized_keys"
-        
-        config.vm.provision "shell", path: 'scripts/conversions.sh', env: { 
-            'WORK_PATH': HOME, 
-            'VM_NAME': ENV['VM_NAME'], 
-            'OUTPUT': ENV['OUTPUT']
-        }
-    end
+    config.vm.provision "shell", inline: ""
+    config.vm.provision "shell", path: 'run.sh'
   end
-  
