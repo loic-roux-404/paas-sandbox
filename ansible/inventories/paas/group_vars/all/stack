@@ -71,6 +71,8 @@ golang_packages:
       - gcc # for libsass
       - g++ # same
     state: present
+  - name: github.com/buildpacks/pack
+    state: present
 # TODO dart sass
 
 # =============
