@@ -1,40 +1,40 @@
 #!/bin/bash
 # Convert qemu/kvm machine to virtualbox ovf config file
-# On mac os disable sudo pass 
+# On mac os disable sudo pass
 
-VMDK=$VM_NAME.vmdk
-RAW=$OUTPUT/$VM_NAME
-QCOW2=$VM_NAME.qcow2
-OVF=$VM_NAME.ovf
+VMDK="$VM_NAME.vmdk"
+RAW="$OUTPUT/$VM_NAME"
+QCOW2="$VM_NAME.qcow2"
+OVF="$VM_NAME.ovf"
 V2OVF_EXE=import2vbox.pl
 
 vdmk() {
     if [ ! -f "$VMDK" ]; then
-        qemu-img convert -O vmdk $RAW $VMDK
+        qemu-img convert -O vmdk "$RAW" "$VMDK"
     fi
 }
 
 # img and qcow2 are same files
 qcow2() {
     if [ ! -f "$VM_NAME.img" ]; then
-      qemu-img convert -p -f raw -O qcow2 $RAW $QCOW2
+      qemu-img convert -p -f raw -O qcow2 "$RAW" "$QCOW2"
     fi
 
-    mv $QCOW2 $VM_NAME.img
+    mv "$QCOW2" "$VM_NAME.img"
 }
 
 convert() {
     if [ ! -f "$OVF" ]; then
         sudo perl -MCPAN -e 'install XML::Writer'
-        # retry in case of not configured CPAN 
+        # retry in case of not configured CPAN
         sudo perl -MCPAN -e 'install XML::Writer'
         sudo perl -MCPAN -e 'install UUID::Generator::PurePerl'
 
-        cd $WORK_PATH
+        cd "$WORK_PATH" || exit
         sudo chmod +x $V2OVF_EXE
         echo "[ ---- Create ovf settings from vmdk file ---- ]"
-        ./$V2OVF_EXE --memory 512 --vcpus 2 $VM_NAME.vmdk
-    else 
+        ./$V2OVF_EXE --memory 512 --vcpus 2 "$VM_NAME.vmdk"
+    else
         echo "Error : no vm name set on OVF variable"
     fi
 }
@@ -47,13 +47,20 @@ by_vagrant_convert() {
     echo "[ ---- done ovf file placed on project ---- ]"
 }
 
+fs_state() {
+    echo "[[ Launch vbox disk conversions ]]"
+    echo "[[ Name =: $VM_NAME ]]"
+    echo "[[ Work folder : $OUTPUT ]]"
+    printf "[[ Files presents : %s ]]" "$(echo $VM_NAME.*)"
+}
+
 # run these conversions in each cases
 qcow2
 vdmk
 fs_state
 
 # run os specific conversions
-OS="`uname`"
+OS="$(uname)"
 case $OS in
   'Linux')
     OS='Linux'
@@ -63,23 +70,10 @@ case $OS in
     convert
 
     ;;
-  'Darwin') 
+  'Darwin')
     OS='Darwin'
-
-    # if no libguest-fs try by temporary debian machine
-    if [ ! -f "$OVF" ] && ! which guestfish > /dev/null ; then
-        by_vagrant_convert
-    elif [ ! -f "$OVF" ]; then
-        V2OVF_EXE=scripts/$V2OVF_EXE
-        convert || by_vagrant_convert
-    fi
+    echo "[ Build for libvirt isn't available on $OS ]"
+    exit 1
     ;;
 
 esac
-
-fs_state() {
-    echo "[[ Launch vbox disk conversions ]]"
-    echo "[[ Name =: $VM_NAME ]]" 
-    echo "[[ Work folder : $OUTPUT ]]"
-    echo "[[ Files presents : `$(echo $VM_NAME.*)` ]]"
-}

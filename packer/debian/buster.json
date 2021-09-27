@@ -68,8 +68,7 @@
             "pause_before": "5s",
             "execute_command": "echo 'vagrant'| {{.Vars}} sudo --preserve-env --stdin sh '{{.Path}}'",
             "environment_vars": [
-                "VAGRANT_BUILDER_FS=/",
-                "DEBUG='{{ user `PACKER_LOG` }}'"
+                "VAGRANT_BUILDER_FS=/"
             ],
             "scripts": [
                 "../helpers/vagrant-setup",

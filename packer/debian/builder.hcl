@@ -1,36 +1,21 @@
 
 variable "vm_name" {}
-variable "box_name" {}
-variable "box_version" {
-  default = "0.0.0"
+variable "box_tag" {}
+variable "box_version" { default = "0.0.0" }
+variable "box_changelog" {
+  default = "Version: ${var.box_version}"
 }
-variable "box_changelog" {}
 variable "description" {}
-
-variable "distro_version" {
-    default = "0.0"
-}
-// variable "iso_url" {}
-variable "iso_checksum" {
-    default = "{{ env `ISO_SHA256` }}"
-}
-variable "playbook" {
-    default = "playbook"
-}
-variable "sub_playbook" {
-    default = "site.yml"
-}
-variable "inventory" {}
-// variable "playbook_file" {}
-// variable "inventory_directory" {}
+variable "distro_version" {}
+variable "playbook" { default = "env.yml" }
+variable "inventory" { default = "packer" }
 
 locals {
     cloud_token = "{{ env `VAGRANT_CLOUD_TOKEN` }}"
     output_dir = "${var.vm_name}.build"
     exports_dir = "${var.vm_name}.build/exports"
-    iso_url = "https=//cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-${var.distro_version}.0-amd64-netinst.iso"
-    playbook_file = "./ansible/${var.playbook}/${var.sub_playbook}"
-    inventory_directory = "../ansible/${var.playbook}/inventories/${var.inventory}"
+    playbook_file = "../../ansible/${var.playbook}"
+    inventory_directory = "../../ansible/inventories/${var.inventory}"
 }
 
 # enum builder sources
@@ -59,7 +44,7 @@ source "qemu" "vg-libvirt"{
   http_directory = "http"
   iso_checksum = var.iso_checksum
   iso_checksum_type = "sha256"
-  iso_url = local.iso_url
+  iso_url = var.iso_url
   accelerator = "hvf"
   ssh_password = "vagrant"
   ssh_username =" vagrant"
@@ -106,10 +91,7 @@ build {
     provisioner "shell" {
       pause_before = "5s"
       execute_command = "echo 'vagrant'| {{ .Vars }} sudo --preserve-env --stdin sh '{{ .Path }}'"
-      environment_vars = [
-        "VAGRANT_BUILDER_FS = /",
-        "DEBUG = {{ env `PACKER_LOG` }}"
-      ]
+      environment_vars = ["VAGRANT_BUILDER_FS = /"]
       scripts = [
         "../helpers/vagrant-setup",
         "scripts/customize.sh",
@@ -127,19 +109,12 @@ build {
     provisioner "shell" {
       pause_before = "1s"
         execute_command = "echo 'vagrant' | {{ .Vars }} sudo --preserve-env --stdin sh '{{ .Path }}'"
-        scripts = [
-            "scripts/cleanup.sh",
-            "scripts/minimize.sh"
-        ]
+        scripts = ["scripts/cleanup.sh", "scripts/minimize.sh"]
         except = ["virtualbox-ovf"]
     }
 
     post-processor "shell-local" {
-        environment_vars = [
-          "VM_NAME=${var.vm_name}",
-          "OUTPUT=${var.output_dir}",
-          "WORK_PATH=./"
-        ]
+        environment_vars = ["VM_NAME=${var.vm_name}", "OUTPUT=${var.output_dir}", "WORK_PATH=./"]
         script = "scripts/conversions.sh"
         except = ["virtualbox-ovf"]
     }
@@ -151,21 +126,21 @@ build {
         except = ["virtualbox-ovf"]
     }
 
-    post-processor "artifice" {
-        files = [
-          "${var.exports_dir}/${var.vm_name}.libvirt.box"
-        ]
-        except = ["virtualbox-ovf"]
-    }
+    // post-processor "artifice" {
+    //     files = [
+    //       "${var.exports_dir}/${var.vm_name}.libvirt.box"
+    //     ]
+    //     except = ["virtualbox-ovf"]
+    // }
 
     post-processor "vagrant" {
         output = "${var.exports_dir}/${var.vm_name}.{{ .Provider }}.box"
         keep_input_artifact = true
-        only = ["virtualbox-ovf"]
+        // only = ["virtualbox-ovf"]
     }
-          
+
     post-processor "vagrant-cloud" {
-        box_tag = "loic-roux-404/${box_name}"
+        box_tag = "${var.box_tag}"
         access_token = local.cloud_token
         version = var.box_version
     }

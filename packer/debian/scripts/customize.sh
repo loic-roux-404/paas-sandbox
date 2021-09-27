@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Script installing common packages
 sudo apt-get -y update && sudo apt-get -y upgrade
 sudo apt-get -y install --no-install-recommends apt-transport-https \
@@ -8,7 +10,7 @@ sudo apt-get -y install --no-install-recommends apt-transport-https \
 
 sudo pip3 install ansible
 # Minimal bash shell Config
-echo "Adding base shell config for `whoami`"
+echo "Adding base shell config for $(whoami)"
 sudo mv /tmp/res/.bash_aliases ~/.bash_aliases
 sudo mv /tmp/res/.bashrc ~/.bashrc
 sudo rm -rf /tmp/res
