@@ -15,9 +15,10 @@ roles:
   - name: role-tools
     version: master
     src: ssh://git@github.com/loic-roux-404/role-tools.git
-  - name: role-ledokku
+    scm: git
+  - name: role-porter-run
     version: master
-    src: ssh://git@github.com/loic-roux-404/role-ledokku.git
+    src: ssh://git@github.com/loic-roux-404/role-porter-run.git
     scm: git
   - name: role-upgrade
     src: oefenweb.apt
@@ -33,11 +34,7 @@ roles:
   - name: role-sudo
     src: weareinteractive.sudo
     version: master
-  # - name: role-docker
-  #   src: nickjj.docker
-  - name: role-dokku
-    src: dokku_bot.ansible_dokku
-    version: v2021.5.8
+
 # replace zsh by role: gantsign.oh-my-zsh
 
 collections:

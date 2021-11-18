@@ -1,0 +1,28 @@
+{
+  "yaml.format.enable": true,
+  "files.associations": {
+    "Vagrantfile": "ruby",
+    "[.appveyor|.travis].yml": "yaml",
+    ".[ya|y]ml": "yaml",
+    "/**/hosts": "ini",
+    "**/defaults/**/*": "ansible",
+    "**/tasks/**/*.yml": "ansible",
+    "**/handler/*.yml": "ansible",
+    "**/*_vars/**": "ansible",
+    "**/roles/**/*.yml": "ansible",
+    "**/playbooks/**/*.yml": "ansible",
+    "**/*ansible*/**/*.yml": "ansible",
+    "**/vars/**/*.yml": "ansible",
+    "**/invento*/*/*": "ansible",
+    "/**/invento**/secrets": "txt",
+    "*.tmpl": "gotemplate"
+  },
+  "[yaml|goyaml|ansible|ansible-advanced]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[jinja]": {
+    "editor.defaultFormatter": "SimonSiefke.prettier-vscode"
+  },
+  "telemetry.enableCrashReporter": false,
+  "telemetry.enableTelemetry": false
+}

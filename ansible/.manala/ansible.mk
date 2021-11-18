@@ -3,9 +3,14 @@ SHELL=/bin/bash
 # Executables
 PIP:=pip3
 
+### Requirements
+# yq 4.x
+# python3 and pip
+# ansible in python virtual env (ex conda)
+
 # Functions
 # read setting from config (touch config.yaml if not exist)
-config=$(shell yq -xa merge config.yaml .manala.yaml | yq r - $(1))
+config=$(shell yq eval-all -N '.$(1)' config.yaml .manala.yaml | grep -v null)
 
 define parse_ansible_vars
 	$(foreach var, $1, -e $(subst ",,$(var)))
@@ -27,7 +32,7 @@ ANSIBLE_STDOUT_CALLBACK:=default
 ANSIBLE_FORCE_COLOR:=true
 ANSIBLE_BECOME_METHOD:=
 # Default Inventory
-INVENTORY?=$(call config, ansible.inventory)
+INVENTORY?=$(call config,ansible.inventory)
 HOSTS:=$(shell egrep '^\[.+\]' $(INVENTORY)/hosts | tr -d ‘\[\]’)
 HOST:=
 ROLES:=$(notdir $(basename $(wildcard roles/role-*) ))

@@ -21,7 +21,8 @@ cron_jobs:
     state: "present"
 
 # =============
-# role-ledokku
-# https://github.com/loic-roux-404/role-ledokku/blob/master/defaults/main.yml
+# role-porter-run
+# https://github.com/loic-roux-404/role-porter-run/blob/master/defaults/main.yml
 # =============
-ledokku_email: "{{ user1.email }}"
+porter_user: "{{ user1.username | d('root') }}"
+kubernetes_version: '1.20'

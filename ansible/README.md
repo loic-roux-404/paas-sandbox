@@ -15,7 +15,11 @@ TO DO
 - `conda activate $(basename "$PWD")`
 - `make install`
 
-To Provision of a server from scratch `make site ANSIBLE_VARS='ansible_user=root ansible_password=root-pass'`
+To Provision of a server from scratch
+
+```
+HISTFILE=/dev/null make site ANSIBLE_VARS='ansible_user=root ansible_password=root-pass'
+```
 
 Creates :
 - security config

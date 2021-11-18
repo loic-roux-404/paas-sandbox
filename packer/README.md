@@ -9,6 +9,7 @@
 - [ ] Add Ubuntu focal 20 + Ubunutu 19 ?
 - [ ] Auto CHANGELOG and versionning
 - [ ] Create LXC (need linux temp vm)
+- [ ] Run github action if folder edited in commit
 
 # Documentation
 see https://app.vagrantup.com/debian

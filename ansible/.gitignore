@@ -2,7 +2,8 @@
 roles/*
 !roles/requirements.yaml
 .vagrant/
-.ext_roles/
+.ext_roles
+roles
 vault_pass.sh
 config.yaml
 

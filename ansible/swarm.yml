@@ -8,7 +8,7 @@
       tags: [system, deps]
     - role: role-dns
       tags: [network, dns]
-    - role: role-ledokku
+    - role: role-porter-run
       tags: [apps, paas]
   post_tasks:
   - name: Create crons
