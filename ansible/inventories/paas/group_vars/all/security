@@ -38,10 +38,20 @@ app_user: "{{ user1 }}"
 security_user: "bodyguard"
 
 users:
+  # Deploy user
+  - username: docker
+    password: "{{ app_user.password }}"
+    group: docker
+    uid: 1001
+    append: yes
+    home_mode: "0750"
+    home_create: false
+    github_user_token: "{{ app_user.github_token }}"
+    update_password: always
+  # Ssh user
   - username: "{{ app_user.username }}"
     password: "{{ app_user.password }}"
     group: "{{ app_user.username }}"
-    uid: 1001
     append: yes
     home_mode: "0750"
     home_create: yes
@@ -54,12 +64,10 @@ users:
 
   - username: "{{ backup_user }}"
     password: "{{ user2.password }}"
-    uid: 1002
     home_create: no
 
   - username: "{{ monitoring_user }}"
     password: "{{ app_user.password }}"
-    uid: 1003
     home_create: no
 
   - username: "{{ security_user }}"
@@ -134,7 +142,7 @@ ssh_acl_ip:
 # role-security
 #============
 security_ssh_port: 22
-security_ssh_password_authentication: "yes"
+security_ssh_password_authentication: "no"
 security_ssh_permit_root_login: "no"
 security_ssh_usedns: "no"
 security_ssh_permit_empty_password: "no"
@@ -154,20 +162,50 @@ security_fail2ban_enabled: true
 #==================
 # role-firewall
 #==================
-firewall_allowed_tcp_ports:
+firewall_allowed_tcp_ports_base:
   - "22"    # ssh
   - "25"    # smtp
   - "80"    # reverse proxy
   - "53"    # dns
   - "443"   # ssl
-  - "2376"  # docker machine
-  - "2377"  # for docker swarm manager nodes
-  - "7946"  # swarm discovery
+  - "4565"  # porter ui
 
-firewall_allowed_udp_ports:
+firewall_allowed_udp_ports_base:
   - "80"   # reverse proxy
-  - "7946" # swarm discovery
-  - "4789" # swarm ingress controller
+
+# =============
+# Tools relative firewall confs
+# =============
+# Kubernetes
+kube_master_tcp_ports:
+  - 2379 # etcd server client API
+  - 2380 # etcd server client API
+  - 6443 # API server
+  - 8090 # Platform Agent
+  - 10250 # kubelet API server
+  - 10251 # kube-scheduler
+  - 10252 # kube-controller-manager
+  - 10255 # kubelet API server for read-only access with no authentication
+
+kube_worker_tcp_ports:
+  - 8090 # Platform Agent
+  - 8472 # Flannel overlay network, VxLAN backend
+  - 10250 # kubelet API server
+  - 10255 # kubelet API server for read-only access with no authentication
+
+kube_operator_tcp_ports:
+  - 8091 # Platform API Server
+
+kube_master_udp_ports:
+  - 8472 # Flannel overlay network, VxLAN backend
+
+firewall_allowed_tcp_ports: "{{ firewall_allowed_tcp_ports_base +
+  (kube_master_tcp_ports if kubernetes_role == 'master' else []) +
+  (kube_worker_tcp_ports if kubernetes_role == 'worker' else []) +
+  (kube_operator_tcp_ports if kubernetes_role == 'operator' else []) }}"
+
+firewall_allowed_udp_ports: "{{ firewall_allowed_udp_ports_base +
+  (kube_master_udp_ports if kubernetes_role == 'master' else []) }}"
 
 firewall_forwarded_udp_ports: []
 

@@ -25,4 +25,10 @@ cron_jobs:
 # https://github.com/loic-roux-404/role-porter-run/blob/master/defaults/main.yml
 # =============
 porter_user: "{{ user1.username | d('root') }}"
+porter_run_version: v0.11.2
 kubernetes_version: '1.20'
+# oauth github app env vars
+
+# github repo app env vars
+github_app_name: 'Porter 404'
+github_app_private_key_src: "{{ lookup('unvault', 'files/keys/porter-loic-roux-404.2021-07-08.private-key.pem') }}"
