@@ -169,6 +169,7 @@ firewall_allowed_tcp_ports_base:
   - "53"    # dns
   - "443"   # ssl
   - "4565"  # porter ui
+  - "45633" # porter external Auth
 
 firewall_allowed_udp_ports_base:
   - "80"   # reverse proxy

@@ -59,6 +59,7 @@ motd_message_3: Unauthorized access is punished
 #==================
 pip_packages:
  - setuptools
+ - openshift
 
 node_version: lts # semantic version | lts | (latest / current)
 yarn_version: latest # semantic version | latest
