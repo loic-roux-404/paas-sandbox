@@ -23,7 +23,7 @@ export CGO_ENABLED=1
 declare ENV_FILE
 # Source hugo site env
 # shellcheck source=/dev/null
-if [ -n "${ENV_FILE+x}" ]; then source "${ENV_FILE}"; fi
+if [ ! -n "${ENV_FILE+x}" ]; then source "${ENV_FILE}"; fi
 
 # Install g (simple go version manager)
 install_g() {
