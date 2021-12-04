@@ -16,8 +16,8 @@ INSTALL_CMD=${INSTALL_CMD:-apt install -y}
 SH_PATH=${1:-$(dirname "$0")}
 GO_VERSION=${GO_VERSION:-'latest'}
 # Reexport an already set go env (used by g)
-export GOPATH=${GOPATH:-'/opt/go/packages'}
-export GOROOT=${GOROOT:-"/opt/go/go-$GO_VERSION"}
+export GOPATH=${GOPATH:-'/usr/local/opt/go/packages'}
+export GOROOT=${GOROOT:-"/usr/local/opt/go/go-$GO_VERSION"}
 export GO111MODULE=${GO111MODULE:-'on'}
 export CGO_ENABLED=1
 declare ENV_FILE
