@@ -1,5 +1,5 @@
-# client01.consul ansible_host=loicroux.com
-master.consul ansible_host=loicroux.com  ansible_user=loic-roux-404 kubernetes_role=master
+# client01.consul ansible_host=144.91.67.171
+master.consul ansible_host=144.91.67.171 ansible_user=loic-roux-404 kubernetes_role=master
 
 [stack]
 master.consul
